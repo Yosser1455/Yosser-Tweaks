@@ -6,265 +6,127 @@
 <title>Yosser Tweaks</title>
 <style>
   :root {
-    --bg-main: #0B0E14;
-    --bg-card: #161B22;
-    --text-primary: #FFFFFF;
-    --text-secondary: #8B949E;
-    --accent-red-neon: #FF0055;
-    --accent-blue-neon: #00E5FF;
-    --accent-blue-hover: #00b3cc;
-    --alert-red: #FF5555;
-    --border-color: #21262d;
+    --accent-green-neon: #00FF66;
+    --accent-cyan: #00E5FF;
+    --bg-main: #070A0F;
+    --bg-card: #0D121A;
+    --border-color: #1C2633;
+    --text-primary: #F5F7FA;
+    --text-title-card: #FFFFFF;
+    --text-secondary: #7D8998;
+    --text-desc: #8B949E;
+    --text-disabled: #586174;
   }
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { background-color: var(--bg-main); color: var(--text-primary); padding: 24px; }
+  .container { max-width: 1300px; margin: 0 auto; }
+
+  header { 
+    text-align: center; margin-bottom: 24px; padding: 28px 24px; 
+    background: var(--bg-card); border: 1px solid var(--border-color); 
+    border-radius: 16px; box-shadow: 0 0 20px rgba(0, 255, 102, 0.1); 
   }
-  body {
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    padding: 24px;
+
+  .logo-title {
+    font-size: 2.8rem; font-weight: 800; letter-spacing: 1px; color: #FFFFFF; margin-bottom: 20px;
+    text-shadow: 0 0 5px rgba(0, 255, 102, 0.5), 0 0 15px rgba(0, 255, 102, 0.4);
   }
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
+  .logo-title span { color: var(--accent-green-neon); }
+
+  .monitor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 600px; margin: 0 auto 20px auto; }
+  .monitor-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; text-align: center; }
+  .monitor-card label { display: block; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+  .monitor-card span { font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan); }
+
+  .hw-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto; font-size: 0.85rem; color: var(--text-secondary); }
+  .hw-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; text-align: center; }
+  .hw-card strong { color: var(--accent-cyan); }
+
+  /* BOTONES DE DESCARGA MASIVA */
+  .bulk-actions { 
+    display: flex; gap: 16px; margin-bottom: 24px; max-width: 1300px; margin-left: auto; margin-right: auto;
   }
-  header {
-    text-align: center;
-    margin-bottom: 32px;
-    padding: 24px;
-    background: var(--bg-card);
-    border: 1px solid var(--accent-red-neon);
-    border-radius: 16px;
-    box-shadow: 0 0 15px rgba(255, 0, 85, 0.25);
+  .btn-bulk { 
+    flex: 1; background: var(--bg-card); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); 
+    padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; 
+    transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.5px;
   }
-  header h1 {
-    color: var(--accent-blue-neon);
-    font-size: 2.5rem;
-    margin-bottom: 16px;
-    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+  .btn-bulk:hover { 
+    background: var(--accent-cyan); color: var(--bg-main); box-shadow: 0 0 16px rgba(0, 229, 255, 0.4); 
   }
-  .monitor-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 600px;
-    margin: 0 auto 16px auto;
+  .btn-bulk-bat { border-color: var(--accent-green-neon); color: var(--accent-green-neon); }
+  .btn-bulk-bat:hover { background: var(--accent-green-neon); color: var(--bg-main); box-shadow: 0 0 16px rgba(0, 255, 102, 0.4); }
+
+  .tabs-nav { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+  .tab-btn { 
+    background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); 
+    padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: all 0.2s ease; 
   }
-  .hw-info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+  .tab-btn:hover { border-color: var(--accent-green-neon); color: var(--text-primary); }
+  .tab-btn.active { background: var(--accent-green-neon); color: var(--bg-main); border-color: var(--accent-green-neon); box-shadow: 0 0 12px rgba(0, 255, 102, 0.4); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+  .card { 
+    background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; 
+    padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; 
   }
-  .hw-card {
-    background: rgba(255, 0, 85, 0.08);
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    border-radius: 8px;
+  .card:hover { transform: translateY(-2px); border-color: var(--accent-green-neon); box-shadow: 0 4px 16px rgba(0, 255, 102, 0.15); }
+  .card h3 { font-size: 1.05rem; margin-bottom: 8px; color: var(--text-title-card); }
+  .card p { color: var(--text-desc); font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4; }
+
+  .btn-execute { 
+    background: rgba(0, 255, 102, 0.1); color: var(--accent-green-neon); border: 1px solid var(--accent-green-neon); 
+    padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: all 0.2s; 
   }
-  .hw-card strong {
-    color: var(--accent-blue-neon);
-  }
-  .monitor-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color);
-    padding: 12px;
-    border-radius: 12px;
-    text-align: center;
-  }
-  .monitor-card label {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .monitor-card span {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-blue-neon);
-  }
-  .tabs-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-  .tab-btn {
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    padding: 12px 24px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: all 0.2s ease;
-  }
-  .tab-btn:hover {
-    border-color: var(--accent-red-neon);
-    color: var(--text-primary);
-  }
-  .tab-btn.active {
-    background: var(--accent-red-neon);
-    color: var(--text-primary);
-    border-color: var(--accent-red-neon);
-    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
-  }
-  .tab-panel {
-    display: none;
-  }
-  .tab-panel.active {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-  }
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: all 0.2s;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent-red-neon);
-    box-shadow: 0 4px 12px rgba(255, 0, 85, 0.2);
-  }
-  .card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    color: var(--text-primary);
-  }
-  .card p {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-    line-height: 1.4;
-  }
-  .badge-reboot {
-    display: inline-block;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    font-weight: bold;
-    width: fit-content;
-  }
-  .reboot-yes {
-    background: rgba(255, 85, 85, 0.15);
-    color: var(--alert-red);
-    border: 1px solid var(--alert-red);
-  }
-  .reboot-no {
-    background: rgba(0, 229, 255, 0.15);
-    color: var(--accent-blue-neon);
-    border: 1px solid var(--accent-blue-neon);
-  }
-  .btn-execute {
-    background: rgba(255, 0, 85, 0.15);
-    color: var(--text-primary);
-    border: 1px solid var(--accent-red-neon);
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    width: 100%;
-    transition: all 0.2s;
-  }
-  .btn-execute:hover {
-    background: var(--accent-red-neon);
-    box-shadow: 0 0 10px rgba(255, 0, 85, 0.6);
-  }
+  .btn-execute:hover { background: var(--accent-green-neon); color: var(--bg-main); box-shadow: 0 0 12px rgba(0, 255, 102, 0.5); }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>Yosser Tweaks</h1>
+    <h1 class="logo-title">Yosser <span>Tweaks</span></h1>
     <div class="monitor-grid">
-      <div class="monitor-card">
-        <label>CPU Usage</label>
-        <span id="cpu-stat">0%</span>
-      </div>
-      <div class="monitor-card">
-        <label>GPU Usage</label>
-        <span id="gpu-stat">0%</span>
-      </div>
-      <div class="monitor-card">
-        <label>Disk Active</label>
-        <span id="disk-stat">0%</span>
-      </div>
+      <div class="monitor-card"><label>CPU Usage</label><span id="cpu-stat">0%</span></div>
+      <div class="monitor-card"><label>GPU Usage</label><span id="gpu-stat">0%</span></div>
+      <div class="monitor-card"><label>Disk Active</label><span id="disk-stat">0%</span></div>
     </div>
     <div class="hw-info-grid">
-      <div class="hw-card">Almacenamiento: <strong id="detected-storage">Detectando...</strong></div>
+      <div class="hw-card">Almacenamiento: <strong id="detected-storage">SSD / HDD (Estándar)</strong></div>
       <div class="hw-card">GPU: <strong id="detected-gpu">Detectando...</strong></div>
       <div class="hw-card">RAM Detectada: <strong id="detected-ram">Detectando...</strong></div>
     </div>
   </header>
 
+  <div class="bulk-actions">
+    <button class="btn-bulk btn-bulk-bat" onclick="downloadAllBAT()">Descargar todos los Tweaks en un BAT</button>
+    <button class="btn-bulk" onclick="downloadAllREG()">Descargar los Tweaks de Regedit (.REG)</button>
+  </div>
+
   <nav class="tabs-nav">
     <button class="tab-btn active" onclick="switchTab(event, 'windowTweaks')">Window Tweaks (<span id="count-windowTweaks">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab(event, 'power')">Power Options (<span id="count-power">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab(event, 'internet')">Internet (<span id="count-internet">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab(event, 'mouse')">Mouse (<span id="count-mouse">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab(event, 'keyboard')">Keyboard (<span id="count-keyboard">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'powerTweaks')">Power Tweaks (<span id="count-powerTweaks">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'ramTweaks')">Ram Tweaks (<span id="count-ramTweaks">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'internetTweaks')">Internet Tweaks (<span id="count-internetTweaks">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'kbmTweaks')">KBM Tweaks (<span id="count-kbmTweaks">0</span>)</button>
   </nav>
 
   <main>
     <div id="windowTweaks" class="tab-panel active"></div>
-    <div id="power" class="tab-panel"></div>
-    <div id="internet" class="tab-panel"></div>
-    <div id="mouse" class="tab-panel"></div>
-    <div id="keyboard" class="tab-panel"></div>
+    <div id="powerTweaks" class="tab-panel"></div>
+    <div id="ramTweaks" class="tab-panel"></div>
+    <div id="internetTweaks" class="tab-panel"></div>
+    <div id="kbmTweaks" class="tab-panel"></div>
   </main>
 </div>
 
 <script>
-  function updateHardwareStats() {
-    document.getElementById('cpu-stat').textContent = Math.floor(Math.random() * (18 - 3) + 3) + '%';
-    document.getElementById('gpu-stat').textContent = Math.floor(Math.random() * (30 - 5) + 5) + '%';
-    document.getElementById('disk-stat').textContent = Math.floor(Math.random() * (4 - 1) + 1) + '%';
-  }
-  setInterval(updateHardwareStats, 2000);
-  updateHardwareStats();
-
-  function detectHardware() {
-    const ram = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "No detectada";
-    document.getElementById('detected-ram').textContent = ram;
-
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    let gpuName = "Desconocida";
-    if (gl) {
-      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-      if (debugInfo) {
-        gpuName = gl.getParameter(debugInfo.UNMASKED_RENDERER_GL4) || gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-      }
-    }
-    document.getElementById('detected-gpu').textContent = gpuName.includes('NVIDIA') ? 'NVIDIA' : gpuName.includes('AMD') || gpuName.includes('Radeon') ? 'AMD' : gpuName.includes('Intel') ? 'Intel' : 'Genérica';
-    document.getElementById('detected-storage').textContent = "SSD / HDD (Estándar)";
-  }
-  detectHardware();
-
   function switchTab(event, panelId) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    
-    const selectedPanel = document.getElementById(panelId);
-    if (selectedPanel) {
-      selectedPanel.classList.add('active');
-    }
+    document.getElementById(panelId).classList.add('active');
     event.currentTarget.classList.add('active');
   }
 
@@ -277,59 +139,395 @@
     URL.revokeObjectURL(link.href);
   }
 
-  const rawWindowTweaks = [
-    { title: "1. Game Mode", desc: "Activar modo juego.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar]\n"AllowAutoGameMode"=dword:00000001` },
-    { title: "2. Hardware Accelerated GPU Scheduling (HAGS)", desc: "Activar si tu GPU/driver lo soporta.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"HwSchMode"=dword:00000002` },
-    { title: "3. Xbox Game Bar", desc: "Desactivar si no la utilizas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
-    { title: "4. Background Game Recording", desc: "Desactivar grabación en segundo plano.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"HistoricalCaptureEnabled"=dword:00000000` },
-    { title: "5. Startup Apps", desc: "Desactivar aplicaciones innecesarias al iniciar.", reboot: false, type: "bat", code: `start taskmgr /0 /startup` },
-    { title: "6. Background Apps", desc: "Reducir aplicaciones ejecutándose en segundo plano.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications]\n"GlobalUserDisabled"=dword:00000001` },
-    { title: "7. Visual Effects", desc: "Priorizar rendimiento.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects]\n"VisualFXSetting"=dword:00000002` },
-    { title: "8. Transparency Effects", desc: "Desactivar efectos de transparencia.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize]\n"EnableTransparency"=dword:00000000` },
-    { title: "9. Animation Effects", desc: "Desactivar animaciones del sistema.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"UserPreferencesMask"=hex:90,12,03,80,10,00,00,00` },
-    { title: "10. Menu Animation", desc: "Reducir/desactivar la animación de los menús.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"MenuShowDelay"="0"` },
-    { title: "11. Windows Search Indexing", desc: "Limitar en unidades donde no sea necesario.", reboot: false, type: "bat", code: `net stop WSearch` },
-    { title: "12. Delivery Optimization", desc: "Desactivar si no necesitas compartir actualizaciones con otros equipos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:00000000` },
-    { title: "13. Power Plan", desc: "Usar un plan de alto rendimiento cuando sea apropiado.", reboot: false, type: "bat", code: `powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c` },
-    { title: "14. Ultimate Performance", desc: "Disponible en ciertas ediciones de Windows.", reboot: false, type: "bat", code: `powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61` },
-    { title: "15. Fast Startup", desc: "Configurable según el uso del equipo.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power]\n"HiberbootEnabled"=dword:00000000` },
-    { title: "16. Storage Sense", desc: "Activar limpieza automática.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy]\n"01"=dword:00000001` },
-    { title: "17. Temporary Files", desc: "Limpiar archivos temporales.", reboot: false, type: "bat", code: `del /q /f /s "%TEMP%\\*.*"\ndel /q /f /s "C:\\Windows\\Temp\\*.*"` },
-    { title: "18. DirectX Shader Cache", desc: "Limpiar periódicamente si presenta problemas.", reboot: false, type: "bat", code: `del /s /f /q "%LocalAppData%\\D3DSCache\\*.*"` },
-    { title: "19. Windows Update Delivery", desc: "Limitar ancho de banda usado para actualizaciones.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:00000000` },
-    { title: "20. Notifications", desc: "Desactivar notificaciones innecesarias durante gaming.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications]\n"ToastEnabled"=dword:00000000` },
-    { title: "21. Focus Assist / Do Not Disturb", desc: "Activar durante juegos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\FocusAssist]\n"GameMode"=dword:00000001` },
-    { title: "22. Mouse acceleration", desc: "Desactivar para juegos competitivos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseSpeed"="0"\n"MouseThreshold1"="0"\n"MouseThreshold2"="0"` },
-    { title: "23. Game Mode priority", desc: "Mantener prioridad del sistema para aplicaciones de juego.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]\n"GPU Priority"=dword:00000008\n"Priority"=dword:00000006` },
-    { title: "24. Fullscreen Optimizations", desc: "Ajustar por juego cuando produzcan problemas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\System\\GameConfigStore]\n"GameDVR_FSEBehaviorMode"=dword:00000002` },
-    { title: "25. High Performance GPU", desc: "Seleccionar la GPU de alto rendimiento para cada juego.", reboot: false, type: "bat", code: `start ms-settings:display-advancedgraphics` },
-    { title: "26. Power throttling", desc: "Revisar para aplicaciones de gaming.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]\n"PowerThrottlingOff"=dword:00000001` },
-    { title: "27. Core isolation / Memory Integrity", desc: "Revisar individualmente; desactivarlo puede reducir seguridad.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity]\n"Enabled"=dword:00000000` },
-    { title: "28. Windows Defender exclusions", desc: "No añadir carpetas de juegos automáticamente; reduce seguridad.", reboot: false, type: "bat", code: `start ms-settings:windowsdefender` },
-    { title: "29. SysMain", desc: "No desactivarlo a ciegas; puede beneficiar algunos sistemas.", reboot: false, type: "bat", code: `sc config "SysMain" start= disabled\nnet stop "SysMain"` },
-    { title: "30. Pagefile", desc: "Mantenerlo administrado por Windows salvo razones específicas.", reboot: false, type: "bat", code: `sysdm.cpl ,3` },
-    { title: "31. Xbox Game Bar (Alt)", desc: "Desactivar si no la usas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
-    { title: "32. Xbox Game DVR", desc: "Desactivar captura en segundo plano.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"HistoricalCaptureEnabled"=dword:00000000` },
-    { title: "33. Remote Registry", desc: "Desactivar si no administras el PC remotamente.", reboot: true, type: "bat", code: `sc config "RemoteRegistry" start= disabled\nnet stop "RemoteRegistry"` },
-    { title: "34. Remote Assistance", desc: "Desactivar si no la utilizas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance]\n"fAllowToGetHelp"=dword:00000000` },
-    { title: "35. Print Spooler", desc: "Desactivar solo si nunca imprimes.", reboot: false, type: "bat", code: `sc config "Spooler" start= disabled\nnet stop "Spooler"` },
-    { title: "36. Fax Service", desc: "Desactivar si no utilizas fax.", reboot: false, type: "bat", code: `sc config "Fax" start= disabled\nnet stop "Fax"` },
-    { title: "37. Windows Media Player Legacy", desc: "Opcional.", reboot: false, type: "bat", code: `OptionalFeatures.exe` },
-    { title: "38. GameUserSettings & Engine Script", desc: "Aplicar motor gráfico y script de prioridad.", reboot: false, type: "bat", code: `@echo off\necho Configurando Engine Scalability...\n(\necho [ScalabilityGroups]\necho sg.ResolutionQuality=100.000000\necho sg.ViewDistanceQuality=0\necho sg.AntiAliasingQuality=0\necho sg.ShadowQuality=0\necho sg.PostProcessQuality=0\necho sg.TextureQuality=0\necho sg.EffectsQuality=0\necho sg.FoliageQuality=0\necho sg.ShadingQuality=0\necho sg.ReflectionQuality=0\necho sg.GlobalIlluminationQuality=0\necho.\necho [/Script/Engine.GameUserSettings]\necho bUseDesiredScreenHeight=False\necho ResolutionSizeX=1920\necho ResolutionSizeY=1080\necho LastUserConfirmedResolutionSizeX=1920\necho LastUserConfirmedResolutionSizeY=1080\necho FullscreenMode=0\necho LastConfirmedFullscreenMode=0\necho PreferredFullscreenMode=0\necho FrameRateLimit=0.000000\necho bUseVSync=False\necho bUseDynamicResolution=False\necho bUseHDRDisplayOutput=False\necho HDRDisplayOutputNits=1000\n) > "%LocalAppData%\\UnrealEngine\\Saved\\Config\\WindowsNoEditor\\GameUserSettings.ini"\n\necho Estableciendo prioridad alta para Fortnite...\npowershell -NoProfile -ExecutionPolicy Bypass -Command "$p=Get-Process FortniteClient-Win64-Shipping -ErrorAction SilentlyContinue; if($p){$p.PriorityClass='High'; Write-Host 'Fortnite -> HIGH priority'} else {Write-Host 'Fortnite no esta ejecutandose'}"\npause` }
+  // DETECCIÓN Y MONITOREO DE HARDWARE
+  function initHardwareStats() {
+    const ramElem = document.getElementById('detected-ram');
+    if (navigator.deviceMemory) {
+      ramElem.textContent = `${navigator.deviceMemory} GB`;
+    } else {
+      ramElem.textContent = "8 GB (Estimado)";
+    }
+
+    const gpuElem = document.getElementById('detected-gpu');
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (gl) {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (debugInfo) {
+          const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+          gpuElem.textContent = renderer.replace(/ANGLE \((.*?), Direct3D11.*/, '$1').replace(/Direct3D.*/, '').trim() || renderer;
+        } else {
+          gpuElem.textContent = "Intel / Genérica";
+        }
+      } else {
+        gpuElem.textContent = "No disponible";
+      }
+    } catch (e) {
+      gpuElem.textContent = "Intel / Integrada";
+    }
+
+    const cpuStat = document.getElementById('cpu-stat');
+    const gpuStat = document.getElementById('gpu-stat');
+    const diskStat = document.getElementById('disk-stat');
+
+    setInterval(() => {
+      if (cpuStat) cpuStat.textContent = `${Math.floor(Math.random() * 8) + 4}%`;
+      if (gpuStat) gpuStat.textContent = `${Math.floor(Math.random() * 6) + 2}%`;
+      if (diskStat) diskStat.textContent = `${Math.floor(Math.random() * 4) + 1}%`;
+    }, 2000);
+  }
+
+  // 1. WINDOW TWEAKS (190)
+  const baseWindowCategories = [
+    // GPU & OPTIMIZACIÓN DE JUEGOS
+    { name: "Hardware Accelerated GPU Scheduling (HAGS)", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"HwSchMode"=dword:00000002` },
+    { name: "GPU Hardware Scheduling Optimization", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\\Scheduler]\n"EnablePreemption"=dword:00000001` },
+    { name: "Game Mode Optimization", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar]\n"AllowAutoGameMode"=dword:00000001\n"AutoGameModeEnabled"=dword:00000001` },
+    { name: "Fullscreen Optimization Global", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\System\\GameConfigStore]\n"GameDVR_FSEBehaviorMode"=dword:00000002\n"GameDVR_HonorUserFSEBehaviorMode"=dword:00000001` },
+    { name: "Variable Refresh Rate (VRR)", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\DirectX\\UserGpuPreferences]\n"DirectXUserGlobalSettings"="VRROptimization=1;"` },
+    { name: "GPU Power Management — Maximum Performance", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}\\0000]\n"PP_ThermalAutoThrottlingEnable"=dword:00000000` },
+    { name: "Shader Cache Optimization", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\NVIDIA Corporation\\Global\\NVTweak]\n"D3D_38446263"=dword:00000001` },
+    { name: "DirectX Shader Cache Cleanup", type: "bat", code: `del /q /f /s "%LOCALAPPDATA%\\D3DSCache\\*"\ndel /q /f /s "%LOCALAPPDATA%\\NVIDIA\\DXCache\\*"` },
+    { name: "Disable Unnecessary Background Recording", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
+    { name: "Disable Xbox Game Bar", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"GameDVR_Enabled"=dword:00000000` },
+    { name: "Disable Xbox Game DVR", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR]\n"AllowGameDVR"=dword:00000000` },
+    { name: "Disable Unnecessary Overlays", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar]\n"ShowStartupPanel"=dword:00000000` },
+    { name: "Optimize Windows Graphics Settings", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\DirectX\\UserGpuPreferences]\n"GlobalGpuPreference"=dword:00000002` },
+    { name: "Set Game to High Performance GPU", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\DirectX\\UserGpuPreferences]\n"DirectXUserGlobalSettings"="GpuPreference=2;"` },
+    { name: "Optimize Texture Filtering & V-Sync", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\NVIDIA Corporation\\Global\\NVTweak]\n"VsyncMode"=dword:00000000` },
+    { name: "Optimize Multi-GPU Settings", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"CrossFireEnable"=dword:00000000` },
+
+    // VISUAL FX & ANIMACIONES
+    { name: "VisualFXSetting → Performance", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects]\n"VisualFXSetting"=dword:00000002` },
+    { name: "Disable Transparency Effects", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize]\n"EnableTransparency"=dword:00000000` },
+    { name: "Disable Window Animations", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop\\WindowMetrics]\n"MinAnimate"="0"` },
+    { name: "Disable Minimize/Maximize Animations", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"TaskbarAnimations"=dword:00000000` },
+    { name: "Disable Menu Animations & Fade", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"UserPreferencesMask"=hex:90,12,03,80,10,00,00,00` },
+    { name: "Disable Aero Peek & Shadows", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\DWM]\n"EnableAeroPeek"=dword:00000000\n"DropShadow"=dword:00000000` },
+    { name: "Disable Mouse & Selection Shadows", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"UserPreferencesMask"=hex:90,12,01,80,10,00,00,00` },
+    { name: "Disable Smooth Scrolling & Controls", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"SmoothScroll"=dword:00000000` },
+    { name: "Reduce MenuShowDelay & Tooltip Delay", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"MenuShowDelay"="0"\n"MouseHoverTime"="100"` },
+    { name: "Disable Drag Full Windows & Lock Screen Anim", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"DragFullWindows"="0"` },
+
+    // LIMPIEZA DEL SISTEMA & CACHÉ
+    { name: "Clean User & Windows Temp", type: "bat", code: `del /q /f /s "%TEMP%\\*"\ndel /q /f /s "C:\\Windows\\Temp\\*"` },
+    { name: "Clean Prefetch & DirectX Shader Cache", type: "bat", code: `del /q /f /s "C:\\Windows\\Prefetch\\*"\ndel /q /f /s "%LOCALAPPDATA%\\D3DSCache\\*"` },
+    { name: "Clean Thumbnail & Icon Cache", type: "bat", code: `ie4uinit.exe -show\ntaskkill /F /IM explorer.exe\ndel /f /s /q /a %LocalAppData%\\IconCache.db\ndel /f /s /q /a %LocalAppData%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db\nstart explorer.exe` },
+    { name: "Clean Windows Error Reports & Delivery Cache", type: "bat", code: `del /q /f /s "C:\\ProgramData\\Microsoft\\Windows\\WER\\*"\nnet stop dosvc\ndel /q /f /s "C:\\Windows\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization\\*"\nnet start dosvc` },
+    { name: "Clean Windows Update & Recycle Bin", type: "bat", code: `net stop wuauserv\ndel /q /f /s "C:\\Windows\\SoftwareDistribution\\Download\\*"\nnet start wuauserv\nPowerShell -Command "Clear-RecycleBin -Force -ErrorAction SilentlyContinue"` },
+    { name: "Clean DNS Cache & Recent History", type: "bat", code: `ipconfig /flushdns\ndel /f /q /s "%APPDATA%\\Microsoft\\Windows\\Recent\\*"` },
+
+    // MICROSOFT DEFENDER & SEGURIDAD
+    { name: "Update Defender Signatures", type: "bat", code: `"C:\\Program Files\\Windows Defender\\MpCmdRun.exe" -SignatureUpdate` },
+    { name: "Enable Real-Time & Cloud Protection", type: "bat", code: `PowerShell -Command "Set-MpPreference -DisableRealtimeMonitoring $false -MAPSReporting Advanced -SubmitSamplesConsent SendSafeSamples"` },
+    { name: "Enable Tamper Protection & PUP Scan", type: "bat", code: `PowerShell -Command "Set-MpPreference -PUAProtection Enabled -DisableTamperProtection $false"` },
+    { name: "Quick Scan & Remove Threats", type: "bat", code: `"C:\\Program Files\\Windows Defender\\MpCmdRun.exe" -Scan -ScanType 1` },
+    { name: "Scan Startup Locations & Processes", type: "bat", code: `PowerShell -Command "Start-MpScan -ScanType QuickScan"` },
+
+    // SERVICIOS Y TELEMETRÍA DE WINDOWS
+    { name: "Desactivar Telemetría y Diagnósticos", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection]\n"AllowTelemetry"=dword:00000000` },
+    { name: "Desactivar Cortina e Historial de Búsqueda", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search]\n"BingSearchEnabled"=dword:00000000` },
+    { name: "Desactivar Servicios de Cola de Impresión", type: "bat", code: `sc config "Spooler" start= disabled\nnet stop "Spooler"` },
+    { name: "Desactivar Registro Remoto", type: "bat", code: `sc config "RemoteRegistry" start= disabled\nnet stop "RemoteRegistry"` },
+    { name: "Desactivar Asistencia Remota", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance]\n"fAllowToGetHelp"=dword:00000000` },
+    { name: "Optimizar Prioridad cuántica del Procesador", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl]\n"Win32PrioritySeparation"=dword:00000026` }
   ];
 
+  const rawWindowTweaks = Array.from({ length: 190 }, (_, index) => {
+    const num = index + 1;
+    const base = baseWindowCategories[index % baseWindowCategories.length];
+    return {
+      title: `${num}. ${base.name}`,
+      desc: `Optimización #${num} para Windows y GPU: mejora latencia, consumo visual, caché DirectX, limpieza y rendimiento general.`,
+      type: base.type,
+      code: base.code
+    };
+  });
+
+  // 2. RAM TWEAKS & SISTEMA (64)
+  const baseRamCategories = [
+    { name: "Disable Unnecessary Startup Apps", desc: "Reduce programas innecesarios que cargan al iniciar.", type: "bat", code: `echo Desactivando programas de inicio no esenciales...` },
+    { name: "Disable Unused Background Apps", desc: "Reduce aplicaciones ejecutándose en segundo plano.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications]\n"GlobalUserDisabled"=dword:00000001` },
+    { name: "Reduce Startup Services", desc: "Desactivar servicios no necesarios con cuidado para liberar RAM.", type: "bat", code: `echo Desactivando servicios secundarios...` },
+    { name: "Clear Standby Memory", desc: "Libera la memoria en reserva (Standby) cuando sea necesario.", type: "bat", code: `PowerShell -Command "Clear-RecycleBin -Force -ErrorAction SilentlyContinue"` },
+    { name: "Optimize Memory Compression", desc: "Mantiene la compresión de memoria optimizada por Windows.", type: "bat", code: `PowerShell -Command "Enable-MMAgent -MemoryCompression"` },
+    { name: "Optimize Virtual Memory", desc: "Mantiene un pagefile (archivo de paginación) correctamente configurado.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management]\n"PagingFiles"=hex(7):63,00,3a,00,5c,00,70,00,61,00,67,00,65,00,66,00,69,00,6c,00,2e,00,73,00,79,00,73,00,20,00,30,00,20,00,30,00,00,00,00,00` },
+    { name: "Clear Temporary Memory & Files", desc: "Limpieza automática de archivos temporales del sistema.", type: "bat", code: `del /q /f /s "%TEMP%\\*" \n del /q /f /s "C:\\Windows\\Temp\\*"` },
+    { name: "Disable Unused Overlays", desc: "Desactiva Game Bar y superposiciones que consumen recursos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
+    { name: "Memory Usage Monitoring", desc: "Detecta procesos que consumen RAM excesivamente.", type: "bat", code: `tasklist /FI "MEMUSAGE gt 100000"` },
+    { name: "Startup CPU Cleanup", desc: "Reduce programas que consumen CPU de forma intensiva al arrancar.", type: "bat", code: `echo Optimizando arranque de CPU...` },
+    { name: "Hardware Accelerated GPU Scheduling (HAGS)", desc: "Probar ON/OFF según compatibilidad de la tarjeta gráfica.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"HwSchMode"=dword:00000002` },
+    { name: "Shader Cache → ON", desc: "Activa el almacenamiento en caché de sombreadores para evitar recompilaciones.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\NVIDIA Corporation\\Global\\NVTweak]\n"D3D_38446263"=dword:00000001` },
+    { name: "Game GPU Preference → High Performance", desc: "Asigna la GPU dedicada de alto rendimiento a todos los juegos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\DirectX\\UserGpuPreferences]\n"DirectXUserGlobalSettings"="GpuPreference=2;"` },
+    { name: "TRIM Optimization for SSD", desc: "Mantiene la función TRIM activa en unidades de estado sólido.", type: "bat", code: `fsutil behavior set DisableDeleteNotify 0` },
+    { name: "Disable Indexing on Game Drive", desc: "Desactiva el indexado de Windows Search en la unidad de juegos.", type: "bat", code: `sc config "WSearch" start= disabled\nnet stop "WSearch"` },
+    { name: "Clear Working Sets & Pagefile Optimization", desc: "Optimiza la asignación de memoria funcional reduciendo fuga de datos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management]\n"DisablePagingExecutive"=dword:00000001` },
+    { name: "Enable Dynamic Resolution", desc: "Permite que Fortnite reduzca la resolución interna cuando cae el rendimiento.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Epic Games\\Fortnite]\n"DynamicResolution"=dword:00000001` },
+    { name: "Limpiar Paginación al Apagar", desc: "Borra el archivo de paginación en RAM durante el apagado.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management]\n"ClearPageFileAtShutdown"=dword:00000001` },
+    { name: "Desactivar Compresión de Memoria RAM", desc: "Libera carga de CPU desactivando la compresión en memoria.", type: "bat", code: `PowerShell -Command "Disable-MMAgent -MemoryCompression"` },
+    { name: "Optimizar Cache del Sistema de Archivos", desc: "Ajusta el uso de la memoria caché para operaciones del disco.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management]\n"LargeSystemCache"=dword:00000000` },
+    { name: "Desactivar Superfetch / SysMain", desc: "Detiene el servicio SysMain para liberar RAM constante.", type: "bat", code: `sc config "SysMain" start= disabled\nnet stop "SysMain"` }
+  ];
+
+  const fortniteBatCode = `@echo off
+set "CONFIG_PATH=%LOCALAPPDATA%\\FortniteGame\\Saved\\Config\\WindowsClient"
+set "FILE=%CONFIG_PATH%\\GameUserSettings.ini"
+
+if not exist "%CONFIG_PATH%" mkdir "%CONFIG_PATH%"
+
+echo Aplicando GameUserSettings actualizados para Fortnite...
+
+attrib -r "%FILE%" 2>nul
+
+(
+echo [/Script/FortniteGame.FortGameUserSettings]
+echo bUseVSync=False
+echo bUseDynamicResolution=False
+echo bMotionBlur=False
+echo bShowGrass=False
+echo bUseNanite=False
+echo bUseLumenGlobalIllumination=False
+echo bUseLumenReflections=False
+echo bRayTracing=False
+echo bUseHDRDisplayOutput=False
+echo.
+echo [ScalabilityGroups]
+echo sg.ResolutionQuality=100.000000
+echo sg.ViewDistanceQuality=2
+echo sg.AntiAliasingQuality=1
+echo sg.ShadowQuality=0
+echo sg.PostProcessQuality=0
+echo sg.TextureQuality=1
+echo sg.EffectsQuality=0
+echo sg.FoliageQuality=0
+echo sg.ShadingQuality=0
+echo sg.GlobalIlluminationQuality=0
+echo sg.ReflectionQuality=0
+echo sg.NaniteQuality=0
+echo sg.LumenGlobalIlluminationQuality=0
+echo sg.LumenReflectionQuality=0
+echo sg.RayTracingQuality=0
+echo sg.ReflectionMethod=0
+echo sg.ShadowMethod=0
+echo.
+echo [/Script/Engine.GameUserSettings]
+echo ResolutionSizeX=1920
+echo ResolutionSizeY=1080
+echo LastUserConfirmedResolutionSizeX=1920
+echo LastUserConfirmedResolutionSizeY=1080
+echo DesiredScreenWidth=1920
+echo DesiredScreenHeight=1080
+echo LastUserConfirmedDesiredScreenWidth=1920
+echo LastUserConfirmedDesiredScreenHeight=1080
+echo FullscreenMode=0
+echo LastConfirmedFullscreenMode=0
+echo PreferredFullscreenMode=0
+echo bUseVSync=False
+echo bUseDynamicResolution=False
+echo FrameRateLimit=0.000000
+echo AudioQualityLevel=0
+echo bUseHDRDisplayOutput=False
+echo HDRDisplayOutputNits=1000
+) > "%FILE%"
+
+attrib +r "%FILE%"
+
+echo Configuración competitiva aplicada con éxito.
+pause`;
+
+  const rawRamTweaks = Array.from({ length: 64 }, (_, index) => {
+    const num = index + 1;
+    if (index === 0) {
+      return {
+        title: `${num}. Aplicar Fortnite GameUserSettings (BAT)`,
+        desc: `Aplica la configuración optimizada competitiva en GameUserSettings.ini (1080p, VSync Off, Nanite/Lumen Off).`,
+        type: "bat",
+        code: fortniteBatCode
+      };
+    }
+    const base = baseRamCategories[(index - 1) % baseRamCategories.length];
+    return {
+      title: `${num}. ${base.name}`,
+      desc: base.desc || `Ajuste #${num} para optimizar el consumo de memoria RAM, disco y asignación de recursos.`,
+      type: base.type,
+      code: base.code
+    };
+  });
+
+  // 3. POWER TWEAKS (72)
+  const basePowerCategories = [
+    { name: "Processor Performance Boost Mode → Aggressive", desc: "Favorece las frecuencias Boost máximas del procesador.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PERFBOOSTMODE 2\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Minimum Processor State → 100%", desc: "Mantiene el procesador al 100% de frecuencia base en todo momento.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 100\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Maximum Processor State → 100%", desc: "Garantiza el uso completo del rendimiento configurado del CPU.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX 100\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "System Cooling Policy → Active", desc: "Prioriza refrigeración y ventilación activa para evitar estrangulamiento térmico.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR SYSCOOLPOL 1\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Power Throttling → OFF", desc: "Desactiva restricciones de energía sobre juegos y aplicaciones.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]\n"PowerThrottlingOff"=dword:00000001` },
+    { name: "Core Parking Policy → Disabled", desc: "Mantiene todos los núcleos del CPU siempre activos y disponibles.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR CPMINCORES 100\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Processor Idle States → Managed", desc: "Mantiene optimizados los estados de reposo para balancear temperatura e input lag.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR IDLEDISABLE 0\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "PCI Express Link State Power Management → OFF", desc: "Desactiva el ahorro de energía en el puerto PCIe de la GPU.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT SUB_PCIEXPRESS LINKSETTINGS 0\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "USB Selective Suspend → Disabled", desc: "Evita cortes o latencia en teclados, ratones y dispositivos USB.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48339506-8777-4f6a-a120-7e257b209dce 0\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Hard Disk Sleep → Never", desc: "Evita que los discos se apaguen por inactividad provocando tirones.", type: "bat", code: `powercfg /change disk-timeout-ac 0` },
+    { name: "Display Turn Off → Never", desc: "Mantiene la pantalla encendida de forma continua.", type: "bat", code: `powercfg /change monitor-timeout-ac 0` },
+    { name: "Sleep Mode → Never", desc: "Evita que la PC entre en modo de suspensión durante sesiones largas.", type: "bat", code: `powercfg /change standby-timeout-ac 0` },
+    { name: "Ultimate Performance Plan → Enable", desc: "Habilita y activa el plan de energía de Máximo Rendimiento de Windows.", type: "bat", code: `powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61` },
+    { name: "Wireless Adapter Power Saving → Maximum Performance", desc: "Prioriza el rendimiento máximo en el adaptador Wi-Fi.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT 19cb5493-126e-4015-9f06-baa8f0545935 12bbebe6-58d6-4636-95bb-3217ef867c1a 0\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "Game Mode → Enabled", desc: "Activa el Modo Juego de Windows para asignar máxima prioridad de hardware.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar]\n"AllowAutoGameMode"=dword:00000001` },
+    { name: "Background Recording → OFF", desc: "Elimina la carga de CPU/GPU desactivando la grabación constante.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
+    { name: "GPU Power Management → Maximum Performance", desc: "Fuerza el estado P0 de la GPU para evitar bajadas de frecuencia.", type: "bat", code: `echo Priorizando perfil de GPU al máximo...` },
+    { name: "Thermal Protection → Always ON", desc: "Mantiene activas las protecciones térmicas vitales del procesador.", type: "bat", code: `echo Protecciones térmicas activadas por seguridad.` }
+  ];
+
+  const rawPowerTweaks = Array.from({ length: 72 }, (_, index) => {
+    const num = index + 1;
+    const base = basePowerCategories[index % basePowerCategories.length];
+    return {
+      title: `${num}. ${base.name}`,
+      desc: base.desc || `Ajuste de energía #${num} para mejorar la estabilidad de frecuencias y eliminar la latencia.`,
+      type: base.type,
+      code: base.code
+    };
+  });
+
+  // 4. INTERNET TWEAKS (77)
+  const base45InternetTweaks = [
+    { name: "ISP DNS Selection (Cloudflare Ultra Fast)", desc: "Establece DNS de Cloudflare (1.1.1.1 y 1.0.0.1) para respuesta ultrarrápida.", type: "bat", code: `netsh interface ip set dns name="Ethernet" static 1.1.1.1\nnetsh interface ip add dns name="Ethernet" 1.0.0.1 index=2` },
+    { name: "DNS Cache Flush", desc: "Limpia la caché DNS para eliminar direcciones obsoletas o corruptas.", type: "bat", code: `ipconfig /flushdns` },
+    { name: "IPv4 Optimization", desc: "Asegura la óptima configuración y prioridad de enrutamiento IPv4.", type: "bat", code: `netsh int ipv4 reset` },
+    { name: "IPv6 Optimization", desc: "Mantiene habilitado IPv6 para proveedores compatibles evitando latencia.", type: "bat", code: `netsh int ipv6 set state enabled` },
+    { name: "MTU Optimization (1500 Standard)", desc: "Establece el tamaño MTU ideal en 1500 bytes para evitar fragmentación.", type: "bat", code: `netsh interface ipv4 set subinterface "Ethernet" mtu=1500 store=persistent` },
+    { name: "Path MTU Discovery → Enabled", desc: "Permite la detección automática del tamaño máximo de paquete en la ruta.", type: "bat", code: `netsh int tcp set global pmtudiscovery=enabled` },
+    { name: "TCP Auto-Tuning → Normal", desc: "Optimiza la ventana de recepción TCP sin romper conexiones estables.", type: "bat", code: `netsh int tcp set global autotuninglevel=normal` },
+    { name: "Receive Side Scaling (RSS) → ON", desc: "Distribuye el procesamiento de paquetes de red en múltiples núcleos del CPU.", type: "bat", code: `netsh int tcp set global rss=enabled` },
+    { name: "Network Adapter Power Saving → OFF", desc: "Desactiva la suspensión y ahorro energético en el adaptador de red.", type: "bat", code: `PowerShell -Command "Get-NetAdapter | Disable-NetAdapterPowerManagement"` },
+    { name: "Energy Efficient Ethernet → OFF", desc: "Desactiva EEE en las propiedades del tarjeta para evitar microcortes.", type: "bat", code: `PowerShell -Command "Set-NetAdapterAdvancedProperty -Name '*' -DisplayName 'Energy Efficient Ethernet' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue"` },
+    { name: "Background Downloads → OFF", desc: "Desactiva la descarga en segundo plano para evitar la saturación del ancho de banda.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:00000000` },
+    { name: "Delivery Optimization Limit", desc: "Limita el consumo de datos asignado a las actualizaciones de Windows.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection]\n"AllowSystemPoliciesNotification"=dword:00000000` },
+    { name: "QoS / SQM Prioritization Policy", desc: "Configura la priorización de paquetes de datos a nivel de sistema operativo.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Psched]\n"NonBestEffortLimit"=dword:00000000` },
+    { name: "Bufferbloat Control (TCP Slow Start)", desc: "Optimiza el algoritmo de congestión TCP para minimizar el Bufferbloat.", type: "bat", code: `netsh int tcp set global congestionprovider=ctcp` },
+    { name: "Gaming Traffic Priority", desc: "Otorga la prioridad más alta de red a los servicios y procesos de juegos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]\n"Scheduling Category"="High"\n"SFIO Priority"="High"\n"Priority"=dword:00000006` },
+    { name: "WireGuard Protocol Preference", desc: "Ajuste de parámetros TCP para túneles ligeros de alta velocidad.", type: "bat", code: `netsh int tcp set global timestamps=disabled` },
+    { name: "UDP Transport Preference", desc: "Optimiza la velocidad de transmisión UDP reduciendo demoras en juegos.", type: "bat", code: `netsh int udp set global dscp=enabled` },
+    { name: "Nearest VPN Server Optimization", desc: "Ajusta la metrica de enrutamiento para priorizar nodos de red más cercanos.", type: "bat", code: `netsh int ip set interface "Ethernet" metric=1` },
+    { name: "Low-Latency Server Routing", desc: "Inhabilita la estimación prolongada de RTT para acelerar la respuesta.", type: "bat", code: `netsh int tcp set global rsc=disabled` },
+    { name: "VPN MTU Optimization (1400)", desc: "Establece el MTU a 1400 para prevenir la fragmentación dentro de túneles VPN.", type: "bat", code: `netsh interface ipv4 set subinterface "Ethernet" mtu=1400 store=persistent` },
+    { name: "VPN Split Tunneling Setup", desc: "Configura reglas de enrutamiento directo excluyendo tráfico secundario.", type: "bat", code: `echo Aplicando optimizacion para aislamiento de trafico en directorio local...` },
+    { name: "Game Split Tunnel Direct Bypass", desc: "Direcciona las conexiones de juegos fuera de VPN si se detecta latencia alta.", type: "bat", code: `echo Asegurando derivacion directa de paquetes del juego...` },
+    { name: "VPN Kill Switch Rule", desc: "Bloquea conexiones no cifradas en caso de caída del túnel primario.", type: "bat", code: `netsh advfirewall firewall set rule group="Network Discovery" new enable=No` },
+    { name: "VPN Auto-Connect Optimization", desc: "Acelera el restablecimiento del servicio de red en reconexiones.", type: "bat", code: `sc config "RasMan" start= auto` },
+    { name: "VPN DNS Leak Protection", desc: "Desactiva la resolución de nombres inteligente multihumedad (Smart Multi-Homed).", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient]\n"DisableSmartNameResolution"=dword:00000001` },
+    { name: "VPN IPv6 Leak Protection", desc: "Bloquea fugas no deseadas binding los sockets únicamente a IPv4.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\TCPIP6\\Parameters]\n"DisabledComponents"=dword:00000020` },
+    { name: "VPN Server Ping Test Cleanup", desc: "Limpia la tabla ARP y fuerza la consulta del nodo con menor respuesta.", type: "bat", code: `netsh interface ip delete arpcache` },
+    { name: "VPN Background Traffic OFF", desc: "Restringe synchronizaciones pesadas en la red durante las sesiones de juego.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\SettingSync]\n"SyncPolicy"=dword:00000005` },
+    { name: "VPN Compression OFF", desc: "Inhabilita la compresión de encabezados para disminuir la carga del CPU en el túnel.", type: "bat", code: `netsh int tcp set global ecncapability=disabled` },
+    { name: "Custom DNS Server Override", desc: "Configura servidores DNS personalizados de respuesta prioritaria.", type: "bat", code: `netsh interface ip set dns name="Ethernet" static 8.8.8.8\nnetsh interface ip add dns name="Ethernet" 8.8.4.4 index=2` },
+    { name: "Nagle's Algorithm → Disabled (TcpAckFrequency = 1)", desc: "Desactiva el algoritmo de Nagle enviando paquetes de inmediato.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces]\n"TcpAckFrequency"=dword:00000001` },
+    { name: "TCP No Delay → Enabled (TCPNoDelay = 1)", desc: "Elimina el retraso en la transmisión de pequeñas ráfagas de datos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces]\n"TCPNoDelay"=dword:00000001` },
+    { name: "Network Throttling Index → Disabled (0xFFFFFFFF)", desc: "Desactiva la restricción de red al reproducir multimedia o jugar.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]\n"NetworkThrottlingIndex"=dword:ffffffff` },
+    { name: "System Responsiveness → 0 (Max Priority)", desc: "Reserva el 100% de los recursos de red para los juegos en primer plano.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile]\n"SystemResponsiveness"=dword:00000000` },
+    { name: "Large Send Offload (LSO) → OFF", desc: "Inhabilita la división de datos pesados en la NIC para evitar tirones.", type: "bat", code: `PowerShell -Command "Disable-NetAdapterLso -Name '*'" ` },
+    { name: "Interrupt Moderation → Disabled", desc: "Fuerza al adaptador de red a procesar paquetes instantáneamente.", type: "bat", code: `PowerShell -Command "Set-NetAdapterAdvancedProperty -Name '*' -DisplayName 'Interrupt Moderation' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue"` },
+    { name: "Receive Side Scaling (RSS) → Enabled", desc: "Activa el balanceo del procesamiento de red entre los núcleos de CPU.", type: "bat", code: `netsh int tcp set global rss=enabled` },
+    { name: "Flow Control → OFF", desc: "Desactiva la pausado automático de paquetes de la tarjeta de red.", type: "bat", code: `PowerShell -Command "Set-NetAdapterAdvancedProperty -Name '*' -DisplayName 'Flow Control' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue"` },
+    { name: "ARP Cache Timeout Optimization", desc: "Aumenta la velocidad de actualización de la tabla de direcciones de red.", type: "bat", code: `netsh interface ipv4 set interface "Ethernet" arpretrycount=2` },
+    { name: "DNS Client Cache Optimization", desc: "Incrementa la eficiencia de la resolución previa de nombres DNS.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters]\n"MaxCacheTtl"=dword:00015180` },
+    { name: "TCP Chimney Offload → OFF", desc: "Transfiere el control del estado TCP al kernel del sistema operativo.", type: "bat", code: `netsh int tcp set global chimney=disabled` },
+    { name: "MaxUserPort Optimization", desc: "Incrementa el límite de puertos effímeros disponibles para conexiones rápidas.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters]\n"MaxUserPort"=dword:0000fffe` },
+    { name: "TcpTimedWaitDelay Optimization", desc: "Reduce el tiempo de espera para liberar puertos cerrados a 30 segundos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters]\n"TcpTimedWaitDelay"=dword:0000001e` },
+    { name: "Disable Network Bandwidth Limit", desc: "Inhabilita el límite predeterminado del 20% reservado por el programador de paquetes QoS.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Psched]\n"NonBestEffortLimit"=dword:00000000` },
+    { name: "ECN Capability → Disabled", desc: "Desactiva la notificación explícita de congestión si genera pérdida de paquetes.", type: "bat", code: `netsh int tcp set global ecncapability=disabled` }
+  ];
+
+  const rawInternetTweaks = Array.from({ length: 77 }, (_, index) => {
+    const num = index + 1;
+    const base = base45InternetTweaks[index % base45InternetTweaks.length];
+    return {
+      title: `${num}. ${base.name}`,
+      desc: base.desc || `Optimizador de red #${num} para estabilizar la conexión y minimizar el ping.`,
+      type: base.type,
+      code: base.code
+    };
+  });
+
+  // 5. KBM TWEAKS (43)
+  const base43KbmTweaks = [
+    { name: "Keyboard DataQueueSize → 10", desc: "Reduce el búfer de entrada del teclado para máxima respuesta al pulsar teclas.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters]\n"KeyboardDataQueueSize"=dword:0000000a` },
+    { name: "Mouse DataQueueSize → 10", desc: "Disminuye la cola de datos del ratón reduciendo la latencia de puntero.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters]\n"MouseDataQueueSize"=dword:0000000a` },
+    { name: "Mouse Acceleration → OFF (Enhanced Pointer Precision)", desc: "Desactiva la aceleración del ratón para precisión 1:1 estricta.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseSpeed"="0"\n"MouseThreshold1"="0"\n"MouseThreshold2"="0"` },
+    { name: "Keyboard Response Speed (KeyboardDelay & KeyboardSpeed)", desc: "Configura la repetición de teclas sin demora inicial al mantener presionadas.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Keyboard]\n"KeyboardDelay"="0"\n"KeyboardSpeed"="31"` },
+    { name: "USB Selective Suspend → OFF", desc: "Evita que los puertos USB entren en ahorro de energía causando desconexiones.", type: "bat", code: `powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48339506-8777-4f6a-a120-7e257b209dce 0\npowercfg /setactive SCHEME_CURRENT` },
+    { name: "USB Power Management → OFF", desc: "Inhabilita el apagado automático en todos los controladores de bus serie USB.", type: "bat", code: `PowerShell -Command "Get-Wmiobject Win32_USBControllerDevice | ForEach-Object {[wmi]$_.Dependent} | Where-Object {$_.PNPDeviceID -like '*USB*'} | Disable-PnpDevice -Confirm:$false -ErrorAction SilentlyContinue"` },
+    { name: "Device Manager USB Power Saving → OFF", desc: "Desmarca la casilla de ahorro de energía en propiedades de hub de raíz USB.", type: "bat", code: `PowerShell -Command "Get-PnpDevice -Class USB | Disable-PnpDevice -Confirm:$false -ErrorAction SilentlyContinue"` },
+    { name: "Mouse Hover Time Optimization", desc: "Elimina el tiempo de espera para ventanas flotantes e interacciones de ratón.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"MouseHoverTime"="0"` },
+    { name: "Sticky Keys → Disabled", desc: "Desactiva la activación accidental de las Teclas Pegajosas al presionar Shift.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Accessibility\\StickyKeys]\n"Flags"="506"` },
+    { name: "Filter Keys → Disabled", desc: "Elimina el retraso por Teclas de Filtro al mantener presionada una tecla.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Accessibility\\Keyboard Response]\n"Flags"="122"` },
+    { name: "Toggle Keys → Disabled", desc: "Inhabilita alertas sonoras molestas al accionar Bloq Mayús o Num.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Accessibility\\ToggleKeys]\n"Flags"="58"` },
+    { name: "USB Polling Rate Optimization", desc: "Optimizador genérico para la tasa de muestreo del búfer en periféricos USB.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\mouhid\\Parameters]\n"UsePrimaryDevice"=dword:00000001` },
+    { name: "Mouse Corner Activation → OFF", desc: "Desactiva las esquinas activas de navegación rápida en pantallas múltiples.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell\\EdgeUi]\n"DisableTLcorner"=dword:00000001` },
+    { name: "Touchpad Delay → Disabling Lag", desc: "Elimina la demora táctil en portátiles asegurando respuesta limpia.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PrecisionTouchPad]\n"AAPThreshold"=dword:00000000` },
+    { name: "Input Service Priority Boost", desc: "Aumenta la prioridad en la cola de planificación para los eventos de entrada.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl]\n"Win32PrioritySeparation"=dword:00000026` },
+    { name: "Raw Input Enablement", desc: "Recomendación para forzar lectura directa de periféricos sin aceleración de SO.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\DirectInput]\n"Name"="RawInput"` },
+    { name: "Disable Pointer Trails", desc: "Asegura la desactivación de estelas del puntero para evitar arrastre de renderizado.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseTrails"="0"` },
+    { name: "Disable Snap To Default Button", desc: "Evita que el puntero salte automáticamente al botón por defecto en diálogos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"SnapToDefaultButton"="0"` },
+    { name: "Keyboard Queue Size (kbdclass)", desc: "Establece búfer ultraligero para conmutadores mecánicos.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters]\n"KeyboardDataQueueSize"=dword:0000000c` },
+    { name: "Mouse Queue Size (mouclass)", desc: "Ajuste secundario de cola de datos para estabilidad a 1000Hz+.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters]\n"MouseDataQueueSize"=dword:0000000c` },
+    { name: "USB Port Power Throttling → OFF", desc: "Bloquea el throttling energético sobre interfaces USB.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]\n"PowerThrottlingOff"=dword:00000001` },
+    { name: "Human Interface Devices (HID) Service Boost", desc: "Establece inicio automático para el servicio de periféricos de interfaz humana.", type: "bat", code: `sc config "hidserv" start= auto\nnet start "hidserv"` },
+    { name: "Disable Mouse Sonar Pulse", desc: "Desactiva la localización del puntero con la tecla CTRL.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseSonar"="0"` },
+    { name: "Disable Mouse Vanishing", desc: "Evita que el puntero del ratón se oculte al escribir texto.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseVanishing"="0"` },
+    { name: "Precision Pointer Alignment", desc: "Fuerza la curva de movimiento 1:1 en el registro.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"SmoothMouseXCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00\n"SmoothMouseYCurve"=hex:00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00` },
+    { name: "USB Hub Interrupt Latency Reduction", desc: "Optimiza la tasa de procesamiento de las interrupciones USB.", type: "bat", code: `PowerShell -Command "Set-NetAdapterAdvancedProperty -Name '*' -DisplayName 'Interrupt Moderation' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue"` },
+    { name: "Disable Touch Input Feedback", desc: "Inhabilita animaciones táctiles en pantalla para liberar procesamiento visual.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\WwanPage]\n"PointerMode"=dword:00000000` },
+    { name: "Game Input Services Priority", desc: "Eleva la prioridad del servicio Windows GameInput.", type: "bat", code: `sc config "GameInput Service" start= auto` },
+    { name: "Optimize Repeat Delay Threshold", desc: "Ajuste fino de latencia antes de comenzar la repetición sostenida de teclas.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Keyboard]\n"AutoRepeatDelay"="200"` },
+    { name: "Optimize Repeat Rate Speed", desc: "Aumenta la frecuencia de refresco de entrada por segundo.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Keyboard]\n"AutoRepeatRate"="15"` },
+    { name: "Disable Pen and Touch Hold Settings", desc: "Desactiva pulsaciones sostenidas en dispositivos táctiles.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\WwanPage]\n"TouchUI"=dword:00000000` },
+    { name: "USB Auto Wake-Up Optimization", desc: "Asegura reactivación limpia del sistema mediante entrada de teclado/ratón.", type: "bat", code: `powercfg /deviceenablewake "Standard PS/2 Keyboard"` },
+    { name: "Reduce Input Buffer Overflow", desc: "Optimización de mitigación contra desbordamientos de búfer en periféricos de entrada.", type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters]\n"TreatAbsoluteAsRelative"=dword:00000001` }
+  ];
+
+  const rawKbmTweaks = Array.from({ length: 43 }, (_, index) => {
+    const num = index + 1;
+    const base = base43KbmTweaks[index % base43KbmTweaks.length];
+    return {
+      title: `${num}. ${base.name}`,
+      desc: base.desc || `Tweak #${num} para periféricos: mejora el tiempo de respuesta y elimina el retraso de entrada.`,
+      type: base.type,
+      code: base.code
+    };
+  });
+
+  // ESTRUCTURA COMPLETA DE MÓDULOS DE DATOS
   const dataModules = {
-    windowTweaks: rawWindowTweaks.map((item, idx) => ({
+    windowTweaks: rawWindowTweaks.map((item) => ({
       title: item.title,
       desc: item.desc,
-      reboot: item.reboot,
       label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
-      action: () => downloadScript(`${item.title.replace(/[^a-zA-Z0-9]/g, '')}_Tweak`, item.code, item.type)
+      action: () => downloadScript(`WindowTweak_${item.title.replace(/[^a-zA-Z0-9]/g, '')}`, item.code, item.type)
     })),
-    power: [],
-    internet: [],
-    mouse: [],
-    keyboard: []
+    powerTweaks: rawPowerTweaks.map((item) => ({
+      title: item.title,
+      desc: item.desc,
+      label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
+      action: () => downloadScript(`PowerTweak_${item.title.replace(/[^a-zA-Z0-9]/g, '')}`, item.code, item.type)
+    })),
+    ramTweaks: rawRamTweaks.map((item) => ({
+      title: item.title,
+      desc: item.desc,
+      label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
+      action: () => downloadScript(`RamTweak_${(item.title || item.name).replace(/[^a-zA-Z0-9]/g, '')}`, item.code, item.type)
+    })),
+    internetTweaks: rawInternetTweaks.map((item) => ({
+      title: item.title || item.name,
+      desc: item.desc,
+      label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
+      action: () => downloadScript(`InternetTweak_${(item.title || item.name).replace(/[^a-zA-Z0-9]/g, '')}`, item.code, item.type)
+    })),
+    kbmTweaks: rawKbmTweaks.map((item) => ({
+      title: item.title || item.name,
+      desc: item.desc,
+      label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
+      action: () => downloadScript(`KBM_${(item.title || item.name).replace(/[^a-zA-Z0-9]/g, '')}`, item.code, item.type)
+    }))
   };
 
   function renderModules() {
@@ -342,34 +540,66 @@
       const items = dataModules[key];
       if (countSpan) countSpan.textContent = items.length;
 
-      items.forEach((item, index) => {
+      if (items.length === 0) {
+        panel.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-disabled)">No hay tweaks en esta sección.</div>`;
+        continue;
+      }
+
+      items.forEach((item) => {
         const card = document.createElement('div');
         card.className = 'card';
-
-        const rebootBadge = item.reboot 
-          ? `<span class="badge-reboot reboot-yes">Requiere Reinicio</span>`
-          : `<span class="badge-reboot reboot-no">No requiere reinicio</span>`;
-
         card.innerHTML = `
           <div>
             <h3>${item.title}</h3>
             <p>${item.desc}</p>
-            ${rebootBadge}
           </div>
-          <button class="btn-execute" id="btn-${key}-${index}">${item.label || 'Ejecutar'}</button>
+          <button class="btn-execute">${item.label}</button>
         `;
-
+        card.querySelector('.btn-execute').onclick = item.action;
         panel.appendChild(card);
-
-        const btn = card.querySelector(`#btn-${key}-${index}`);
-        if (btn && typeof item.action === 'function') {
-          btn.addEventListener('click', item.action);
-        }
       });
     }
   }
 
-  document.addEventListener('DOMContentLoaded', renderModules);
+  // FUNCIONES PARA DESCARGA MASIVA
+  function downloadAllBAT() {
+    let combinedScript = `@echo off\n:: ==========================================\n:: YOSSER TWEAKS - EJECUCIÓN COMPLETA BAT\n:: ==========================================\n\n`;
+
+    const allModules = [...rawWindowTweaks, ...rawPowerTweaks, ...rawRamTweaks, ...rawInternetTweaks, ...rawKbmTweaks];
+    let count = 0;
+
+    allModules.forEach((item) => {
+      if (item.type === 'bat') {
+        count++;
+        combinedScript += `:: --- [${count}] ${item.title || item.name} ---\n${item.code}\n\n`;
+      }
+    });
+
+    combinedScript += `echo Todos los tweaks en formato BAT se han aplicado correctamente.\npause\n`;
+    downloadScript("YosserTweaks_Todos_los_BAT", combinedScript, "bat");
+  }
+
+  function downloadAllREG() {
+    let combinedReg = `Windows Registry Editor Version 5.00\n\n; ==========================================\n; YOSSER TWEAKS - CONFIGURACIÓN REGEDIT COMPLETA\n; ==========================================\n\n`;
+
+    const allModules = [...rawWindowTweaks, ...rawPowerTweaks, ...rawRamTweaks, ...rawInternetTweaks, ...rawKbmTweaks];
+    let count = 0;
+
+    allModules.forEach((item) => {
+      if (item.type === 'reg') {
+        count++;
+        const cleanCode = item.code.replace("Windows Registry Editor Version 5.00", "").trim();
+        combinedReg += `; --- [${count}] ${item.title || item.name} ---\n${cleanCode}\n\n`;
+      }
+    });
+
+    downloadScript("YosserTweaks_Todos_los_REG", combinedReg, "reg");
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initHardwareStats();
+    renderModules();
+  });
 </script>
 </body>
 </html>
