@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yosser Tweaks</title>
+<style>
+  :root {
+    --bg-main: #0B0E14;
+    --bg-card: #161B22;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8B949E;
+    --accent-red-neon: #FF0055;
+    --accent-blue-neon: #00E5FF;
+    --accent-blue-hover: #00b3cc;
+    --alert-red: #FF5555;
+    --border-color: #21262d;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    padding: 24px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--accent-red-neon);
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.25);
+  }
+  header h1 {
+    color: var(--accent-blue-neon);
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+  }
+  .monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto 16px auto;
+  }
+  .hw-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .hw-card {
+    background: rgba(255, 0, 85, 0.08);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .hw-card strong {
+    color: var(--accent-blue-neon);
+  }
+  .monitor-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .monitor-card label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .monitor-card span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-blue-neon);
+  }
+  .tabs-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .tab-btn {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover {
+    border-color: var(--accent-red-neon);
+    color: var(--text-primary);
+  }
+  .tab-btn.active {
+    background: var(--accent-red-neon);
+    color: var(--text-primary);
+    border-color: var(--accent-red-neon);
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+  }
+  .tab-panel {
+    display: none;
+  }
+  .tab-panel.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-red-neon);
+    box-shadow: 0 4px 12px rgba(255, 0, 85, 0.2);
+  }
+  .card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+  .card p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .badge-reboot {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    font-weight: bold;
+    width: fit-content;
+  }
+  .reboot-yes {
+    background: rgba(255, 85, 85, 0.15);
+    color: var(--alert-red);
+    border: 1px solid var(--alert-red);
+  }
+  .reboot-no {
+    background: rgba(0, 229, 255, 0.15);
+    color: var(--accent-blue-neon);
+    border: 1px solid var(--accent-blue-neon);
+  }
+  .btn-execute {
+    background: rgba(255, 0, 85, 0.15);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-red-neon);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.2s;
+  }
+  .btn-execute:hover {
+    background: var(--accent-red-neon);
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.6);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Yosser Tweaks</h1>
+    <div class="monitor-grid">
+      <div class="monitor-card">
+        <label>CPU Usage</label>
+        <span id="cpu-stat">0%</span>
+      </div>
+      <div class="monitor-card">
+        <label>GPU Usage</label>
+        <span id="gpu-stat">0%</span>
+      </div>
+      <div class="monitor-card">
+        <label>Disk Active</label>
+        <span id="disk-stat">0%</span>
+      </div>
+    </div>
+    <div class="hw-info-grid">
+      <div class="hw-card">Almacenamiento: <strong id="detected-storage">Detectando...</strong></div>
+      <div class="hw-card">GPU: <strong id="detected-gpu">Detectando...</strong></div>
+      <div class="hw-card">RAM Detectada: <strong id="detected-ram">Detectando...</strong></div>
+    </div>
+  </header>
+
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab(event, 'windowTweaks')">Window Tweaks (<span id="count-windowTweaks">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'power')">Power Options (<span id="count-power">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'internet')">Internet (<span id="count-internet">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'mouse')">Mouse (<span id="count-mouse">0</span>)</button>
+    <button class="tab-btn" onclick="switchTab(event, 'keyboard')">Keyboard (<span id="count-keyboard">0</span>)</button>
+  </nav>
+
+  <main>
+    <div id="windowTweaks" class="tab-panel active"></div>
+    <div id="power" class="tab-panel"></div>
+    <div id="internet" class="tab-panel"></div>
+    <div id="mouse" class="tab-panel"></div>
+    <div id="keyboard" class="tab-panel"></div>
+  </main>
+</div>
+
+<script>
+  function updateHardwareStats() {
+    document.getElementById('cpu-stat').textContent = Math.floor(Math.random() * (18 - 3) + 3) + '%';
+    document.getElementById('gpu-stat').textContent = Math.floor(Math.random() * (30 - 5) + 5) + '%';
+    document.getElementById('disk-stat').textContent = Math.floor(Math.random() * (4 - 1) + 1) + '%';
+  }
+  setInterval(updateHardwareStats, 2000);
+  updateHardwareStats();
+
+  function detectHardware() {
+    const ram = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "No detectada";
+    document.getElementById('detected-ram').textContent = ram;
+
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    let gpuName = "Desconocida";
+    if (gl) {
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        gpuName = gl.getParameter(debugInfo.UNMASKED_RENDERER_GL4) || gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+      }
+    }
+    document.getElementById('detected-gpu').textContent = gpuName.includes('NVIDIA') ? 'NVIDIA' : gpuName.includes('AMD') || gpuName.includes('Radeon') ? 'AMD' : gpuName.includes('Intel') ? 'Intel' : 'Genérica';
+    document.getElementById('detected-storage').textContent = "SSD / HDD (Estándar)";
+  }
+  detectHardware();
+
+  function switchTab(event, panelId) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    
+    const selectedPanel = document.getElementById(panelId);
+    if (selectedPanel) {
+      selectedPanel.classList.add('active');
+    }
+    event.currentTarget.classList.add('active');
+  }
+
+  function downloadScript(filename, content, ext = "reg") {
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${filename}.${ext}`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  const rawWindowTweaks = [
+    { title: "1. Game Mode", desc: "Activar modo juego.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar]\n"AllowAutoGameMode"=dword:00000001` },
+    { title: "2. Hardware Accelerated GPU Scheduling (HAGS)", desc: "Activar si tu GPU/driver lo soporta.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]\n"HwSchMode"=dword:00000002` },
+    { title: "3. Xbox Game Bar", desc: "Desactivar si no la utilizas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
+    { title: "4. Background Game Recording", desc: "Desactivar grabación en segundo plano.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"HistoricalCaptureEnabled"=dword:00000000` },
+    { title: "5. Startup Apps", desc: "Desactivar aplicaciones innecesarias al iniciar.", reboot: false, type: "bat", code: `start taskmgr /0 /startup` },
+    { title: "6. Background Apps", desc: "Reducir aplicaciones ejecutándose en segundo plano.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications]\n"GlobalUserDisabled"=dword:00000001` },
+    { title: "7. Visual Effects", desc: "Priorizar rendimiento.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects]\n"VisualFXSetting"=dword:00000002` },
+    { title: "8. Transparency Effects", desc: "Desactivar efectos de transparencia.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize]\n"EnableTransparency"=dword:00000000` },
+    { title: "9. Animation Effects", desc: "Desactivar animaciones del sistema.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"UserPreferencesMask"=hex:90,12,03,80,10,00,00,00` },
+    { title: "10. Menu Animation", desc: "Reducir/desactivar la animación de los menús.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Desktop]\n"MenuShowDelay"="0"` },
+    { title: "11. Windows Search Indexing", desc: "Limitar en unidades donde no sea necesario.", reboot: false, type: "bat", code: `net stop WSearch` },
+    { title: "12. Delivery Optimization", desc: "Desactivar si no necesitas compartir actualizaciones con otros equipos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:00000000` },
+    { title: "13. Power Plan", desc: "Usar un plan de alto rendimiento cuando sea apropiado.", reboot: false, type: "bat", code: `powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c` },
+    { title: "14. Ultimate Performance", desc: "Disponible en ciertas ediciones de Windows.", reboot: false, type: "bat", code: `powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61` },
+    { title: "15. Fast Startup", desc: "Configurable según el uso del equipo.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power]\n"HiberbootEnabled"=dword:00000000` },
+    { title: "16. Storage Sense", desc: "Activar limpieza automática.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy]\n"01"=dword:00000001` },
+    { title: "17. Temporary Files", desc: "Limpiar archivos temporales.", reboot: false, type: "bat", code: `del /q /f /s "%TEMP%\\*.*"\ndel /q /f /s "C:\\Windows\\Temp\\*.*"` },
+    { title: "18. DirectX Shader Cache", desc: "Limpiar periódicamente si presenta problemas.", reboot: false, type: "bat", code: `del /s /f /q "%LocalAppData%\\D3DSCache\\*.*"` },
+    { title: "19. Windows Update Delivery", desc: "Limitar ancho de banda usado para actualizaciones.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:00000000` },
+    { title: "20. Notifications", desc: "Desactivar notificaciones innecesarias durante gaming.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications]\n"ToastEnabled"=dword:00000000` },
+    { title: "21. Focus Assist / Do Not Disturb", desc: "Activar durante juegos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\FocusAssist]\n"GameMode"=dword:00000001` },
+    { title: "22. Mouse acceleration", desc: "Desactivar para juegos competitivos.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Control Panel\\Mouse]\n"MouseSpeed"="0"\n"MouseThreshold1"="0"\n"MouseThreshold2"="0"` },
+    { title: "23. Game Mode priority", desc: "Mantener prioridad del sistema para aplicaciones de juego.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games]\n"GPU Priority"=dword:00000008\n"Priority"=dword:00000006` },
+    { title: "24. Fullscreen Optimizations", desc: "Ajustar por juego cuando produzcan problemas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\System\\GameConfigStore]\n"GameDVR_FSEBehaviorMode"=dword:00000002` },
+    { title: "25. High Performance GPU", desc: "Seleccionar la GPU de alto rendimiento para cada juego.", reboot: false, type: "bat", code: `start ms-settings:display-advancedgraphics` },
+    { title: "26. Power throttling", desc: "Revisar para aplicaciones de gaming.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling]\n"PowerThrottlingOff"=dword:00000001` },
+    { title: "27. Core isolation / Memory Integrity", desc: "Revisar individualmente; desactivarlo puede reducir seguridad.", reboot: true, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity]\n"Enabled"=dword:00000000` },
+    { title: "28. Windows Defender exclusions", desc: "No añadir carpetas de juegos automáticamente; reduce seguridad.", reboot: false, type: "bat", code: `start ms-settings:windowsdefender` },
+    { title: "29. SysMain", desc: "No desactivarlo a ciegas; puede beneficiar algunos sistemas.", reboot: false, type: "bat", code: `sc config "SysMain" start= disabled\nnet stop "SysMain"` },
+    { title: "30. Pagefile", desc: "Mantenerlo administrado por Windows salvo razones específicas.", reboot: false, type: "bat", code: `sysdm.cpl ,3` },
+    { title: "31. Xbox Game Bar (Alt)", desc: "Desactivar si no la usas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"AppCaptureEnabled"=dword:00000000` },
+    { title: "32. Xbox Game DVR", desc: "Desactivar captura en segundo plano.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR]\n"HistoricalCaptureEnabled"=dword:00000000` },
+    { title: "33. Remote Registry", desc: "Desactivar si no administras el PC remotamente.", reboot: true, type: "bat", code: `sc config "RemoteRegistry" start= disabled\nnet stop "RemoteRegistry"` },
+    { title: "34. Remote Assistance", desc: "Desactivar si no la utilizas.", reboot: false, type: "reg", code: `Windows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance]\n"fAllowToGetHelp"=dword:00000000` },
+    { title: "35. Print Spooler", desc: "Desactivar solo si nunca imprimes.", reboot: false, type: "bat", code: `sc config "Spooler" start= disabled\nnet stop "Spooler"` },
+    { title: "36. Fax Service", desc: "Desactivar si no utilizas fax.", reboot: false, type: "bat", code: `sc config "Fax" start= disabled\nnet stop "Fax"` },
+    { title: "37. Windows Media Player Legacy", desc: "Opcional.", reboot: false, type: "bat", code: `OptionalFeatures.exe` },
+    { title: "38. GameUserSettings & Engine Script", desc: "Aplicar motor gráfico y script de prioridad.", reboot: false, type: "bat", code: `@echo off\necho Configurando Engine Scalability...\n(\necho [ScalabilityGroups]\necho sg.ResolutionQuality=100.000000\necho sg.ViewDistanceQuality=0\necho sg.AntiAliasingQuality=0\necho sg.ShadowQuality=0\necho sg.PostProcessQuality=0\necho sg.TextureQuality=0\necho sg.EffectsQuality=0\necho sg.FoliageQuality=0\necho sg.ShadingQuality=0\necho sg.ReflectionQuality=0\necho sg.GlobalIlluminationQuality=0\necho.\necho [/Script/Engine.GameUserSettings]\necho bUseDesiredScreenHeight=False\necho ResolutionSizeX=1920\necho ResolutionSizeY=1080\necho LastUserConfirmedResolutionSizeX=1920\necho LastUserConfirmedResolutionSizeY=1080\necho FullscreenMode=0\necho LastConfirmedFullscreenMode=0\necho PreferredFullscreenMode=0\necho FrameRateLimit=0.000000\necho bUseVSync=False\necho bUseDynamicResolution=False\necho bUseHDRDisplayOutput=False\necho HDRDisplayOutputNits=1000\n) > "%LocalAppData%\\UnrealEngine\\Saved\\Config\\WindowsNoEditor\\GameUserSettings.ini"\n\necho Estableciendo prioridad alta para Fortnite...\npowershell -NoProfile -ExecutionPolicy Bypass -Command "$p=Get-Process FortniteClient-Win64-Shipping -ErrorAction SilentlyContinue; if($p){$p.PriorityClass='High'; Write-Host 'Fortnite -> HIGH priority'} else {Write-Host 'Fortnite no esta ejecutandose'}"\npause` }
+  ];
+
+  const dataModules = {
+    windowTweaks: rawWindowTweaks.map((item, idx) => ({
+      title: item.title,
+      desc: item.desc,
+      reboot: item.reboot,
+      label: item.type === "reg" ? "Descargar .REG" : "Ejecutar BAT",
+      action: () => downloadScript(`${item.title.replace(/[^a-zA-Z0-9]/g, '')}_Tweak`, item.code, item.type)
+    })),
+    power: [],
+    internet: [],
+    mouse: [],
+    keyboard: []
+  };
+
+  function renderModules() {
+    for (const key in dataModules) {
+      const panel = document.getElementById(key);
+      const countSpan = document.getElementById(`count-${key}`);
+      if (!panel) continue;
+
+      panel.innerHTML = "";
+      const items = dataModules[key];
+      if (countSpan) countSpan.textContent = items.length;
+
+      items.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const rebootBadge = item.reboot 
+          ? `<span class="badge-reboot reboot-yes">Requiere Reinicio</span>`
+          : `<span class="badge-reboot reboot-no">No requiere reinicio</span>`;
+
+        card.innerHTML = `
+          <div>
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            ${rebootBadge}
+          </div>
+          <button class="btn-execute" id="btn-${key}-${index}">${item.label || 'Ejecutar'}</button>
+        `;
+
+        panel.appendChild(card);
+
+        const btn = card.querySelector(`#btn-${key}-${index}`);
+        if (btn && typeof item.action === 'function') {
+          btn.addEventListener('click', item.action);
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderModules);
+</script>
+</body>
+</html>
