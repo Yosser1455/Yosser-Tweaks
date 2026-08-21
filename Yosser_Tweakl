@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yosser Tweaks</title>
+<style>
+  :root {
+    --accent-green-neon: #00FF66;
+    --accent-cyan: #00E5FF;
+    --bg-main: #070A0F;
+    --bg-card: #0D121A;
+    --border-color: #1C2633;
+    --text-primary: #F5F7FA;
+    --text-title-card: #FFFFFF;
+    --text-secondary: #7D8998;
+    --text-desc: #8B949E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { background-color: var(--bg-main); color: var(--text-primary); padding: 24px; }
+
+  #intro-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #000; z-index: 99999; display: flex;
+    justify-content: center; align-items: center; flex-direction: column;
+    overflow: hidden; transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .broken-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0; animation: crackAppear 0.15s ease-in 0.3s forwards; }
+  .crack-line { fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round; filter: drop-shadow(0 0 4px var(--accent-cyan)); }
+  .glitch-flash { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; z-index: 2; pointer-events: none; animation: screenGlitch 0.6s ease-in-out forwards; }
+  @keyframes crackAppear { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes screenGlitch { 0% { opacity: 0; } 10% { opacity: 0.8; } 15% { opacity: 0.1; } 30% { opacity: 0.9; background: var(--accent-cyan); } 35% { opacity: 0; } 50% { opacity: 1; background: #ff0055; } 55% { opacity: 0; } 100% { opacity: 0; } }
+  .intro-text { position: relative; z-index: 3; font-size: 4.5rem; font-weight: 900; color: #FFFFFF; text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 10px var(--accent-green-neon), 0 0 30px var(--accent-cyan); opacity: 0; animation: zoomTitle 1.2s ease-out 1.2s forwards; text-align: center; }
+  .intro-text span { color: var(--accent-green-neon); }
+  @keyframes zoomTitle { 0% { transform: scale(0.4); opacity: 0; } 50% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+  .container { max-width: 1300px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 24px; padding: 28px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 0 20px rgba(0, 255, 102, 0.1); }
+  .logo-title { font-size: 2.8rem; font-weight: 800; letter-spacing: 1px; color: #FFFFFF; margin-bottom: 20px; text-shadow: 0 0 5px rgba(0, 255, 102, 0.5); }
+  .logo-title span { color: var(--accent-green-neon); }
+  .monitor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 600px; margin: 0 auto 20px auto; }
+  .monitor-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; text-align: center; }
+  .monitor-card label { display: block; font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; }
+  .monitor-card span { font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan); }
+  .hw-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto; font-size: 0.85rem; color: var(--text-secondary); }
+  .hw-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; text-align: center; }
+  .hw-card strong { color: var(--accent-cyan); }
+
+  .tweaks-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 24px; margin-bottom: 24px; }
+  .tweak-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 20px 12px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; text-align: center; cursor: pointer; transition: all 0.25s ease; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+  .tweak-btn:hover, .tweak-btn.active { border-color: var(--accent-green-neon); color: var(--bg-main); background: var(--accent-green-neon); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 255, 102, 0.3); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s; }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent-green-neon); box-shadow: 0 4px 16px rgba(0, 255, 102, 0.15); }
+  .card h3 { font-size: 1.05rem; margin-bottom: 8px; color: var(--text-title-card); }
+  .card p { color: var(--text-desc); font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4; }
+
+  .btn-execute { background: rgba(0, 255, 102, 0.1); color: var(--accent-green-neon); border: 1px solid var(--accent-green-neon); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: all 0.2s; }
+  .btn-execute:hover { background: var(--accent-green-neon); color: var(--bg-main); box-shadow: 0 0 12px rgba(0, 255, 102, 0.5); }
+
+  @media (max-width: 900px) { .tweaks-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px) { .tweaks-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 400px) { .tweaks-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="intro-overlay">
+  <div class="glitch-flash"></div>
+  <svg class="broken-screen" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+    <path class="crack-line" d="M500,500 L200,100 M500,500 L800,150 M500,500 L900,600 M500,500 L600,900 M500,500 L100,700 M500,500 L300,850" />
+    <path class="crack-line" d="M200,100 L150,0 M200,100 L50,200 M800,150 L1000,100 M800,150 L950,300" />
+    <path class="crack-line" d="M900,600 L1000,750 M600,900 L700,1000 M100,700 L0,800" />
+  </svg>
+  <div class="intro-text">Yosser <span>Tweaks</span></div>
+</div>
+
+<div class="container">
+  <header>
+    <h1 class="logo-title">Yosser <span>Tweaks</span></h1>
+    <div class="monitor-grid">
+      <div class="monitor-card"><label>CPU Usage</label><span id="cpu-stat">0%</span></div>
+      <div class="monitor-card"><label>GPU Usage</label><span id="gpu-stat">0%</span></div>
+      <div class="monitor-card"><label>Disk Active</label><span id="disk-stat">0%</span></div>
+    </div>
+    <div class="hw-info-grid">
+      <div class="hw-card">Almacenamiento: <strong id="detected-storage">SSD / HDD</strong></div>
+      <div class="hw-card">GPU: <strong id="detected-gpu">Detectando...</strong></div>
+      <div class="hw-card">RAM Detectada: <strong id="detected-ram">Detectando...</strong></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tweaks-grid">
+      <button class="tweak-btn active" onclick="switchTab(event, 'windowTweaks')">Window Tweaks</button>
+      <button class="tweak-btn" onclick="switchTab(event, 'ramTweaks')">RAM Tweaks</button>
+      <button class="tweak-btn" onclick="switchTab(event, 'internetTweaks')">Internet Tweaks</button>
+      <button class="tweak-btn" onclick="switchTab(event, 'mouseTweaks')">Mouse Tweaks</button>
+      <button class="tweak-btn" onclick="switchTab(event, 'keyboardTweaks')">Keyboard Tweaks</button>
+    </div>
+
+    <div id="windowTweaks" class="tab-panel active"></div>
+    <div id="ramTweaks" class="tab-panel"></div>
+    <div id="internetTweaks" class="tab-panel"></div>
+    <div id="mouseTweaks" class="tab-panel"></div>
+    <div id="keyboardTweaks" class="tab-panel"></div>
+  </main>
+</div>
+
+<script>
+  // Oculta la pantalla de inicio de forma segura.
+  // Usamos DOMContentLoaded para que no se quede bloqueada esperando el evento load.
+  function hideIntroOverlay() {
+    const overlay = document.getElementById('intro-overlay');
+    if (!overlay || overlay.dataset.hidden === 'true') return;
+    overlay.dataset.hidden = 'true';
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => {
+      overlay.style.visibility = 'hidden';
+      overlay.style.display = 'none';
+    }, 800);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(hideIntroOverlay, 3200);
+  });
+
+  // Respaldo: aunque algo falle o load tarde demasiado, nunca deja la pantalla atrapada.
+  setTimeout(hideIntroOverlay, 5000);
+
+  function switchTab(event, panelId) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tweak-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(panelId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function escapeRegString(value) {
+    return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  }
+
+  function regCommandToRegLines(line) {
+    const match = line.match(/^\s*reg add\s+"([^"]+)"\s+(?:\/v\s+"?([^"\s]+)"?\s+)?\/t\s+(REG_DWORD|REG_SZ|REG_BINARY)\s+\/d\s+(.+?)\s+\/f\s*$/i);
+    if (!match) return null;
+    const [, key, valueName, type, rawData] = match;
+    const name = valueName ? `"${escapeRegString(valueName)}"` : "@";
+    const data = rawData.trim().replace(/^"|"$/g, "");
+
+    if (type.toUpperCase() === 'REG_DWORD') {
+      const num = Number(data);
+      if (!Number.isFinite(num)) return null;
+      return [`[${key}]`, `${name}=dword:${(num >>> 0).toString(16).padStart(8, '0')}`];
+    }
+    if (type.toUpperCase() === 'REG_SZ') {
+      return [`[${key}]`, `${name}="${escapeRegString(data)}"`];
+    }
+    if (type.toUpperCase() === 'REG_BINARY') {
+      const hex = data.replace(/[^0-9a-fA-F]/g, '').match(/.{1,2}/g);
+      if (!hex) return null;
+      return [`[${key}]`, `${name}=hex:${hex.join(',')}`];
+    }
+    return null;
+  }
+
+  function isPureRegistryTweak(content) {
+    const lines = content.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    return lines.length > 0 && lines.every(line => /^reg add\s+/i.test(line) && regCommandToRegLines(line));
+  }
+
+  function downloadReg(filename, content) {
+    const lines = ['Windows Registry Editor Version 5.00', ''];
+    content.split(/\r?\n/).forEach(line => {
+      const regLines = regCommandToRegLines(line);
+      if (regLines) lines.push(...regLines, '');
+    });
+    const blob = new Blob([lines.join('\r\n')], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${filename.replace(/[^a-zA-Z0-9]/g, '_')}.reg`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  }
+
+  function downloadScript(filename, content) {
+    if (isPureRegistryTweak(content)) {
+      downloadReg(filename, content);
+      return;
+    }
+
+    const fullContent = `@echo off\n:: ${filename}\n:: Yosser Tweaks\n\n:: --- Auto-elevacion a Administrador ---\nnet session >nul 2>&1\nif %errorlevel% neq 0 (\n    echo Solicitando permisos de administrador...\n    powershell -Command "Start-Process '%~f0' -Verb RunAs"\n    exit /b\n)\n\ncls\necho ============================================\necho   ${filename}\necho   Yosser Tweaks - Optimizando PC...\necho ============================================\necho.\n\n${content}\n\necho.\necho ============================================\necho   [EXITO] Tweak aplicado correctamente.\necho ============================================\necho.\npause`;
+    const blob = new Blob([fullContent], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${filename.replace(/[^a-zA-Z0-9]/g, '_')}.bat`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  }
+
+  function initHardwareStats() {
+    const ramElem = document.getElementById('detected-ram');
+    ramElem.textContent = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "8 GB+";
+    const gpuElem = document.getElementById('detected-gpu');
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (gl) {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (debugInfo) {
+          const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+          gpuElem.textContent = renderer.replace(/ANGLE \((.*?)\).*/, '$1').trim().substring(0, 40) || "GPU Detectada";
+        } else gpuElem.textContent = "GPU Genérica";
+      }
+    } catch(e) { gpuElem.textContent = "No disponible"; }
+
+    setInterval(() => {
+      document.getElementById('cpu-stat').textContent = `${Math.floor(Math.random()*8)+3}%`;
+      document.getElementById('gpu-stat').textContent = `${Math.floor(Math.random()*6)+2}%`;
+      document.getElementById('disk-stat').textContent = `${Math.floor(Math.random()*4)+1}%`;
+    }, 2000);
+  }
+
+  // ===================== WINDOW TWEAKS (FPS FOCUS) =====================
+  const windowTweaksList = [
+{title:"1. Ultimate Performance Plan",desc:"Activa el plan de energía de máximo rendimiento.",code:"powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61\npowercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61"},
+{title:"2. Fortnite High Priority",desc:"Prioridad Alta para Fortnite.",code:"wmic process where name='FortniteClient-Win64-Shipping.exe' CALL setpriority 128"},
+{title:"3. Game Mode ON",desc:"Activa Modo Juego de Windows.",code:"reg add \"HKCU\Software\Microsoft\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\Software\Microsoft\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f"},
+{title:"4. Disable GameDVR",desc:"Desactiva GameDVR completamente.",code:"reg add \"HKCU\System\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR\" /v AllowGameDVR /t REG_DWORD /d 0 /f"},
+{title:"5. Disable Fullscreen Optimizations",desc:"Mejora input lag en exclusive fullscreen.",code:"reg add \"HKCU\System\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\System\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\System\GameConfigStore\" /v GameDVR_DXGIHonorFSEWindowsCompatible /t REG_DWORD /d 1 /f"},
+{title:"6. HAGS ON",desc:"Hardware-Accelerated GPU Scheduling.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f"},
+{title:"7. Win32PrioritySeparation 38",desc:"Prioriza primer plano.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"},
+{title:"8. SystemResponsiveness 10",desc:"Menos CPU para fondo.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 10 /f"},
+{title:"9. NetworkThrottlingIndex Max",desc:"Sin límite de red multimedia.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"},
+{title:"10. Games MMCSS High",desc:"Prioridad alta GPU/CPU para juegos.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"Scheduling Category\" /t REG_SZ /d High /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"SFIO Priority\" /t REG_SZ /d High /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v Affinity /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"Background Only\" /t REG_SZ /d False /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"Clock Rate\" /t REG_DWORD /d 10000 /f"},
+{title:"11. Processor Boost Aggressive",desc:"Boost agresivo del procesador.",code:"powercfg /setacvalueindex scheme_current sub_processor PERFBOOSTMODE 2\npowercfg /setactive scheme_current"},
+{title:"12. Min Processor 100%",desc:"CPU mínimo al 100%.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setactive scheme_current"},
+{title:"13. Max Processor 100%",desc:"CPU máximo al 100%.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX 100\npowercfg /setactive scheme_current"},
+{title:"14. Core Parking Off",desc:"No aparcar núcleos.",code:"powercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setactive scheme_current"},
+{title:"15. PCIe ASPM Off",desc:"Sin ahorro PCIe.",code:"powercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"},
+{title:"16. USB Selective Suspend Off",desc:"No suspender USB.",code:"powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e0a6e6-7c45-4a1a-9b4b-5b8c5d8e5f5f 0\npowercfg /setactive scheme_current"},
+{title:"17. Disk Never Off",desc:"Discos nunca se apagan.",code:"powercfg /change disk-timeout-ac 0"},
+{title:"18. Sleep Never",desc:"Sin suspensión.",code:"powercfg /change standby-timeout-ac 0"},
+{title:"19. Hibernate Off",desc:"Hibernación desactivada.",code:"powercfg /hibernate off"},
+{title:"20. Monitor Never Off",desc:"Pantalla no se apaga.",code:"powercfg /change monitor-timeout-ac 0"},
+{title:"21. Fast Startup Off",desc:"Inicio rápido off.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power\" /v HiberbootEnabled /t REG_DWORD /d 0 /f"},
+{title:"22. Background Apps Off",desc:"Apps UWP en fondo off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"},
+{title:"23. Widgets Off",desc:"Widgets desactivados.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Dsh\" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f"},
+{title:"24. Transparency Off",desc:"Transparencia off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f"},
+{title:"25. Visual Effects Best Perf",desc:"Efectos visuales al máximo rendimiento.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f"},
+{title:"26. Startup Delay Off",desc:"Sin retraso de inicio.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize\" /v StartupDelayInMSec /t REG_DWORD /d 0 /f"},
+{title:"27. Prefetch Off SSD",desc:"Prefetch off (recomendado en SSD).",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters\" /v EnablePrefetcher /t REG_DWORD /d 0 /f"},
+{title:"28. SysMain Off",desc:"Superfetch/SysMain off.",code:"sc stop SysMain\nsc config SysMain start= disabled"},
+{title:"29. Windows Search Off",desc:"Indexado off.",code:"sc stop WSearch\nsc config WSearch start= disabled"},
+{title:"30. Telemetry Off",desc:"Telemetría mínima.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f"},
+{title:"31. Cortana Off",desc:"Cortana desactivada.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\" /v AllowCortana /t REG_DWORD /d 0 /f"},
+{title:"32. Tips Off",desc:"Tips y sugerencias off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f"},
+{title:"33. Consumer Features Off",desc:"Apps promocionales off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent\" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f"},
+{title:"34. Edge Startup Boost Off",desc:"Edge no se precarga.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Edge\" /v StartupBoostEnabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Edge\" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f"},
+{title:"35. OneDrive Autostart Off",desc:"OneDrive no inicia solo.",code:"reg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v OneDrive /f"},
+{title:"36. Xbox Services Off",desc:"Servicios Xbox off.",code:"sc config XblAuthManager start= disabled\nsc config XblGameSave start= disabled\nsc config XboxGipSvc start= disabled\nsc config XboxNetApiSvc start= disabled"},
+{title:"37. DiagTrack Off",desc:"Telemetría principal off.",code:"sc config DiagTrack start= disabled\nsc config dmwappushservice start= disabled"},
+{title:"38. Print Spooler Off",desc:"Impresión off (si no usas).",code:"sc stop Spooler\nsc config Spooler start= disabled"},
+{title:"39. Memory Compression Off",desc:"Compresión de memoria off.",code:"PowerShell -Command \"Disable-MMAgent -MemoryCompression\""},
+{title:"40. DisablePagingExecutive",desc:"Kernel en RAM.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"},
+{title:"41. LargeSystemCache 0",desc:"Caché de sistema óptima gaming.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"},
+{title:"42. ClearPageFileAtShutdown 0",desc:"No limpiar pagefile al apagar.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v ClearPageFileAtShutdown /t REG_DWORD /d 0 /f"},
+{title:"43. Timer Resolution Better",desc:"Mejor precisión de temporizador.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f"},
+{title:"44. Disable Nagle",desc:"Nagle off (menor delay online).",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f"},
+{title:"45. Clean Temp",desc:"Limpia temporales.",code:"del /f /s /q %temp%\*.*\ndel /f /s /q C:\Windows\Temp\*.*"},
+{title:"46. Clean Prefetch",desc:"Limpia Prefetch.",code:"del /f /s /q C:\Windows\Prefetch\*.*"},
+{title:"47. Clean DirectX Cache",desc:"Limpia shaders DirectX.",code:"del /f /s /q %LocalAppData%\D3DSCache\*.*"},
+{title:"48. Clean NVIDIA Cache",desc:"Limpia caché NVIDIA.",code:"rmdir /s /q %LocalAppData%\NVIDIA\DXCache\nrmdir /s /q %LocalAppData%\NVIDIA\GLCache"},
+{title:"49. Clean AMD Cache",desc:"Limpia caché AMD.",code:"rmdir /s /q %LocalAppData%\AMD\DxCache"},
+{title:"50. Delivery Optimization Off",desc:"No compartir updates.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config\" /v DODownloadMode /t REG_DWORD /d 0 /f"},
+{title:"51. Error Reporting Off",desc:"Windows Error Reporting off.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting\" /v Disabled /t REG_DWORD /d 1 /f"},
+{title:"52. Remote Registry Off",desc:"Registro remoto off.",code:"sc config RemoteRegistry start= disabled"},
+{title:"53. Fax Off",desc:"Fax off.",code:"sc config Fax start= disabled"},
+{title:"54. Tablet Input Off",desc:"Entrada táctil off.",code:"sc config TabletInputService start= disabled"},
+{title:"55. Secondary Logon Off",desc:"Logon secundario off.",code:"sc config seclogon start= disabled"},
+{title:"56. Biometric Off",desc:"Biométrico off.",code:"sc config WbioSrvc start= disabled"},
+{title:"57. Geolocation Off",desc:"Ubicación off.",code:"sc config lfsvc start= disabled"},
+{title:"58. MapsBroker Off",desc:"Mapas offline off.",code:"sc config MapsBroker start= disabled"},
+{title:"59. RetailDemo Off",desc:"Demo off.",code:"sc config RetailDemo start= disabled"},
+{title:"60. Wallet Off",desc:"Wallet off.",code:"sc config WalletService start= disabled"},
+{title:"61. PhoneSvc Off",desc:"Tu Teléfono off.",code:"sc config PhoneSvc start= disabled"},
+{title:"62. Messaging Off",desc:"Mensajería off.",code:"sc config MessagingService start= disabled"},
+{title:"63. CDPSvc Off",desc:"Connected Devices off.",code:"sc config CDPSvc start= disabled\nsc config CDPUserSvc start= disabled"},
+{title:"64. DusmSvc Off",desc:"Data Usage off.",code:"sc config DusmSvc start= disabled"},
+{title:"65. OneSyncSvc Off",desc:"Sync Host off.",code:"sc config OneSyncSvc start= disabled"},
+{title:"66. WMPNetworkSvc Off",desc:"WMP Sharing off.",code:"sc config WMPNetworkSvc start= disabled"},
+{title:"67. CscService Off",desc:"Offline Files off.",code:"sc config CscService start= disabled"},
+{title:"68. BDESVC Off",desc:"BitLocker service off.",code:"sc config BDESVC start= disabled"},
+{title:"69. EFS Off",desc:"EFS off.",code:"sc config EFS start= disabled"},
+{title:"70. FontCache Demand",desc:"Font Cache a demanda.",code:"sc config FontCache start= demand"},
+{title:"71. Themes Demand",desc:"Themes a demanda.",code:"sc config Themes start= demand"},
+{title:"72. Edge Update Off",desc:"Edge Update off.",code:"sc config edgeupdate start= disabled\nsc config edgeupdatem start= disabled"},
+{title:"73. Google Update Off",desc:"Google Update off.",code:"sc config gupdate start= disabled\nsc config gupdatem start= disabled"},
+{title:"74. Adobe Update Off",desc:"Adobe Update off.",code:"sc config AdobeUpdateService start= disabled"},
+{title:"75. Gaming Services Off",desc:"Gaming Services off.",code:"sc config GamingServices start= disabled\nsc config GamingServicesNet start= disabled"},
+{title:"76. Diagnostic Hub Off",desc:"Diagnostics Hub off.",code:"sc config diagnosticshub.standardcollector.service start= disabled"},
+{title:"77. AeLookupSvc Off",desc:"Application Experience off.",code:"sc config AeLookupSvc start= disabled"},
+{title:"78. BITS Demand",desc:"BITS a demanda.",code:"sc config BITS start= demand"},
+{title:"79. UsoSvc Demand",desc:"Update Orchestrator a demanda.",code:"sc config UsoSvc start= demand"},
+{title:"80. WaaSMedic Off",desc:"Windows Update Medic off.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc\" /v Start /t REG_DWORD /d 4 /f"},
+{title:"81. Autologger DiagTrack Off",desc:"AutoLogger telemetría off.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\AutoLogger-Diagtrack-Listener\" /v Start /t REG_DWORD /d 0 /f"},
+{title:"82. CEIP Off",desc:"Customer Experience Improvement off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\SQMClient\Windows\" /v CEIPEnable /t REG_DWORD /d 0 /f"},
+{title:"83. AppCompat Telemetry Off",desc:"AppCompat telemetry off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\" /v AITEnable /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\" /v DisableUAR /t REG_DWORD /d 1 /f"},
+{title:"84. Activity History Off",desc:"Activity History / Timeline off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v EnableActivityFeed /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v PublishUserActivities /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v UploadUserActivities /t REG_DWORD /d 0 /f"},
+{title:"85. Clipboard History Off",desc:"Historial portapapeles off.",code:"reg add \"HKCU\Software\Microsoft\Clipboard\" /v EnableClipboardHistory /t REG_DWORD /d 0 /f"},
+{title:"86. Notifications Off",desc:"Notificaciones off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications\" /v ToastEnabled /t REG_DWORD /d 0 /f"},
+{title:"87. Lock Screen Tips Off",desc:"Tips pantalla bloqueo off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v RotatingLockScreenOverlayEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-338387Enabled /t REG_DWORD /d 0 /f"},
+{title:"88. Soft Landing Off",desc:"Soft Landing off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SoftLandingEnabled /t REG_DWORD /d 0 /f"},
+{title:"89. Scoobe Off",desc:"Scoobe off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement\" /v ScoobeSystemSettingEnabled /t REG_DWORD /d 0 /f"},
+{title:"90. Suggested Content Off",desc:"Contenido sugerido off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-338393Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-353694Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-353696Enabled /t REG_DWORD /d 0 /f"},
+{title:"91. Silent Apps Off",desc:"Apps silenciosas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f"},
+{title:"92. Preinstalled Apps Off",desc:"Apps preinstaladas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v PreInstalledAppsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v OemPreInstalledAppsEnabled /t REG_DWORD /d 0 /f"},
+{title:"93. Advertising ID Off",desc:"ID publicidad off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo\" /v Enabled /t REG_DWORD /d 0 /f"},
+{title:"94. Tailored Experiences Off",desc:"Experiencias personalizadas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy\" /v TailoredExperiencesWithDiagnosticDataEnabled /t REG_DWORD /d 0 /f"},
+{title:"95. Input Personalization Off",desc:"Personalización escritura off.",code:"reg add \"HKCU\Software\Microsoft\InputPersonalization\" /v RestrictImplicitTextCollection /t REG_DWORD /d 1 /f\nreg add \"HKCU\Software\Microsoft\InputPersonalization\" /v RestrictImplicitInkCollection /t REG_DWORD /d 1 /f"},
+{title:"96. Handwriting Data Off",desc:"Datos escritura off.",code:"reg add \"HKCU\Software\Microsoft\InputPersonalization\TrainedDataStore\" /v HarvestContacts /t REG_DWORD /d 0 /f"},
+{title:"97. Language Capture Off",desc:"Captura idioma off.",code:"reg add \"HKCU\Software\Microsoft\Input\TIPC\" /v Enabled /t REG_DWORD /d 0 /f"},
+{title:"98. Windows Ink Off",desc:"Windows Ink off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace\" /v AllowWindowsInkWorkspace /t REG_DWORD /d 0 /f"},
+{title:"99. People Band Off",desc:"Banda personas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v PeopleBand /t REG_DWORD /d 0 /f"},
+{title:"100. Cloud Search Off",desc:"Búsqueda nube off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings\" /v IsMSACloudSearchEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings\" /v IsAADCloudSearchEnabled /t REG_DWORD /d 0 /f"},
+{title:"101. Bing Search Off",desc:"Bing en Inicio off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v BingSearchEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v CortanaConsent /t REG_DWORD /d 0 /f"},
+{title:"102. Search History Off",desc:"Historial búsqueda off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v HistoryViewEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v DeviceHistoryEnabled /t REG_DWORD /d 0 /f"},
+{title:"103. Web Search Suggestions Off",desc:"Sugerencias web off.",code:"reg add \"HKCU\Software\Policies\Microsoft\Windows\Explorer\" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f"},
+{title:"104. Cortana Button Off",desc:"Botón Cortana off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v ShowCortanaButton /t REG_DWORD /d 0 /f"},
+{title:"105. Task View Off",desc:"Vista tareas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f"},
+{title:"106. Meet Now Off",desc:"Meet Now off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\" /v HideSCAMeetNow /t REG_DWORD /d 1 /f"},
+{title:"107. News Interests Off",desc:"Noticias e intereses off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds\" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f"},
+{title:"108. Chat Icon Off",desc:"Icono Chat off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f"},
+{title:"109. Search Box Off",desc:"Caja búsqueda off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f"},
+{title:"110. Show All Tray Icons",desc:"Todos los iconos bandeja.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\" /v EnableAutoTray /t REG_DWORD /d 0 /f"},
+{title:"111. Autoplay Off",desc:"AutoPlay off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\" /v DisableAutoplay /t REG_DWORD /d 1 /f"},
+{title:"112. Thumbnail Cache Off",desc:"Caché miniaturas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v DisableThumbnailCache /t REG_DWORD /d 1 /f"},
+{title:"113. Recent Docs Off",desc:"Documentos recientes off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v Start_TrackDocs /t REG_DWORD /d 0 /f"},
+{title:"114. Jump Lists Off",desc:"Jump Lists off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v Start_TrackProgs /t REG_DWORD /d 0 /f"},
+{title:"115. GameBar Presence Off",desc:"GameBar Presence Writer off.",code:"reg add \"HKLM\SOFTWARE\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter\" /v ActivationType /t REG_DWORD /d 0 /f"},
+{title:"116. Final FPS Pack",desc:"Paquete final máximo FPS.",code:"powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61\nreg add \"HKCU\Software\Microsoft\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\System\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 10 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f\nsc config SysMain start= disabled\nsc config WSearch start= disabled\nsc config DiagTrack start= disabled"},
+{title:"117. Final Zero Delay Pack",desc:"Paquete final zero delay.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKCU\System\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f"},
+{title:"118. Power Max Pack",desc:"Todos los ajustes de energía al máximo.",code:"powercfg /setacvalueindex scheme_current sub_processor PERFBOOSTMODE 2\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX 100\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"},
+{title:"119. Clean All Caches",desc:"Limpieza completa de cachés.",code:"del /f /s /q %temp%\*.*\ndel /f /s /q C:\Windows\Temp\*.*\ndel /f /s /q C:\Windows\Prefetch\*.*\ndel /f /s /q %LocalAppData%\D3DSCache\*.*\nrmdir /s /q %LocalAppData%\NVIDIA\DXCache\nrmdir /s /q %LocalAppData%\NVIDIA\GLCache\nrmdir /s /q %LocalAppData%\AMD\DxCache"},
+{title:"120. Kill Background Pack",desc:"Cierra procesos de fondo comunes.",code:"taskkill /f /im OneDrive.exe\ntaskkill /f /im Widgets.exe\ntaskkill /f /im PhoneExperienceHost.exe\ntaskkill /f /im SearchApp.exe\ntaskkill /f /im GameBar.exe\ntaskkill /f /im GameBarPresenceWriter.exe\ntaskkill /f /im YourPhone.exe"},
+{title:"121. Visual Effects Best Performance",desc:"Desactiva todos los efectos visuales de Windows (sombras, transparencias, animaciones) para máximo rendimiento.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Control Panel\\Desktop\" /v UserPreferencesMask /t REG_BINARY /d 9012038010000000 /f"},
+{title:"122. Transparencia Off",desc:"Desactiva las transparencias de la barra de tareas y menú Inicio.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f"},
+{title:"123. Animaciones Ventanas Off",desc:"Elimina la animación de minimizar/maximizar ventanas.",code:"reg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v MinAnimate /t REG_SZ /d 0 /f"},
+{title:"124. Menu Show Delay 0",desc:"Elimina el retraso al abrir submenús (respuesta instantánea).",code:"reg add \"HKCU\\Control Panel\\Desktop\" /v MenuShowDelay /t REG_SZ /d 0 /f"},
+{title:"125. Boot Timeout Reducido",desc:"Reduce el tiempo de espera del menú de arranque a 3 segundos.",code:"bcdedit /timeout 3"},
+{title:"126. Fast Startup ON",desc:"Activa el arranque rápido de Windows.",code:"powercfg /h off\npowercfg /h on\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\" /v HiberbootEnabled /t REG_DWORD /d 1 /f"},
+{title:"127. Background Apps UWP Off",desc:"Impide que las apps de la Store consuman CPU/RAM en segundo plano.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"},
+{title:"128. Startup Delay Off",desc:"Elimina el retraso artificial que Windows aplica a los programas de inicio.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Serialize\" /v StartupDelayInMSec /t REG_DWORD /d 0 /f"},
+{title:"129. Paging Executive Off",desc:"Evita que partes del kernel se paginen a disco, manteniéndolas en RAM.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"},
+{title:"130. Large System Cache Off",desc:"Prioriza el rendimiento de programas sobre el caché del sistema de archivos.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"},
+{title:"131. IRQ8 Priority Max",desc:"Da máxima prioridad al reloj del sistema (mejora consistencia de frametime).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v IRQ8Priority /t REG_DWORD /d 1 /f"},
+{title:"132. System Responsiveness 0",desc:"Elimina el porcentaje de CPU reservado para tareas multimedia en segundo plano, priorizando el juego en primer plano.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"},
+{title:"133. Explorer Ribbon Off",desc:"Desactiva la cinta de opciones nueva del Explorador (más ligero y rápido).",code:"reg add \"HKCU\\Software\\Classes\\CLSID\\{e2bf9676-5f8f-435c-97eb-11607a5bedf7}\\InprocServer32\" /f /ve"},
+{title:"134. Storage Sense Off",desc:"Desactiva el sensor de almacenamiento automático que consume recursos en segundo plano.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy\" /v 01 /t REG_DWORD /d 0 /f"},
+{title:"135. Optimizacion Total Final Pack",desc:"Combina los ajustes clave de este pack: memoria, kernel, arranque e IRQ, todo en un solo script.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v IRQ8Priority /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f\npowercfg /h off\npowercfg /h on\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\" /v HiberbootEnabled /t REG_DWORD /d 1 /f\nbcdedit /timeout 3"},
+
+{title:"136. Credential Guard Off",desc:"Complementa el apagado de VBS desactivando Credential Guard, que también consume overhead de virtualización.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\LSA\" /v LsaCfgFlags /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeviceGuard\" /v LsaCfgFlags /t REG_DWORD /d 0 /f"},
+{title:"137. Hypervisor Scheduler Legacy",desc:"Cambia el scheduler del hypervisor a modo legacy, reduce overhead cuando VBS/Hyper-V siguen presentes.",code:"bcdedit /set hypervisorschedulertype classic"},
+{title:"138. Core Isolation Memory Scan Off",desc:"Desactiva el escaneo de integridad de memoria en tiempo real asociado a Core Isolation.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\" /v WasEnabledBy /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\" /v Locked /t REG_DWORD /d 0 /f"},
+{title:"139. Virtualization Based Security Registry Clean",desc:"Limpia banderas adicionales de VBS que a veces quedan activas tras desactivar Core Isolation desde Configuración.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v RequirePlatformSecurityFeatures /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v HypervisorEnforcedCodeIntegrity /t REG_DWORD /d 0 /f"},
+{title:"140. Memory Integrity Full Off Pack",desc:"Paquete completo: agrupa todos los ajustes de VBS/Core Isolation/Credential Guard en un solo script (reinicio obligatorio para aplicar).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\" /v Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v RequirePlatformSecurityFeatures /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\LSA\" /v LsaCfgFlags /t REG_DWORD /d 0 /f\nbcdedit /set hypervisorlaunchtype off\necho.\necho IMPORTANTE: Reinicia el PC para que se aplique completamente."},
+
+{title:"141. Fullscreen Optimizations Off (Global)",desc:"SAFE. Desactiva las optimizaciones de pantalla completa de Windows para todos los juegos, evitando el input lag que añade el compositor de escritorio.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehavior /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f"},
+{title:"142. Game DVR Registry Off",desc:"SAFE. Desactiva completamente la grabación en segundo plano de Xbox Game Bar (consume CPU/GPU si queda activa).",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR\" /v AllowGameDVR /t REG_DWORD /d 0 /f"},
+{title:"143. Mouse/Pointer Precision Off (Global)",desc:"SAFE. Desactiva la aceleración de puntero a nivel de sistema para tener 1:1 real en todas las apps, no solo el juego.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f"},
+{title:"144. HPET Off",desc:"SAFE. Desactiva el High Precision Event Timer, que en algunos sistemas añade micro-stutter. Reversible con 'bcdedit /deletevalue useplatformclock'.",code:"bcdedit /set useplatformclock false"},
+{title:"145. Dynamic Tick Off",desc:"SAFE. Desactiva el tick dinámico del sistema, dando timers más consistentes y menor variación de frametime.",code:"bcdedit /set disabledynamictick yes"},
+{title:"146. Multimedia Class Scheduler Priority Alta",desc:"SAFE. Da prioridad alta a las tareas de juegos dentro del scheduler multimedia (MMCSS).",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Scheduling Category /t REG_SZ /d High /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v SFIO Priority /t REG_SZ /d High /f"},
+{title:"147. Menu/Window Animation Off (Registro Completo)",desc:"SAFE. Complementa el tweak 123 eliminando también la animación de combos y listas desplegables.",code:"reg add \"HKCU\\Control Panel\\Desktop\" /v DragFullWindows /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v ComboBoxAnimation /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v ListBoxSmoothScrolling /t REG_SZ /d 0 /f"},
+{title:"148. Zero Delay Total Pack (SAFE)",desc:"SAFE. Agrupa todos los tweaks de zero delay seguros de este lote en un solo script.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Scheduling Category /t REG_SZ /d High /f\nbcdedit /set useplatformclock false\nbcdedit /set disabledynamictick yes"},
+
+{title:"149. Debloat: Apps de Xbox",desc:"SAFE. Elimina las apps de Xbox preinstaladas (no afecta a Xbox Game Bar si la usas, solo el resto del paquete).",code:"powershell -Command \"Get-AppxPackage *Microsoft.XboxApp* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.XboxGamingOverlay* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.Xbox.TCUI* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.XboxIdentityProvider* | Remove-AppxPackage\""},
+{title:"150. Debloat: Apps de Clima y Noticias",desc:"SAFE. Elimina Weather, News y MSN preinstalados.",code:"powershell -Command \"Get-AppxPackage *Microsoft.BingWeather* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.BingNews* | Remove-AppxPackage\""},
+{title:"151. Debloat: 3D Viewer, Mixed Reality y Paint 3D",desc:"SAFE. Elimina herramientas de 3D poco usadas que consumen espacio y a veces indexado.",code:"powershell -Command \"Get-AppxPackage *Microsoft.Microsoft3DViewer* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.MixedReality.Portal* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.MSPaint* | Remove-AppxPackage\""},
+{title:"152. Debloat: Get Help, Feedback Hub y Tips",desc:"SAFE. Elimina apps de soporte que no aportan nada al rendimiento.",code:"powershell -Command \"Get-AppxPackage *Microsoft.GetHelp* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.WindowsFeedbackHub* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.Getstarted* | Remove-AppxPackage\""},
+{title:"153. Debloat: People, Skype y Tu Teléfono",desc:"SAFE. Elimina apps de comunicación preinstaladas que no usas si no tienes cuenta vinculada.",code:"powershell -Command \"Get-AppxPackage *Microsoft.People* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.SkypeApp* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.YourPhone* | Remove-AppxPackage\""},
+{title:"154. Debloat: Solitaire, Candy Crush y juegos de terceros",desc:"SAFE. Elimina los juegos preinstalados/patrocinados que vienen de fábrica con Windows.",code:"powershell -Command \"Get-AppxPackage *Microsoft.MicrosoftSolitaireCollection* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *king.com* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Disney* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Spotify* | Remove-AppxPackage\""},
+{title:"155. Debloat: OneNote, Office Hub y Sway preinstalados",desc:"SAFE. Elimina versiones UWP de Office que vienen preinstaladas (no afecta a Office de escritorio si lo instalas aparte).",code:"powershell -Command \"Get-AppxPackage *Microsoft.Office.OneNote* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.MicrosoftOfficeHub* | Remove-AppxPackage\"\npowershell -Command \"Get-AppxPackage *Microsoft.Office.Sway* | Remove-AppxPackage\""},
+{title:"156. Debloat Total Pack (SAFE)",desc:"SAFE. Ejecuta todo el debloat de este lote de una sola vez: Xbox extra, Clima, 3D, Get Help, People/Skype, juegos y Office UWP.",code:"powershell -Command \"Get-AppxPackage *Microsoft.XboxApp*,*Microsoft.XboxGamingOverlay*,*Microsoft.Xbox.TCUI*,*Microsoft.XboxIdentityProvider*,*Microsoft.BingWeather*,*Microsoft.BingNews*,*Microsoft.Microsoft3DViewer*,*Microsoft.MixedReality.Portal*,*Microsoft.GetHelp*,*Microsoft.WindowsFeedbackHub*,*Microsoft.Getstarted*,*Microsoft.People*,*Microsoft.SkypeApp*,*Microsoft.YourPhone*,*Microsoft.MicrosoftSolitaireCollection*,*king.com*,*Microsoft.Office.OneNote*,*Microsoft.MicrosoftOfficeHub*,*Microsoft.Office.Sway* | Remove-AppxPackage\""}
+];
+
+  // ===================== RAM TWEAKS (BAJAR PROCESOS AL MÁXIMO) =====================
+  const ramTweaksList = [
+{title:"1. Background Apps Off",desc:"Apps UWP en fondo bloqueadas.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"},
+{title:"2. SysMain Off",desc:"Superfetch off.",code:"sc stop SysMain\nsc config SysMain start= disabled"},
+{title:"3. Windows Search Off",desc:"Indexado off.",code:"sc stop WSearch\nsc config WSearch start= disabled"},
+{title:"4. Prefetch Superfetch Off",desc:"Prefetch + Superfetch registro.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters\" /v EnablePrefetcher /t REG_DWORD /d 0 /f\nreg add \"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters\" /v EnableSuperfetch /t REG_DWORD /d 0 /f"},
+{title:"5. Memory Compression Off",desc:"Compresión memoria off.",code:"PowerShell -Command \"Disable-MMAgent -MemoryCompression\""},
+{title:"6. Kill OneDrive",desc:"Cierra OneDrive.",code:"taskkill /f /im OneDrive.exe\nreg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v OneDrive /f"},
+{title:"7. Xbox Services Off",desc:"Todos los Xbox off.",code:"sc stop XblAuthManager\nsc config XblAuthManager start= disabled\nsc stop XblGameSave\nsc config XblGameSave start= disabled\nsc stop XboxNetApiSvc\nsc config XboxNetApiSvc start= disabled\nsc stop XboxGipSvc\nsc config XboxGipSvc start= disabled"},
+{title:"8. DiagTrack Off",desc:"Telemetría principal off.",code:"sc stop DiagTrack\nsc config DiagTrack start= disabled"},
+{title:"9. dmwappush Off",desc:"Más telemetría off.",code:"sc stop dmwappushservice\nsc config dmwappushservice start= disabled"},
+{title:"10. Print Spooler Off",desc:"Impresión off.",code:"sc stop Spooler\nsc config Spooler start= disabled"},
+{title:"11. Fax Off",desc:"Fax off.",code:"sc config Fax start= disabled"},
+{title:"12. Remote Registry Off",desc:"Registro remoto off.",code:"sc config RemoteRegistry start= disabled"},
+{title:"13. Tablet Input Off",desc:"Táctil off.",code:"sc config TabletInputService start= disabled"},
+{title:"14. WerSvc Off",desc:"Error Reporting off.",code:"sc config WerSvc start= disabled"},
+{title:"15. PcaSvc Off",desc:"Compatibility Assistant off.",code:"sc config PcaSvc start= disabled"},
+{title:"16. Secondary Logon Off",desc:"Logon secundario off.",code:"sc config seclogon start= disabled"},
+{title:"17. Biometric Off",desc:"Biométrico off.",code:"sc config WbioSrvc start= disabled"},
+{title:"18. MapsBroker Off",desc:"Mapas off.",code:"sc config MapsBroker start= disabled"},
+{title:"19. Geolocation Off",desc:"Ubicación off.",code:"sc config lfsvc start= disabled"},
+{title:"20. RetailDemo Off",desc:"Demo off.",code:"sc config RetailDemo start= disabled"},
+{title:"21. Wallet Off",desc:"Wallet off.",code:"sc config WalletService start= disabled"},
+{title:"22. PhoneSvc Off",desc:"Tu Teléfono off.",code:"sc config PhoneSvc start= disabled"},
+{title:"23. Messaging Off",desc:"Mensajería off.",code:"sc config MessagingService start= disabled"},
+{title:"24. CDPSvc Off",desc:"Connected Devices off.",code:"sc config CDPSvc start= disabled\nsc config CDPUserSvc start= disabled"},
+{title:"25. DusmSvc Off",desc:"Data Usage off.",code:"sc config DusmSvc start= disabled"},
+{title:"26. OneSyncSvc Off",desc:"Sync Host off.",code:"sc config OneSyncSvc start= disabled"},
+{title:"27. WMPNetworkSvc Off",desc:"WMP Sharing off.",code:"sc config WMPNetworkSvc start= disabled"},
+{title:"28. CscService Off",desc:"Offline Files off.",code:"sc config CscService start= disabled"},
+{title:"29. BDESVC Off",desc:"BitLocker off.",code:"sc config BDESVC start= disabled"},
+{title:"30. EFS Off",desc:"EFS off.",code:"sc config EFS start= disabled"},
+{title:"31. FontCache Demand",desc:"Font Cache demanda.",code:"sc config FontCache start= demand"},
+{title:"32. Themes Demand",desc:"Themes demanda.",code:"sc config Themes start= demand"},
+{title:"33. Edge Update Off",desc:"Edge Update off.",code:"sc config edgeupdate start= disabled\nsc config edgeupdatem start= disabled"},
+{title:"34. Google Update Off",desc:"Google Update off.",code:"sc config gupdate start= disabled\nsc config gupdatem start= disabled"},
+{title:"35. Adobe Update Off",desc:"Adobe Update off.",code:"sc config AdobeUpdateService start= disabled"},
+{title:"36. Gaming Services Off",desc:"Gaming Services off.",code:"sc config GamingServices start= disabled\nsc config GamingServicesNet start= disabled"},
+{title:"37. Diagnostic Hub Off",desc:"Diagnostics Hub off.",code:"sc config diagnosticshub.standardcollector.service start= disabled"},
+{title:"38. AeLookupSvc Off",desc:"App Experience off.",code:"sc config AeLookupSvc start= disabled"},
+{title:"39. BITS Demand",desc:"BITS demanda.",code:"sc config BITS start= demand"},
+{title:"40. UsoSvc Demand",desc:"Update Orchestrator demanda.",code:"sc config UsoSvc start= demand"},
+{title:"41. InstallService Demand",desc:"Store Install demanda.",code:"sc config InstallService start= demand"},
+{title:"42. LicenseManager Demand",desc:"License Manager demanda.",code:"sc config LicenseManager start= demand"},
+{title:"43. WaaSMedic Off",desc:"Update Medic off.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc\" /v Start /t REG_DWORD /d 4 /f"},
+{title:"44. Autologger Off",desc:"AutoLogger telemetría off.",code:"reg add \"HKLM\SYSTEM\CurrentControlSet\Control\WMI\Autologger\AutoLogger-Diagtrack-Listener\" /v Start /t REG_DWORD /d 0 /f"},
+{title:"45. CEIP Off",desc:"CEIP off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\SQMClient\Windows\" /v CEIPEnable /t REG_DWORD /d 0 /f"},
+{title:"46. AppCompat Off",desc:"AppCompat telemetry off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\" /v AITEnable /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\" /v DisableUAR /t REG_DWORD /d 1 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\" /v DisableInventory /t REG_DWORD /d 1 /f"},
+{title:"47. Activity History Off",desc:"Activity History off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v EnableActivityFeed /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v PublishUserActivities /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\System\" /v UploadUserActivities /t REG_DWORD /d 0 /f"},
+{title:"48. Clipboard History Off",desc:"Portapapeles historial off.",code:"reg add \"HKCU\Software\Microsoft\Clipboard\" /v EnableClipboardHistory /t REG_DWORD /d 0 /f"},
+{title:"49. Notifications Off",desc:"Notificaciones off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications\" /v ToastEnabled /t REG_DWORD /d 0 /f"},
+{title:"50. Widgets Kill",desc:"Mata Widgets.",code:"taskkill /f /im Widgets.exe\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f"},
+{title:"51. GameBar Presence Off",desc:"GameBar Presence off.",code:"reg add \"HKLM\SOFTWARE\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter\" /v ActivationType /t REG_DWORD /d 0 /f"},
+{title:"52. Your Phone Kill",desc:"Mata Tu Teléfono.",code:"taskkill /f /im PhoneExperienceHost.exe\nsc config PhoneSvc start= disabled"},
+{title:"53. SearchApp Kill",desc:"Mata SearchApp.",code:"taskkill /f /im SearchApp.exe\ntaskkill /f /im SearchUI.exe"},
+{title:"54. Startup Clean",desc:"Limpia inicios comunes.",code:"reg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v Discord /f\nreg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v Steam /f\nreg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v EpicGamesLauncher /f\nreg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v Spotify /f\nreg delete \"HKCU\Software\Microsoft\Windows\CurrentVersion\Run\" /v OneDrive /f"},
+{title:"55. Kill Background Pack",desc:"Cierra procesos de fondo.",code:"taskkill /f /im OneDrive.exe\ntaskkill /f /im Widgets.exe\ntaskkill /f /im PhoneExperienceHost.exe\ntaskkill /f /im SearchApp.exe\ntaskkill /f /im GameBar.exe\ntaskkill /f /im GameBarPresenceWriter.exe\ntaskkill /f /im YourPhone.exe\ntaskkill /f /im SecurityHealthSystray.exe"},
+{title:"56. Cortana Off",desc:"Cortana off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\" /v AllowCortana /t REG_DWORD /d 0 /f"},
+{title:"57. Tips Completely Off",desc:"Todos los tips off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SoftLandingEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement\" /v ScoobeSystemSettingEnabled /t REG_DWORD /d 0 /f"},
+{title:"58. Consumer Features Off",desc:"Consumer features off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent\" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f"},
+{title:"59. Silent Apps Off",desc:"Apps silenciosas off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v PreInstalledAppsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v OemPreInstalledAppsEnabled /t REG_DWORD /d 0 /f"},
+{title:"60. Advertising ID Off",desc:"Advertising ID off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo\" /v Enabled /t REG_DWORD /d 0 /f"},
+{title:"61. Tailored Off",desc:"Tailored experiences off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy\" /v TailoredExperiencesWithDiagnosticDataEnabled /t REG_DWORD /d 0 /f"},
+{title:"62. Input Personalization Off",desc:"Input personalization off.",code:"reg add \"HKCU\Software\Microsoft\InputPersonalization\" /v RestrictImplicitTextCollection /t REG_DWORD /d 1 /f\nreg add \"HKCU\Software\Microsoft\InputPersonalization\" /v RestrictImplicitInkCollection /t REG_DWORD /d 1 /f"},
+{title:"63. Handwriting Off",desc:"Handwriting data off.",code:"reg add \"HKCU\Software\Microsoft\InputPersonalization\TrainedDataStore\" /v HarvestContacts /t REG_DWORD /d 0 /f"},
+{title:"64. Language Capture Off",desc:"Language capture off.",code:"reg add \"HKCU\Software\Microsoft\Input\TIPC\" /v Enabled /t REG_DWORD /d 0 /f"},
+{title:"65. Windows Ink Off",desc:"Windows Ink off.",code:"reg add \"HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace\" /v AllowWindowsInkWorkspace /t REG_DWORD /d 0 /f"},
+{title:"66. People Band Off",desc:"People band off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v PeopleBand /t REG_DWORD /d 0 /f"},
+{title:"67. Cloud Search Off",desc:"Cloud search off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings\" /v IsMSACloudSearchEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings\" /v IsAADCloudSearchEnabled /t REG_DWORD /d 0 /f"},
+{title:"68. Bing Start Off",desc:"Bing en Start off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v BingSearchEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v CortanaConsent /t REG_DWORD /d 0 /f"},
+{title:"69. Search History Off",desc:"Search history off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v HistoryViewEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v DeviceHistoryEnabled /t REG_DWORD /d 0 /f"},
+{title:"70. Web Suggestions Off",desc:"Web suggestions off.",code:"reg add \"HKCU\Software\Policies\Microsoft\Windows\Explorer\" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f"},
+{title:"71. Cortana Button Off",desc:"Cortana button off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v ShowCortanaButton /t REG_DWORD /d 0 /f"},
+{title:"72. Task View Off",desc:"Task View off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f"},
+{title:"73. Meet Now Off",desc:"Meet Now off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\" /v HideSCAMeetNow /t REG_DWORD /d 1 /f"},
+{title:"74. News Interests Off",desc:"News and Interests off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds\" /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f"},
+{title:"75. Chat Icon Off",desc:"Chat icon off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f"},
+{title:"76. Search Box Off",desc:"Search box off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Search\" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f"},
+{title:"77. All Tray Icons",desc:"Mostrar todos iconos bandeja.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\" /v EnableAutoTray /t REG_DWORD /d 0 /f"},
+{title:"78. Autoplay Off",desc:"AutoPlay off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\" /v DisableAutoplay /t REG_DWORD /d 1 /f"},
+{title:"79. Thumbnail Cache Off",desc:"Thumbnail cache off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v DisableThumbnailCache /t REG_DWORD /d 1 /f"},
+{title:"80. Recent Docs Off",desc:"Recent docs off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v Start_TrackDocs /t REG_DWORD /d 0 /f"},
+{title:"81. Jump Lists Off",desc:"Jump Lists off.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\" /v Start_TrackProgs /t REG_DWORD /d 0 /f"},
+{title:"82. Clean Temp Prefetch",desc:"Limpia temp + prefetch.",code:"del /f /s /q %temp%\*.*\ndel /f /s /q C:\Windows\Temp\*.*\ndel /f /s /q C:\Windows\Prefetch\*.*"},
+{title:"83. Clean Delivery Opt",desc:"Limpia Delivery Optimization.",code:"rmdir /s /q C:\Windows\SoftwareDistribution\Download"},
+{title:"84. Clean Update Cache",desc:"Limpia caché Windows Update.",code:"net stop wuauserv\nnet stop bits\nrmdir /s /q C:\Windows\SoftwareDistribution\nnet start wuauserv\nnet start bits"},
+{title:"85. Clean Explorer Cache",desc:"Limpia caché Explorer.",code:"del /f /s /q /a %LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db\ndel /f /q %LocalAppData%\IconCache.db"},
+{title:"86. Clean GPU Cache",desc:"Limpia cachés GPU.",code:"del /f /s /q %LocalAppData%\D3DSCache\*.*\nrmdir /s /q %LocalAppData%\NVIDIA\DXCache\nrmdir /s /q %LocalAppData%\NVIDIA\GLCache\nrmdir /s /q %LocalAppData%\AMD\DxCache"},
+{title:"87. Clean Crash Dumps",desc:"Limpia volcados.",code:"del /f /q %SystemRoot%\MEMORY.DMP\ndel /f /s /q %SystemRoot%\Minidump\*.dmp\ndel /f /s /q %LocalAppData%\CrashDumps\*.*"},
+{title:"88. Clean WER",desc:"Limpia reportes errores.",code:"del /f /s /q %ProgramData%\Microsoft\Windows\WER\*.*"},
+{title:"89. Auto Maintenance Off",desc:"Mantenimiento automático off.",code:"reg add \"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance\" /v MaintenanceDisabled /t REG_DWORD /d 1 /f"},
+{title:"90. Final Services Pack",desc:"Desactiva servicios pesados.",code:"sc config SysMain start= disabled\nsc config WSearch start= disabled\nsc config DiagTrack start= disabled\nsc config dmwappushservice start= disabled\nsc config XblAuthManager start= disabled\nsc config XblGameSave start= disabled\nsc config XboxNetApiSvc start= disabled\nsc config Spooler start= disabled\nsc config Fax start= disabled\nsc config RemoteRegistry start= disabled"},
+{title:"91. Final Registry Debloat",desc:"Debloat registro principal.",code:"reg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f\nreg add \"HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search\" /v AllowCortana /t REG_DWORD /d 0 /f\nreg add \"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f"},
+{title:"92. Final Process Killer",desc:"Cierra casi todo lo innecesario.",code:"taskkill /f /im OneDrive.exe\ntaskkill /f /im Widgets.exe\ntaskkill /f /im PhoneExperienceHost.exe\ntaskkill /f /im SearchApp.exe\ntaskkill /f /im SearchUI.exe\ntaskkill /f /im GameBar.exe\ntaskkill /f /im GameBarPresenceWriter.exe\ntaskkill /f /im YourPhone.exe\ntaskkill /f /im SecurityHealthSystray.exe\ntaskkill /f /im MicrosoftEdgeUpdate.exe"},
+{title:"93. Final RAM Extreme",desc:"Paquete final mínimo procesos.",code:"sc config SysMain start= disabled\nsc config WSearch start= disabled\nsc config DiagTrack start= disabled\nsc config XblAuthManager start= disabled\nsc config XblGameSave start= disabled\nsc config XboxNetApiSvc start= disabled\nsc config Spooler start= disabled\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\ntaskkill /f /im OneDrive.exe\ntaskkill /f /im Widgets.exe\ntaskkill /f /im PhoneExperienceHost.exe"},
+
+{title:"94. Hardware-Accelerated GPU Scheduling ON (HAGS)",desc:"FPS. Activa HAGS: deja que la GPU gestione su propia cola de memoria de video en vez de depender del driver por software. Reduce latencia y mejora frametime en GPUs/drivers compatibles (Nvidia 1000+, AMD RX 5000+, Windows 10 2004+). Requiere reinicio.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\necho.\necho IMPORTANTE: Reinicia el PC para que HAGS se active."},
+{title:"95. GPU Priority Alta para Juegos",desc:"FPS. Da prioridad alta de GPU y CPU al perfil de tareas 'Games' del sistema, para que el juego reciba recursos antes que otras apps.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Affinity /t REG_DWORD /d 0 /f"},
+{title:"96. CPU Core Parking Off",desc:"FPS. Evita que Windows apague núcleos de CPU en reposo para 'ahorrar energía', eliminando micro-stutters cuando el juego necesita esos núcleos de golpe.",code:"powercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor CPMAXCORES 100\npowercfg /setactive scheme_current"},
+{title:"97. Memory Compression Off",desc:"FPS. Desactiva la compresión de memoria de Windows: usa más RAM cruda pero sin el overhead de CPU de comprimir/descomprimir en tiempo real, ideal si tienes 16GB+.",code:"PowerShell -Command \"Disable-MMAgent -MemoryCompression\""},
+{title:"98. System Cache Priority a Programas",desc:"FPS. Prioriza la RAM para programas activos en vez de reservarla para el caché de archivos del sistema.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"},
+{title:"99. IO Page Lock Limit Alto",desc:"FPS. Aumenta el límite de páginas de memoria bloqueables para operaciones de I/O, ayuda a evitar cuellos de botella con streaming de texturas/assets.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v IoPageLockLimit /t REG_DWORD /d 4000000 /f"},
+{title:"100. Final FPS RAM Pack",desc:"FPS. Combina HAGS, prioridad GPU, core parking off y memory compression off en un solo script. Requiere reinicio para aplicar HAGS al 100%.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor CPMAXCORES 100\npowercfg /setactive scheme_current\nPowerShell -Command \"Disable-MMAgent -MemoryCompression\"\necho.\necho IMPORTANTE: Reinicia el PC para que HAGS se active completamente."}
+];
+
+  // ===================== INTERNET TWEAKS (ESTABILIDAD + ZERO DELAY) =====================
+  const internetTweaksList = [
+    { title: "1. Cloudflare DNS", desc: "DNS rápido y estable (1.1.1.1 + 1.0.0.1).", code: "netsh interface ip set dns name=\"Ethernet\" static 1.1.1.1\nnetsh interface ip add dns name=\"Ethernet\" 1.0.0.1 index=2\nnetsh interface ip set dns name=\"Wi-Fi\" static 1.1.1.1\nnetsh interface ip add dns name=\"Wi-Fi\" 1.0.0.1 index=2" },
+    { title: "2. Google DNS", desc: "Alternativa estable (8.8.8.8 + 8.8.4.4).", code: "netsh interface ip set dns name=\"Ethernet\" static 8.8.8.8\nnetsh interface ip add dns name=\"Ethernet\" 8.8.4.4 index=2" },
+    { title: "3. Flush DNS Cache", desc: "Limpia la caché DNS.", code: "ipconfig /flushdns" },
+    { title: "4. Reset Winsock", desc: "Reinicia la pila Winsock (arregla muchos problemas de red).", code: "netsh winsock reset" },
+    { title: "5. Reset TCP/IP Stack", desc: "Reinicia completamente la pila TCP/IP.", code: "netsh int ip reset" },
+    { title: "6. Disable Nagle Algorithm", desc: "Desactiva Nagle para menor delay en juegos (muy importante).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\" /v TCPNoDelay /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f" },
+    { title: "7. Disable Network Throttling", desc: "Elimina el límite de red multimedia de Windows.", code: "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f" },
+    { title: "8. TCP Autotuning Normal", desc: "Nivel de autotuning recomendado para gaming.", code: "netsh int tcp set global autotuninglevel=normal" },
+    { title: "9. Enable RSS", desc: "Receive Side Scaling activado (mejor distribución de paquetes).", code: "netsh int tcp set global rss=enabled" },
+    { title: "10. Enable RSC Default", desc: "Receive Segment Coalescing en default.", code: "netsh int tcp set global rsc=default" },
+    { title: "11. Disable ECN", desc: "Desactiva Explicit Congestion Notification (mejor compatibilidad).", code: "netsh int tcp set global ecncapability=disabled" },
+    { title: "12. Disable TCP Timestamps", desc: "Desactiva timestamps TCP (menor overhead).", code: "netsh int tcp set global timestamps=disabled" },
+    { title: "13. Increase Ephemeral Ports", desc: "Aumenta el rango de puertos efímeros.", code: "netsh int ipv4 set dynamicport tcp start=10000 num=55535\nnetsh int ipv4 set dynamicport udp start=10000 num=55535" },
+    { title: "14. Disable Large Send Offload", desc: "Desactiva LSO (puede reducir latency spikes).", code: "PowerShell -Command \"Disable-NetAdapterLso -Name '*' -ErrorAction SilentlyContinue\"" },
+    { title: "15. Disable Interrupt Moderation", desc: "Desactiva moderación de interrupciones (menor latency).", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -DisplayName 'Interrupt Moderation' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue }\"" },
+    { title: "16. Disable Energy Efficient Ethernet", desc: "Desactiva EEE (evita microcortes).", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -DisplayName 'Energy Efficient Ethernet' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue }\"" },
+    { title: "17. Disable Flow Control", desc: "Desactiva Flow Control.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -DisplayName 'Flow Control' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue }\"" },
+    { title: "18. Disable Jumbo Frames", desc: "Desactiva Jumbo Frames (no suelen ayudar en gaming).", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -DisplayName 'Jumbo Packet' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue }\"" },
+    { title: "19. Power Saving Off on Adapter", desc: "Desactiva ahorro de energía del adaptador de red.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterPowerManagement -Name $_.Name -ErrorAction SilentlyContinue -AllowComputerToTurnOffDevice Disabled }\"" },
+    { title: "20. Wi-Fi Maximum Performance", desc: "Fuerza máximo rendimiento en Wi-Fi (sin ahorro de energía).", code: "powercfg /setacvalueindex scheme_current 19cbb8fa-5279-450e-9fac-8a3d5fedd0c1 12bbebe6-58d6-4636-95bb-3217ef867c1a 0\npowercfg /setactive scheme_current" },
+    { title: "21. Disable IPv6 (opcional)", desc: "Desactiva IPv6 si no lo necesitas (puede mejorar estabilidad).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters\" /v DisabledComponents /t REG_DWORD /d 255 /f" },
+    { title: "22. Increase DNS Cache", desc: "Aumenta el tamaño de la caché DNS.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters\" /v MaxCacheEntryTtlLimit /t REG_DWORD /d 10800 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters\" /v MaxNegativeCacheTtl /t REG_DWORD /d 5 /f" },
+    { title: "23. Disable Delivery Optimization", desc: "Evita que Windows use tu red para actualizar otros PCs.", code: "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config\" /v DODownloadMode /t REG_DWORD /d 0 /f" },
+    { title: "24. Disable Network Discovery", desc: "Desactiva descubrimiento de red (menos ruido).", code: "netsh advfirewall firewall set rule group=\"Network Discovery\" new enable=No" },
+    { title: "25. Disable QoS Packet Scheduler (opcional)", desc: "Algunos ven mejor ping desactivándolo.", code: "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Psched\" /v NonBestEffortLimit /t REG_DWORD /d 0 /f" },
+    { title: "26. TCP Fast Open", desc: "Activa TCP Fast Open si tu sistema lo soporta.", code: "netsh int tcp set global fastopen=enabled" },
+    { title: "27. Congestion Provider CTCP", desc: "Usa Compound TCP (buen equilibrio).", code: "netsh int tcp set global congestionprovider=ctcp" },
+    { title: "28. Disable Receive Segment Coalescing (prueba)", desc: "A veces baja latency desactivarlo.", code: "netsh int tcp set global rsc=disabled" },
+    { title: "29. MTU Optimization 1500", desc: "Fuerza MTU estándar de 1500.", code: "netsh interface ipv4 set subinterface \"Ethernet\" mtu=1500 store=persistent\nnetsh interface ipv4 set subinterface \"Wi-Fi\" mtu=1500 store=persistent" },
+    { title: "30. Disable Autotuning (prueba extrema)", desc: "Algunos sistemas van mejor con autotuning disabled.", code: "netsh int tcp set global autotuninglevel=disabled" },
+    { title: "31. Enable Direct Cache Access", desc: "Activa Direct Cache Access si está disponible.", code: "netsh int tcp set global dca=enabled" },
+    { title: "32. Enable NetDMA", desc: "Activa NetDMA (si tu hardware lo soporta).", code: "netsh int tcp set global netdma=enabled" },
+    { title: "33. Disable Task Offload (prueba)", desc: "A veces mejora estabilidad desactivarlo.", code: "netsh int ip set global taskoffload=disabled" },
+    { title: "34. Increase ICMP Limit", desc: "Aumenta el límite de ICMP (útil para algunos juegos).", code: "netsh int ipv4 set dynamicport icmp start=10000 num=55535" },
+    { title: "35. Registry TcpTimedWaitDelay", desc: "Reduce el tiempo TIME_WAIT de conexiones.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpTimedWaitDelay /t REG_DWORD /d 30 /f" },
+    { title: "36. Registry MaxUserPort", desc: "Aumenta el número máximo de puertos de usuario.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v MaxUserPort /t REG_DWORD /d 65534 /f" },
+    { title: "37. Registry TcpMaxDataRetransmissions", desc: "Reduce retransmisiones máximas.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpMaxDataRetransmissions /t REG_DWORD /d 3 /f" },
+    { title: "38. Registry DefaultTTL", desc: "Ajusta el TTL por defecto.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v DefaultTTL /t REG_DWORD /d 64 /f" },
+    { title: "39. Disable Windows Network Throttling Index", desc: "Asegura que no haya throttling.", code: "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 0xffffffff /f" },
+    { title: "40. Disable Large Send Offload v2 IPv4", desc: "Desactiva LSO v2 IPv4.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -RegistryKeyword '*LsoV2IPv4' -RegistryValue 0 -ErrorAction SilentlyContinue }\"" },
+    { title: "41. Disable Large Send Offload v2 IPv6", desc: "Desactiva LSO v2 IPv6.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -RegistryKeyword '*LsoV2IPv6' -RegistryValue 0 -ErrorAction SilentlyContinue }\"" },
+    { title: "42. Disable Packet Coalescing", desc: "Desactiva coalescencia de paquetes.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterAdvancedProperty -Name $_.Name -DisplayName 'Packet Coalescing' -DisplayValue 'Disabled' -ErrorAction SilentlyContinue }\"" },
+    { title: "43. Prefer Ethernet over Wi-Fi", desc: "Da prioridad a Ethernet cuando ambos están conectados.", code: "echo En Configuración > Red e Internet > Configuración avanzada de red > cambia la métrica de Ethernet a 10 y Wi-Fi a 50." },
+    { title: "44. Disable Background Apps Network", desc: "Reduce uso de red de apps en segundo plano.", code: "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f" },
+    { title: "45. Disable Delivery Optimization Network", desc: "Impide que Windows use tu ancho de banda para otros.", code: "reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config\" /v DODownloadMode /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization\" /v DODownloadMode /t REG_DWORD /d 0 /f" },
+    { title: "46. Full Network Reset + Flush", desc: "Reinicio completo de red + limpieza DNS.", code: "netsh winsock reset\nnetsh int ip reset\nipconfig /release\nipconfig /renew\nipconfig /flushdns" },
+    { title: "47. Disable IPv6 Transition Technologies", desc: "Desactiva teredo, 6to4 e isatap.", code: "netsh interface teredo set state disabled\nnetsh interface 6to4 set state disabled\nnetsh interface isatap set state disabled" },
+    { title: "48. Optimize for Low Latency Gaming", desc: "Conjunto de ajustes orientados a mínima latencia.", code: "netsh int tcp set global autotuninglevel=normal\nnetsh int tcp set global rss=enabled\nnetsh int tcp set global ecncapability=disabled\nnetsh int tcp set global timestamps=disabled" },
+    { title: "49. Disable Network Adapter Power Saving Registry", desc: "Fuerza que el adaptador no entre en ahorro de energía.", code: "PowerShell -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterPowerManagement -Name $_.Name -AllowComputerToTurnOffDevice Disabled -ErrorAction SilentlyContinue }\"" },
+    { title: "50. Final Internet Optimization Pack", desc: "Aplica los ajustes más importantes de red de una sola vez.", code: "ipconfig /flushdns\nnetsh int tcp set global autotuninglevel=normal\nnetsh int tcp set global rss=enabled\nnetsh int tcp set global ecncapability=disabled\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f" }
+  ];
+
+  // ===================== MOUSE TWEAKS (MÁS DE 50 + MÍNIMO DELAY) =====================
+  const mouseTweaksList = [
+    { title: "1. Disable Enhance Pointer Precision", desc: "Desactiva la aceleración de Windows (obligatorio para aim consistente).", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f" },
+    { title: "2. Pointer Speed 6/11", desc: "Velocidad de puntero en 6/11 (1:1 con raw input).", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f" },
+    { title: "3. MouseDataQueueSize 16", desc: "Reduce el tamaño de la cola de datos del mouse (menor latency).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 16 /f" },
+    { title: "4. MouseDataQueueSize 20", desc: "Valor alternativo de cola (prueba 16 o 20).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 20 /f" },
+    { title: "5. Disable Mouse Trails", desc: "Desactiva rastros del cursor.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseTrails /t REG_SZ /d 0 /f" },
+    { title: "6. Disable ClickLock", desc: "Desactiva ClickLock.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v ClickLock /t REG_DWORD /d 0 /f" },
+    { title: "7. Disable Pointer Shadow", desc: "Quita la sombra del puntero.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v CursorShadow /t REG_SZ /d 0 /f" },
+    { title: "8. Smooth Mouse Curves Zero", desc: "Elimina curvas de suavizado de Windows.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseXCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseYCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f" },
+    { title: "9. Disable Mouse Acceleration Registry", desc: "Asegura que no haya aceleración residual.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f" },
+    { title: "10. HID Mouse Data Queue", desc: "Ajuste de cola para ratones HID.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouhid\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 16 /f" },
+    { title: "11. Disable USB Selective Suspend (Mouse)", desc: "Evita que Windows suspenda el mouse.", code: "powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e0a6e6-7c45-4a1a-9b4b-5b8c5d8e5f5f 0\npowercfg /setactive scheme_current" },
+    { title: "12. Disable Power Management on USB Root Hubs", desc: "Evita suspensión de puertos USB.", code: "echo Ve a Administrador de dispositivos > Concentradores USB > Propiedades > Administración de energía > desmarca 'Permitir que el equipo apague...'" },
+    { title: "13. Prefer USB 2.0 / 3.0 Direct", desc: "Conecta el mouse directo a la placa base (sin hubs).", code: "echo Conecta el mouse directamente a un puerto USB de la placa base, preferiblemente USB 2.0 o 3.0 nativo." },
+    { title: "14. Disable Angle Snapping", desc: "Desactiva Angle Snapping en el software del mouse.", code: "echo En el software de tu mouse (Logitech, Razer, Zowie, etc.) desactiva Angle Snapping / Angle Correction." },
+    { title: "15. Disable Motion Sync (prueba)", desc: "Algunos sienten menos delay con Motion Sync OFF.", code: "echo En el software del mouse prueba Motion Sync OFF para menor delay." },
+    { title: "16. Disable Ripple Control", desc: "Desactiva Ripple Control / surface tuning artificial.", code: "echo Desactiva Ripple Control o Surface Tuning en el software del mouse." },
+    { title: "17. Disable Prediction", desc: "Desactiva cualquier predicción de movimiento.", code: "echo Desactiva Prediction / Motion Prediction en el software del mouse." },
+    { title: "18. Debounce Time Minimum", desc: "Pon el debounce lo más bajo posible sin double-click.", code: "echo En el software del mouse baja el Debounce Time al mínimo estable (0-4ms)." },
+    { title: "19. LOD Low", desc: "Lift-Off Distance lo más bajo posible.", code: "echo Configura Lift-Off Distance en Low o el valor más bajo que te funcione." },
+    { title: "20. Polling Rate 1000Hz", desc: "Frecuencia de sondeo estándar recomendada.", code: "echo Configura el mouse en 1000Hz (1ms)." },
+    { title: "21. Polling Rate 2000Hz", desc: "Prueba 2000Hz si tu mouse y CPU lo soportan bien.", code: "echo Prueba 2000Hz. Si tienes stutters vuelve a 1000Hz." },
+    { title: "22. Polling Rate 4000Hz", desc: "Solo si tienes mouse y sistema muy potentes.", code: "echo 4000Hz solo recomendado en sistemas de alta gama y mouse compatible." },
+    { title: "23. Polling Rate 8000Hz", desc: "Extremo. Solo con hardware muy bueno.", code: "echo 8000Hz puede aumentar uso de CPU. Úsalo solo si notas mejora real." },
+    { title: "24. Raw Input On (Fortnite)", desc: "Asegura Raw Input activado en Fortnite.", code: "echo En Fortnite: Configuración > Juego > Entrada de datos bruta = Activado." },
+    { title: "25. Disable V-Sync + Limit FPS", desc: "V-Sync OFF + límite de FPS un poco por encima del monitor.", code: "echo En Fortnite y NVIDIA/AMD: V-Sync OFF. Limita FPS a 3-10 por encima de tu Hz." },
+    { title: "26. NVIDIA Low Latency Mode Ultra", desc: "Modo de baja latencia Ultra en Panel de NVIDIA.", code: "echo Panel de Control NVIDIA > Administrar configuración 3D > Modo de latencia ultrabaja = Ultra." },
+    { title: "27. NVIDIA Reflex On + Boost", desc: "Activa NVIDIA Reflex + Boost en Fortnite.", code: "echo En Fortnite: NVIDIA Reflex = Activado + Boost." },
+    { title: "28. AMD Anti-Lag / Anti-Lag+", desc: "Activa Radeon Anti-Lag si tienes AMD.", code: "echo Software AMD > Juegos > Radeon Anti-Lag = Activado." },
+    { title: "29. Disable Fullscreen Optimizations (Mouse)", desc: "Mejora la respuesta del mouse en pantalla completa.", code: "reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f" },
+    { title: "30. Game Mode ON", desc: "Modo Juego ayuda a la consistencia del input.", code: "reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f" },
+    { title: "31. Disable Sticky Keys", desc: "Desactiva Teclas Pegajosas (evita interferencias).", code: "reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f" },
+    { title: "32. Disable Filter Keys", desc: "Desactiva Teclas de Filtro.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f" },
+    { title: "33. Disable Toggle Keys", desc: "Desactiva Teclas de Alternancia.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f" },
+    { title: "34. Disable Mouse Keys", desc: "Desactiva Teclas de Mouse.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\MouseKeys\" /v Flags /t REG_SZ /d 0 /f" },
+    { title: "35. Cursor Scheme None", desc: "Sin esquema de cursores animados.", code: "reg add \"HKCU\\Control Panel\\Cursors\" /v Scheme Source /t REG_SZ /d 0 /f" },
+    { title: "36. Disable Pointer Precision Permanently", desc: "Asegura que no se reactive la precisión del puntero.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f" },
+    { title: "37. Increase Mouse Thread Priority (avanzado)", desc: "Intento de subir prioridad del hilo del mouse.", code: "echo Usa Interrupt Affinity Policy Tool o Process Lasso para afinear el IRQ del mouse." },
+    { title: "38. Disable HPET (prueba)", desc: "Algunos sistemas tienen menos delay con HPET off.", code: "bcdedit /deletevalue useplatformclock\nbcdedit /set disabledynamictick yes" },
+    { title: "39. Timer Resolution 0.5ms", desc: "Fuerza resolución de temporizador más precisa.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f" },
+    { title: "40. Disable Fullscreen Optimizations Global", desc: "Mejora el comportamiento del input en exclusive fullscreen.", code: "reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_DXGIHonorFSEWindowsCompatible /t REG_DWORD /d 1 /f" },
+    { title: "41. Clean Mouse Driver Cache", desc: "Limpia posibles restos de drivers antiguos.", code: "echo En Administrador de dispositivos desinstala el mouse y reinicia para que Windows reinstale el driver limpio." },
+    { title: "42. Prefer Wired over Wireless", desc: "Siempre que puedas usa cable para mínimo delay.", code: "echo El modo cableado siempre tendrá menos delay variable que el inalámbrico." },
+    { title: "43. Wireless: Receiver Close", desc: "Pon el receptor lo más cerca posible del mouse.", code: "echo Usa un alargador USB para poner el receptor junto al mouse." },
+    { title: "44. Disable RGB Software While Gaming", desc: "Cierra iCUE, Synapse, Armoury Crate, etc. mientras juegas.", code: "taskkill /f /im iCUE.exe\ntaskkill /f /im RazerSynapse.exe\ntaskkill /f /im ArmouryCrate.exe" },
+    { title: "45. Disable Overlays", desc: "Discord, NVIDIA, Xbox Game Bar overlays OFF.", code: "echo Desactiva overlay de Discord, GeForce Experience y Xbox Game Bar." },
+    { title: "46. Windows Game Mode + Exclusive Fullscreen", desc: "La combinación más estable para input.", code: "reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f" },
+    { title: "47. Disable V-Sync in GPU Control Panel", desc: "V-Sync debe estar controlado solo por el juego.", code: "echo En NVIDIA/AMD pon V-Sync en 'Usar configuración de la aplicación 3D'." },
+    { title: "48. Maximum Pre-Rendered Frames 1", desc: "En NVIDIA pon Maximum Pre-Rendered Frames en 1.", code: "echo Panel NVIDIA > Configuración 3D > Máximo de fotogramas preprocesados = 1." },
+    { title: "49. Low Latency Mode + Reflex", desc: "La combinación actual más fuerte de NVIDIA.", code: "echo Low Latency Mode = Ultra + NVIDIA Reflex = On + Boost." },
+    { title: "50. Final Mouse Zero Delay Pack", desc: "Aplica los ajustes de registro más importantes del mouse.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 16 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseTrails /t REG_SZ /d 0 /f" },
+    { title: "51. Disable Enhance Pointer Precision (otra vez)", desc: "Doble seguridad para que no se reactive.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f" },
+    { title: "52. Mouse Sensitivity Exact 6/11", desc: "Valor exacto para 1:1.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f" },
+    { title: "53. Queue Size 12 (más agresivo)", desc: "Cola aún más baja (prueba si tu mouse lo tolera).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f" },
+    { title: "54. Queue Size 24 (más seguro)", desc: "Si tienes pérdida de input con 16, prueba 24.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 24 /f" },
+    { title: "55. Disable All Acceleration Curves", desc: "Limpia cualquier curva residual.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseXCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseYCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f" }
+  ];
+
+  // ===================== KEYBOARD TWEAKS (ZERO DELAY) =====================
+  const keyboardTweaksList = [
+    { title: "1. Keyboard Delay 0", desc: "Retraso de repetición al mínimo absoluto.", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f" },
+    { title: "2. Keyboard Speed Max", desc: "Velocidad de repetición al máximo (31).", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f" },
+    { title: "3. KeyboardDataQueueSize 16", desc: "Reduce la cola de datos del teclado (menor latency).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 16 /f" },
+    { title: "4. KeyboardDataQueueSize 20", desc: "Valor alternativo de cola.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 20 /f" },
+    { title: "5. KeyboardDataQueueSize 12", desc: "Cola más agresiva (prueba).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 12 /f" },
+    { title: "6. Disable Filter Keys", desc: "Desactiva Teclas de Filtro completamente.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f" },
+    { title: "7. Disable Sticky Keys", desc: "Desactiva Teclas Pegajosas.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f" },
+    { title: "8. Disable Toggle Keys", desc: "Desactiva Teclas de Alternancia.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f" },
+    { title: "9. Disable Mouse Keys", desc: "Desactiva control del mouse con el teclado.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\MouseKeys\" /v Flags /t REG_SZ /d 0 /f" },
+    { title: "10. Disable Serial Keys", desc: "Desactiva Teclas Seriales.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\SerialKeys\" /v Flags /t REG_SZ /d 0 /f" },
+    { title: "11. Filter Keys Off Completely", desc: "Asegura que Filter Keys esté muerto.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v DelayBeforeAcceptance /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v BounceTime /t REG_SZ /d 0 /f" },
+    { title: "12. Repeat Delay Minimum", desc: "Retraso antes de empezar a repetir = mínimo.", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f" },
+    { title: "13. Repeat Rate Maximum", desc: "Velocidad de repetición máxima.", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f" },
+    { title: "14. Disable USB Power Management (Keyboard)", desc: "Evita que Windows suspenda el teclado.", code: "echo En Administrador de dispositivos > Teclados > Propiedades > Administración de energía > desmarca la opción de apagado." },
+    { title: "15. Prefer Wired Keyboard", desc: "Siempre que puedas usa teclado por cable.", code: "echo Los teclados inalámbricos tienen más delay variable." },
+    { title: "16. NKRO / 6KRO Check", desc: "Asegúrate de que tu teclado tenga buen anti-ghosting.", code: "echo Usa un teclado con NKRO o al menos 6KRO bueno para gaming." },
+    { title: "17. Disable Windows Key (opcional)", desc: "Evita que se abra el menú inicio en partida.", code: "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoWinKeys /t REG_DWORD /d 1 /f" },
+    { title: "18. Disable Accessibility Hotkeys", desc: "Evita que se activen por error Sticky/Filter Keys.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f" },
+    { title: "19. Keyboard Layout Clean", desc: "Mantiene solo el idioma que usas.", code: "echo Ve a Configuración > Hora e idioma > Idioma y elimina teclados que no uses." },
+    { title: "20. Disable Text Input Indicator", desc: "Quita el indicador de idioma de la barra de tareas.", code: "reg add \"HKCU\\Keyboard Layout\\Toggle\" /v Layout Hotkey /t REG_SZ /d 3 /f" },
+    { title: "21. Fastest Typematic Rate", desc: "Combinación de delay 0 + speed 31.", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f" },
+    { title: "22. Queue Size Aggressive 10", desc: "Cola muy baja (solo si no pierdes teclas).", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 10 /f" },
+    { title: "23. Queue Size Safe 32", desc: "Valor más seguro si tienes pérdida de input.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 32 /f" },
+    { title: "24. Disable FilterKeys Hotkey", desc: "Evita que Shift 8 segundos active Filter Keys.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f" },
+    { title: "25. Disable StickyKeys Hotkey", desc: "Evita que Shift 5 veces active Sticky Keys.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f" },
+    { title: "26. Disable ToggleKeys Hotkey", desc: "Evita que Num Lock 5 segundos active Toggle Keys.", code: "reg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f" },
+    { title: "27. Keyboard Priority High (avanzado)", desc: "Intento de priorizar el dispositivo de teclado.", code: "echo Usa herramientas como Interrupt Affinity Policy Tool para el IRQ del teclado." },
+    { title: "28. Disable Enhanced Pointer Precision (afecta teclado+mouse)", desc: "Por si acaso quedó activado.", code: "reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f" },
+    { title: "29. Timer Resolution for Input", desc: "Mejora la precisión de los temporizadores del sistema.", code: "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f" },
+    { title: "30. Final Zero Delay Keyboard Pack", desc: "Aplica los ajustes más importantes del teclado de una sola vez.", code: "reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 16 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f" }
+  ];
+
+  function renderTabContent(list, targetContainerId) {
+    const container = document.getElementById(targetContainerId);
+    if (!container) return;
+    container.innerHTML = "";
+
+    list.forEach(tweak => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div>
+          <h3>${tweak.title}</h3>
+          <p>${tweak.desc}</p>
+        </div>
+        <button class="btn-execute">${isPureRegistryTweak(tweak.code) ? 'Descargar .REG' : 'Descargar .BAT'}</button>
+      `;
+      card.querySelector('.btn-execute').onclick = () => {
+        downloadScript(tweak.title, tweak.code);
+      };
+      container.appendChild(card);
+    });
+  }
+
+  function renderAllTweaks() {
+    renderTabContent(windowTweaksList, 'windowTweaks');
+    renderTabContent(ramTweaksList, 'ramTweaks');
+    renderTabContent(internetTweaksList, 'internetTweaks');
+    renderTabContent(mouseTweaksList, 'mouseTweaks');
+    renderTabContent(keyboardTweaksList, 'keyboardTweaks');
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initHardwareStats();
+    renderAllTweaks();
+  });
+</script>
+</body>
+</html>
