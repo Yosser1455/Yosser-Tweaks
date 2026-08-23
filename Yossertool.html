@@ -138,6 +138,14 @@ header:after{content:"ULTRA GAMING EDITION";position:absolute;right:18px;top:14p
 }
 .btn-download-all:active,.btn-download-reg:active{transform:translateY(0) scale(.99);}
 
+
+/* ===== Yosser Aurora Theme ===== */
+:root{--accent-green-neon:#7CFF6B;--accent-cyan:#38BDF8;--bg-main:#080812;--bg-card:#121225;--border-color:#2A2A4A;--text-primary:#F8FAFC;--text-title-card:#FFFFFF;--text-secondary:#A7B0C0;--text-desc:#B2BAC8;}
+body{background:radial-gradient(circle at 15% 10%,rgba(124,255,107,.10),transparent 28%),radial-gradient(circle at 85% 15%,rgba(56,189,248,.12),transparent 30%),linear-gradient(135deg,#080812,#101025 55%,#080812);}
+.sidebar,.card,.tweak-card,.modal-content{box-shadow:0 10px 35px rgba(0,0,0,.28),0 0 22px rgba(56,189,248,.04);}
+button,.btn,.tab-btn{border-radius:12px;}
+.active,.tab-btn.active{box-shadow:0 0 18px rgba(124,255,107,.20),0 0 30px rgba(56,189,248,.10);}
+
 </style>
 
 
@@ -331,6 +339,17 @@ header:after{content:"ULTRA GAMING EDITION";position:absolute;right:18px;top:14p
   // ===================== WINDOW TWEAKS (FPS FOCUS) =====================
   // ===================== WINDOW TWEAKS (90 GAMING TWEAKS) =====================
   const windowTweaksList = [
+{title:"MPO / DWM OverlayTestMode OFF",desc:"Desactiva MPO como prueba para resolver stutter o problemas de overlays. Requiere reinicio; no mejora todos los PCs.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\Dwm\" /v OverlayTestMode /t REG_DWORD /d 5 /f"},
+{title:"Memory FeatureSettingsOverride",desc:"Aplica los valores de Memory Management solicitados. Haz un punto de restauración antes de probar.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v FeatureSettingsOverride /t REG_DWORD /d 3 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v FeatureSettingsOverrideMask /t REG_DWORD /d 3 /f"},
+{title:"BIOS Guide - HPET",desc:"Guía solamente: si tu BIOS ofrece HPET, prueba Disabled y comprueba estabilidad. Yosser Tweaks no modifica la BIOS automáticamente.",code:"echo GUIA BIOS - HPET\necho Busca HPET solo si tu placa ofrece esa opcion.\necho No se modifica la BIOS desde este tweak.\npause"},
+{title:"BIOS Guide - XMP EXPO DOCP",desc:"Guía solamente: activa el perfil de memoria soportado por tu RAM y placa para usar su velocidad certificada. No se aplica desde Windows.",code:"echo GUIA BIOS - XMP EXPO DOCP\necho Activa solo el perfil soportado por tu placa y RAM.\necho No se modifica la BIOS desde este tweak.\npause"},
+{title:"BIOS Guide - fTPM / TPM",desc:"Guía solamente: no se cambia TPM automáticamente. En Windows 11 puede ser necesario para funciones del sistema; verifica compatibilidad antes de modificarlo.",code:"echo GUIA BIOS - TPM\necho No se modifica TPM o fTPM automaticamente.\necho Verifica los requisitos de Windows y de tu placa antes de cambiarlo.\npause"},
+{title:"NVIDIA Control Panel Gaming Guide",desc:"Guía para Power Management Maximum Performance, Texture Filtering High Performance, Threaded Optimization On, V-Sync Off y Low Latency según compatibilidad del driver.",code:"echo NVIDIA CONTROL PANEL - GUIA\necho Power Management Mode = Prefer Maximum Performance\necho Texture Filtering - Quality = High Performance\necho Threaded Optimization = On\necho Vertical Sync = Off\necho Low Latency Mode = prueba On o Ultra segun el juego\necho Display Power Saving = Off si tu hardware ofrece la opcion\necho Maximum Pre-Rendered Frames = 1 solo en drivers antiguos donde exista\npause"},
+{title:"Fortnite GameUserSettings Guide",desc:"Crea una guía BAT con la ubicación y valores solicitados; no sobrescribe automáticamente el archivo para evitar borrar la configuración personal.",code:"echo Fortnite config:\necho %%LOCALAPPDATA%%\\FortniteGame\\Saved\\Config\\WindowsClient\\GameUserSettings.ini\necho bFirstRun=False\necho FrameRateLimit=0.000000\necho Revisa sombras, foliage, AO y distance field shadows dentro del archivo/juego.\npause"},
+{title:"Apex Legends Video Guide",desc:"Guía de fullscreen, V-Sync y opciones. Las opciones de lanzamiento pueden cambiar entre versiones; verifica que el juego las soporte.",code:"echo Apex Legends video.txt guide:\necho setting.fullscreen 1\necho setting.nowindowborder 0\necho Ajusta mat_picmip y V-Sync desde opciones compatibles.\necho Launch options: +fps_max unlimited -novid -fullscreen -forcenovsync\npause"},
+{title:"Valorant Launch Guide",desc:"Guía de opciones de inicio solicitadas. Algunas opciones pueden ser ignoradas por versiones actuales del juego.",code:"echo Valorant launch guide: -novid -high -fullscreen\npause"},
+{title:"GPU Tuning Guide",desc:"Guía para MSI Afterburner: cambios de undervolt/overclock dependen de la GPU y pueden causar inestabilidad. Prueba pequeños cambios y verifica temperaturas/estabilidad.",code:"echo GPU TUNING GUIDE\necho Undervolt u overclock pueden causar inestabilidad.\necho Haz cambios pequenos y prueba estabilidad.\necho No se aplican automaticamente desde Yosser Tweaks.\npause"},
+
 {title:"02. Game Mode ON",desc:"Activa Game Mode en Windows compatibles.",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f"},
 {title:"03. GameDVR OFF",desc:"Evita capturas en segundo plano que pueden consumir recursos.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f"},
 {title:"04. Background Capture OFF",desc:"Desactiva captura histórica de GameDVR.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v HistoricalCaptureEnabled /t REG_DWORD /d 0 /f"},
@@ -797,6 +816,10 @@ header:after{content:"ULTRA GAMING EDITION";position:absolute;right:18px;top:14p
 {title:"106. COMPETITIVE - Disable Prefetch Superfetch Hard",desc:"Prefetch y Superfetch a 0.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnablePrefetcher /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnableSuperfetch /t REG_DWORD /d 0 /f\nsc config SysMain start= disabled"},
 {title:"107. COMPETITIVE - Kill All Bloat Processes",desc:"Cierra de golpe los procesos mas pesados de fondo.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im SecurityHealthSystray.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im RuntimeBroker.exe 2>nul\ntaskkill /f /im Cortana.exe 2>nul"},
 {title:"108. COMPETITIVE - Services Extreme Debloat",desc:"Desactiva el maximo de servicios no esenciales.",code:"sc config SysMain start= disabled\nsc config WSearch start= disabled\nsc config DiagTrack start= disabled\nsc config dmwappushservice start= disabled\nsc config XblAuthManager start= disabled\nsc config XblGameSave start= disabled\nsc config XboxNetApiSvc start= disabled\nsc config Spooler start= disabled\nsc config DoSvc start= disabled\nsc config WerSvc start= disabled\nsc config PcaSvc start= disabled\nsc config MapsBroker start= disabled\nsc config PhoneSvc start= disabled\nsc config CDPSvc start= disabled\nsc config OneSyncSvc start= disabled"}
+
+,{title:"RAM - Desactivar VBS / HVCI",desc:"Desactiva VBS y la integridad de código basada en hipervisor. Puede requerir reiniciar.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\" /v RequireMicrosoftSignatures /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\" /v Enabled /t REG_DWORD /d 0 /f"}
+,{title:"RAM - Timer / Dynamic Tick",desc:"Ajustes de arranque y temporizador para probar rendimiento. Puede requerir reiniciar.",code:"bcdedit /deletevalue useplatformclock\nbcdedit /set disabledynamictick yes\nbcdedit /set useplatformtick yes"}
+,{title:"RAM - Contar procesos",desc:"Muestra la cantidad actual de procesos en Windows. Es una herramienta informativa, no un tweak.",code:"powershell -NoProfile -Command \"(Get-Process).Count\"\npause"}
 ];
 
   // ===================== INTERNET TWEAKS (ESTABILIDAD + ZERO DELAY) =====================
@@ -1043,84 +1066,83 @@ header:after{content:"ULTRA GAMING EDITION";position:absolute;right:18px;top:14p
     });
   }
 
+  // Compatibilidad conservadora: solo Windows 8.1 / 10 / 11.
+  // Si un tweak declara supportedOS, se respeta; los demás se revisan por comandos conocidos.
+  function isCompatibleWithSupportedWindows(t) {
+    const code = String(t.code || '').toLowerCase();
+    if (Array.isArray(t.supportedOS)) return t.supportedOS.some(v => ['8.1','10','11','all','10/11'].includes(String(v)));
+    // Cmdlets y funciones exclusivas de Windows 10/11 se excluyen del paquete universal.
+    const win10PlusOnly = ['disable-mmagent','enable-mmagent','get-mmagent','set-mmagent','get-netadapter','set-netadapter','disable-netadapter','get-pnpdevice','gamemode','game bar','game dvr'];
+    return !win10PlusOnly.some(x => code.includes(x));
+  }
+
   function getAllTweaks() {
-    // Incluye TODOS los tweaks de todas las categorías (Window, RAM, Internet, Mouse, Keyboard)
-    // Compatible con Windows 8.1 / 10 / 11 — no filtra nada
     return [
       ...windowTweaksList,
       ...ramTweaksList,
       ...internetTweaksList,
       ...mouseTweaksList,
       ...keyboardTweaksList
-    ];
+    ].filter(isCompatibleWithSupportedWindows);
   }
 
   function downloadAllTweaksBat() {
     try {
       const tweaks = getAllTweaks();
-      if (!tweaks || tweaks.length === 0) {
-        alert('No se encontraron tweaks para descargar.');
-        return;
-      }
-      const body = tweaks.map((t, i) => `\n:: ========================================\n:: ${i + 1}. ${t.title}\n:: ${t.desc || ''}\n:: ========================================\n${t.code || ''}\n`).join('\n');
+      if (!tweaks.length) return alert('No se encontraron tweaks compatibles.');
+      const body = tweaks.map((t,i)=>`\n:: ========================================\n:: ${i+1}. ${t.title}\n:: ${t.desc||''}\n:: ========================================\n${t.code||''}\n`).join('\n');
       const fullContent = `@echo off
-:: ========================================================
-:: Yosser Tweaks - TODOS LOS TWEAKS EN UN SOLO BAT
-:: Objetivo: Bajar procesos lo maximo posible (meta ~30)
-:: Compatible: Windows 8.1 / 10 / 11
-:: Ejecutar como ADMINISTRADOR
-:: ========================================================
-cls
+setlocal EnableExtensions
+:: Yosser Tweaks - paquete compatible Windows 8.1 / 10 / 11
+:: Ejecutar como administrador. Se bloquea cualquier otro Windows.
+for /f "tokens=2 delims==" %%V in ('wmic os get Version /value ^| find "="') do set "WINVER=%%V"
+if not defined WINVER (
+  for /f "delims=" %%V in ('powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).Version"') do set "WINVER=%%V"
+)
+echo Windows detectado: %WINVER%
+echo %WINVER% | findstr /b "6.3. 10.0." >nul || (
+  echo [BLOQUEADO] Este archivo solo es para Windows 8.1, 10 y 11.
+  pause
+  exit /b 1
+)
 echo.
-echo  ================================================
-echo   Yosser Tweaks - TODOS LOS TWEAKS
-echo   Bajando procesos al minimo...
-echo  ================================================
+echo Yosser Tweaks: aplicando solo comandos del paquete compatible...
 echo.
-echo  Total tweaks incluidos: ${tweaks.length}
-echo  Reinicia el PC cuando termine.
-echo.
-
 ${body}
-
 echo.
-echo  ================================================
-echo   TODOS LOS TWEAKS APLICADOS
-echo   Reinicia el PC ahora para ver el efecto.
-echo   Abre Task Manager y revisa el conteo de procesos.
-echo  ================================================
-echo.
+echo Terminado. Reinicia Windows si algun ajuste lo requiere.
 pause
+endlocal
 `;
-      const blob = new Blob([fullContent], { type: 'text/plain;charset=utf-8' });
-      forceDownload(blob, 'Yosser_Tweaks_TODOS_AGRESIVO.BAT');
-      alert('Descarga iniciada: Yosser_Tweaks_TODOS_AGRESIVO.BAT\nTotal tweaks: ' + tweaks.length);
-    } catch (e) {
-      alert('Error en downloadAllTweaksBat: ' + e.message);
-      console.error(e);
-    }
+      forceDownload(new Blob([fullContent], {type:'text/plain;charset=utf-8'}), 'Yosser_Tweaks_Compatible_Windows_8.1_10_11.BAT');
+    } catch(e) { alert('Error al crear BAT: '+e.message); console.error(e); }
   }
-
   function downloadAllTweaksReg() {
     try {
-      const lines = ['Windows Registry Editor Version 5.00', '', '; Yosser Tweaks - TODOS LOS TWEAKS DE REGISTRO', '; Compatible Windows 8.1 / 10 / 11', '; Objetivo: bajar procesos + optimizacion gaming', ''];
+      // Solo exporta comandos REG de Windows, RAM, Internet, Mouse y Keyboard.
+      const lines = ['Windows Registry Editor Version 5.00', '', '; Yosser Tweaks - TODOS LOS TWEAKS DE REGISTRO', '; Windows + RAM + Internet + Mouse + Keyboard', ''];
+      const seen = new Set();
       let count = 0;
+
       getAllTweaks().forEach(t => {
         String(t.code || '').split(/\r?\n/).forEach(line => {
           const regLines = regCommandToRegLines(line);
-          if (regLines && regLines.length) {
-            lines.push(...regLines, '');
-            count++;
-          }
+          if (!regLines || !regLines.length) return;
+          const signature = regLines.join('\n').toLowerCase();
+          if (seen.has(signature)) return;
+          seen.add(signature);
+          lines.push(...regLines, '');
+          count++;
         });
       });
+
       if (!count) {
         alert('No se encontraron tweaks de Registro para exportar.');
         return;
       }
       const blob = new Blob([lines.join('\r\n')], { type: 'application/octet-stream' });
       forceDownload(blob, 'Yosser_Tweaks_TODOS_Registro.REG');
-      alert('Descarga iniciada: Yosser_Tweaks_TODOS_Registro.REG\nEntradas de registro: ' + count);
+      alert('Descarga iniciada: Yosser_Tweaks_TODOS_Registro.REG\nEntradas únicas de registro: ' + count);
     } catch (e) {
       alert('Error en downloadAllTweaksReg: ' + e.message);
       console.error(e);
@@ -1143,13 +1165,22 @@ pause
 
 
   function restoreAllTweaks() {
-    const ok = confirm("¿Quieres descargar el archivo para restaurar los tweaks de Yosser Tweaks?\n\nEjecuta Restore_All_Yosser_Tweaks.bat para aplicar la restauración.");
+    const ok = confirm("¿Quieres descargar el archivo de restauración de Yosser Tweaks?\n\nEl archivo creará primero un punto de restauración llamado Yosser Tweaks y después continuará con la restauración.");
     if (!ok) return;
     const restore = `@echo off
 setlocal
 echo ============================================
 echo Yosser Tweaks - Restauracion General
 echo ============================================
+echo.
+echo Creando punto de restauracion: Yosser Tweaks...
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "try { Enable-ComputerRestore -Drive (Get-CimInstance Win32_OperatingSystem).SystemDrive + '\\'; Checkpoint-Computer -Description 'Yosser Tweaks' -RestorePointType 'MODIFY_SETTINGS'; exit 0 } catch { Write-Host $_.Exception.Message; exit 1 }"
+if errorlevel 1 (
+  echo [AVISO] No se pudo crear el punto de restauracion.
+  echo Puede que Proteccion del sistema este desactivada o que Windows limite la creacion de puntos.
+) else (
+  echo [OK] Punto de restauracion creado: Yosser Tweaks
+)
 echo.
 echo Restaurando ajustes comunes...
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v DisableThumbnailCache /f >nul 2>&1
