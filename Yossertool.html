@@ -259,7 +259,8 @@ button,.btn,.tab-btn{border-radius:12px;}
   }
 
   function isPureRegistryTweak(content) {
-    const lines = content.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (content == null || content === undefined) return false;
+    const lines = String(content).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
     return lines.length > 0 && lines.every(line => /^reg add\s+/i.test(line) && regCommandToRegLines(line));
   }
 
@@ -1067,18 +1068,18 @@ const ramTweaksList = [
     if (!container) return;
     container.innerHTML = "";
 
-    list.forEach(tweak => {
+    (list || []).filter(tweak => tweak && typeof tweak === 'object' && tweak.code != null).forEach(tweak => {
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
         <div>
-          <h3>${tweak.title}</h3>
-          <p>${tweak.desc}</p>
+          <h3>${tweak.title || ''}</h3>
+          <p>${tweak.desc || ''}</p>
         </div>
         <button class="btn-execute">${isPureRegistryTweak(tweak.code) ? 'Descargar .REG' : 'Descargar .BAT'}</button>
       `;
       card.querySelector('.btn-execute').onclick = () => {
-        downloadScript(tweak.title, tweak.code);
+        downloadScript(tweak.title || 'tweak', tweak.code || '');
       };
       container.appendChild(card);
     });
@@ -1087,6 +1088,7 @@ const ramTweaksList = [
   // Compatibilidad conservadora: solo Windows 8.1 / 10 / 11.
   // Si un tweak declara supportedOS, se respeta; los demás se revisan por comandos conocidos.
   function isCompatibleWithSupportedWindows(t) {
+    if (!t || typeof t !== 'object') return false;
     const code = String(t.code || '').toLowerCase();
     if (Array.isArray(t.supportedOS)) return t.supportedOS.some(v => ['8.1','10','11','all','10/11'].includes(String(v)));
     // Cmdlets y funciones exclusivas de Windows 10/11 se excluyen del paquete universal.
@@ -1101,17 +1103,19 @@ const ramTweaksList = [
       ...internetTweaksList,
       ...mouseTweaksList,
       ...keyboardTweaksList
-    ].filter(isCompatibleWithSupportedWindows);
+    ].filter(t => t && typeof t === 'object' && t.code != null)
+     .filter(isCompatibleWithSupportedWindows);
   }
 
   function downloadAllTweaksBat() {
     try {
-      const tweaks = getAllTweaks();
-      if (!tweaks.length) return alert('No se encontraron tweaks compatibles.');
+      // Solo tweaks que en la UI muestran "Descargar .BAT" (no son puro registro)
+      const tweaks = getAllTweaks().filter(t => t && t.code != null && !isPureRegistryTweak(String(t.code || '')));
+      if (!tweaks.length) return alert('No se encontraron tweaks .BAT compatibles.');
       const body = tweaks.map((t,i)=>`\n:: ========================================\n:: ${i+1}. ${t.title}\n:: ${t.desc||''}\n:: ========================================\n${t.code||''}\n`).join('\n');
       const fullContent = `@echo off
 setlocal EnableExtensions
-:: Yosser Tweaks - paquete compatible Windows 8.1 / 10 / 11
+:: Yosser Tweaks - SOLO TWEAKS .BAT (Windows 8.1 / 10 / 11)
 :: Ejecutar como administrador. Se bloquea cualquier otro Windows.
 for /f "tokens=2 delims==" %%V in ('wmic os get Version /value ^| find "="') do set "WINVER=%%V"
 if not defined WINVER (
@@ -1124,7 +1128,7 @@ echo %WINVER% | findstr /b "6.3. 10.0." >nul || (
   exit /b 1
 )
 echo.
-echo Yosser Tweaks: aplicando solo comandos del paquete compatible...
+echo Yosser Tweaks: aplicando SOLO tweaks .BAT (${tweaks.length} ajustes)...
 echo.
 ${body}
 echo.
@@ -1132,17 +1136,25 @@ echo Terminado. Reinicia Windows si algun ajuste lo requiere.
 pause
 endlocal
 `;
-      forceDownload(new Blob([fullContent], {type:'text/plain;charset=utf-8'}), 'Yosser_Tweaks_Compatible_Windows_8.1_10_11.BAT');
+      forceDownload(new Blob([fullContent], {type:'text/plain;charset=utf-8'}), 'Yosser_Tweaks_SOLO_BAT.BAT');
+      alert('Descarga iniciada: Yosser_Tweaks_SOLO_BAT.BAT\nTweaks .BAT incluidos: ' + tweaks.length);
     } catch(e) { alert('Error al crear BAT: '+e.message); console.error(e); }
   }
   function downloadAllTweaksReg() {
     try {
-      // Solo exporta comandos REG de Windows, RAM, Internet, Mouse y Keyboard.
-      const lines = ['Windows Registry Editor Version 5.00', '', '; Yosser Tweaks - TODOS LOS TWEAKS DE REGISTRO', '; Windows + RAM + Internet + Mouse + Keyboard', ''];
+      // Solo tweaks que en la UI muestran "Descargar .REG" (puro registro)
+      const tweaks = getAllTweaks().filter(t => t && t.code != null && isPureRegistryTweak(String(t.code || '')));
+      if (!tweaks.length) {
+        alert('No se encontraron tweaks de Registro (solo .REG) para exportar.');
+        return;
+      }
+
+      const lines = ['Windows Registry Editor Version 5.00', '', '; Yosser Tweaks - SOLO TWEAKS .REG', '; Windows + RAM + Internet + Mouse + Keyboard', ''];
       const seen = new Set();
       let count = 0;
 
-      getAllTweaks().forEach(t => {
+      tweaks.forEach(t => {
+        lines.push('; --- ' + String(t.title || '').replace(/\r?\n/g, ' ') + ' ---', '');
         String(t.code || '').split(/\r?\n/).forEach(line => {
           const regLines = regCommandToRegLines(line);
           if (!regLines || !regLines.length) return;
@@ -1155,12 +1167,12 @@ endlocal
       });
 
       if (!count) {
-        alert('No se encontraron tweaks de Registro para exportar.');
+        alert('No se encontraron entradas de Registro válidas para exportar.');
         return;
       }
       const blob = new Blob([lines.join('\r\n')], { type: 'application/octet-stream' });
-      forceDownload(blob, 'Yosser_Tweaks_TODOS_Registro.REG');
-      alert('Descarga iniciada: Yosser_Tweaks_TODOS_Registro.REG\nEntradas únicas de registro: ' + count);
+      forceDownload(blob, 'Yosser_Tweaks_SOLO_REG.REG');
+      alert('Descarga iniciada: Yosser_Tweaks_SOLO_REG.REG\nTweaks .REG: ' + tweaks.length + '\nEntradas únicas: ' + count);
     } catch (e) {
       alert('Error en downloadAllTweaksReg: ' + e.message);
       console.error(e);
