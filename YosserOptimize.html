@@ -52,8 +52,25 @@
 
   .tweak-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:112px; }
   .tab-icon { height:30px; display:flex; align-items:center; justify-content:center; color:var(--accent-green-neon); }
-  .windows-icon { width:34px; display:grid; grid-template-columns:repeat(2, 1fr); grid-template-rows:repeat(2, 1fr); gap:3px; }
-  .windows-icon i { display:block; background:currentColor; border-radius:1px; }
+  .windows-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+  }
+  .windows-icon i {
+    display: block;
+    background: #00A4EF;
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0, 164, 239, 0.35);
+  }
+  .tweak-btn:hover .windows-icon i,
+  .tweak-btn.active .windows-icon i {
+    background: #04170b;
+    box-shadow: none;
+  }
   .ram-icon { width:42px; height:28px; border:2px solid currentColor; border-radius:4px; gap:4px; padding:4px; align-items:center; }
   .ram-icon i { width:4px; height:18px; background:currentColor; border-radius:1px; }
   .wifi-icon { position:relative; width:38px; height:30px; align-items:flex-end; gap:4px; }
@@ -146,6 +163,99 @@ body{background:radial-gradient(circle at 15% 10%,rgba(124,255,107,.10),transpar
 button,.btn,.tab-btn{border-radius:12px;}
 .active,.tab-btn.active{box-shadow:0 0 18px rgba(124,255,107,.20),0 0 30px rgba(56,189,248,.10);}
 
+
+/* Cuadros mas finos (menos anchos) */
+.tab-panel.active {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  gap: 12px !important;
+}
+.card {
+  padding: 12px 14px !important;
+  border-radius: 10px !important;
+  min-height: auto !important;
+}
+.card h3 {
+  font-size: 0.88rem !important;
+  margin-bottom: 6px !important;
+  line-height: 1.25 !important;
+}
+.card p {
+  font-size: 0.75rem !important;
+  margin-bottom: 10px !important;
+  line-height: 1.35 !important;
+}
+.btn-execute {
+  padding: 8px 12px !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+.tweak-btn {
+  min-height: 88px !important;
+  padding: 12px 8px !important;
+  font-size: 0.78rem !important;
+  border-radius: 12px !important;
+}
+.tweaks-grid {
+  gap: 12px !important;
+}
+
+
+/* ===== UI Premium: colores, sombras, botones protegidos ===== */
+body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0,255,102,.12), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(0,164,239,.10), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(124,255,107,.06), transparent 40%),
+    #070A0F !important;
+}
+header {
+  box-shadow: 0 20px 60px rgba(0,0,0,.55), 0 0 40px rgba(0,255,102,.08), inset 0 1px rgba(255,255,255,.06) !important;
+  border-color: rgba(0,255,102,.22) !important;
+}
+.card {
+  box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 0 1px rgba(0,255,102,.06), inset 0 1px rgba(255,255,255,.04) !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,.45), 0 0 24px rgba(0,255,102,.12) !important;
+  border-color: rgba(0,255,102,.45) !important;
+}
+.btn-execute {
+  box-shadow: 0 0 12px rgba(0,255,102,.15), inset 0 1px rgba(255,255,255,.06) !important;
+  font-weight: 700 !important;
+  letter-spacing: .3px !important;
+}
+.btn-execute:hover {
+  box-shadow: 0 0 22px rgba(0,255,102,.45) !important;
+}
+.btn-download-all, .btn-download-reg {
+  box-shadow: 0 0 18px rgba(0,255,102,.35), 0 8px 24px rgba(0,0,0,.4), inset 0 0 20px rgba(0,255,102,.06) !important;
+  border-width: 2px !important;
+  position: relative !important;
+}
+.btn-download-all:hover, .btn-download-reg:hover {
+  box-shadow: 0 0 32px rgba(0,255,102,.65), 0 10px 28px rgba(0,0,0,.45) !important;
+}
+.tweak-btn {
+  box-shadow: 0 10px 28px rgba(0,0,0,.38), inset 0 1px rgba(255,255,255,.05) !important;
+}
+.tweak-btn.active, .tweak-btn:hover {
+  box-shadow: 0 14px 36px rgba(0,255,102,.22), 0 0 0 1px rgba(0,255,102,.25) !important;
+}
+.windows-icon i {
+  background: #00A4EF !important;
+  border-radius: 5px !important;
+  box-shadow: 0 2px 6px rgba(0,120,200,.35) !important;
+}
+.monitor-card, .hw-card {
+  box-shadow: 0 8px 22px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.05) !important;
+}
+/* Zero-delay feel on download buttons */
+.btn-download-all, .btn-download-reg, .btn-execute {
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease !important;
+}
+
 </style>
 
 
@@ -165,7 +275,7 @@ button,.btn,.tab-btn{border-radius:12px;}
 
 <div class="container">
   <header>
-    <h1 class="logo-title">Yosser <span>Tweaks</span></h1><div style="margin-top:8px;color:#7CFF6B;font-size:.78rem;letter-spacing:1px;">SAFE SERVICES MODE • RAM anti-stutter sin desactivar procesos requeridos por juegos • Windows/Defender protegidos</div>
+    <h1 class="logo-title">Yosser <span>Tweaks</span></h1><div style="margin-top:8px;color:#7CFF6B;font-size:.78rem;letter-spacing:1px;">SAFE AGRESIVO • Debloat + Limpieza juegos • Delay/GPU/Intel-AMD-NVIDIA • Fortnite Apex Valorant Warzone • NO borra trabajo • NO Defender/Firewall</div>
     <div class="monitor-grid">
       <div class="monitor-card"><label>CPU Usage</label><span id="cpu-stat">0%</span></div>
       <div class="monitor-card"><label>GPU Usage</label><span id="gpu-stat">0%</span></div>
@@ -183,11 +293,11 @@ button,.btn,.tab-btn{border-radius:12px;}
   <main>
     <div class="restore-all-wrap" style="margin:0 0 22px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
       <button class="btn-download-all btn-download-reg" onclick="restoreAllTweaks()" style="min-width:360px;min-height:64px;font-size:17px;">↩️ Restaurar todos los Tweaks aplicados</button>
-      <button class="btn-download-all" onclick="downloadAllTweaksBat()" style="min-width:330px;min-height:64px;font-size:17px;">⬇️ Descargar TODOS los Tweaks (.BAT)</button>
-      <button class="btn-download-all btn-download-reg" onclick="downloadAllTweaksReg()" style="min-width:330px;min-height:64px;font-size:17px;">🗂️ Descargar TODOS los Tweaks (.REG)</button>
+      <button class="btn-download-all" onclick="downloadAllTweaksBat()" style="min-width:330px;min-height:64px;font-size:17px;">⬇️ Descargar TODOS los Tweaks .BAT (Window+RAM+Net+Mouse+KB)</button>
+      <button class="btn-download-all btn-download-reg" onclick="downloadAllTweaksReg()" style="min-width:330px;min-height:64px;font-size:17px;">🗂️ Descargar TODOS los Tweaks .REG (solo registro)</button>
     </div>
     <div class="tweaks-grid">
-      <button class="tweak-btn active" onclick="switchTab(event, 'windowTweaks')"><span class="tab-icon windows-icon"><i></i><i></i><i></i><i></i></span><span>Window Tweaks • Competitive FPS / 1% Low</span></button>
+      <button class="tweak-btn active" onclick="switchTab(event, 'windowTweaks')"><span class="tab-icon windows-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Window Tweaks</span></button>
       <button class="tweak-btn" onclick="switchTab(event, 'ramTweaks')"><span class="tab-icon ram-icon"><i></i><i></i><i></i><i></i><i></i></span><span>RAM Tweaks</span></button>
       <button class="tweak-btn" onclick="switchTab(event, 'internetTweaks')"><span class="tab-icon wifi-icon"><i></i><i></i><i></i></span><span>Internet Tweaks</span></button>
       <button class="tweak-btn" onclick="switchTab(event, 'mouseTweaks')"><span class="tab-icon emoji-icon">🖱</span><span>Mouse Tweaks</span></button>
@@ -218,11 +328,16 @@ button,.btn,.tab-btn{border-radius:12px;}
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(hideIntroOverlay, 3200);
+    setTimeout(hideIntroOverlay, 2500);
   });
 
   // Respaldo: aunque algo falle o load tarde demasiado, nunca deja la pantalla atrapada.
-  setTimeout(hideIntroOverlay, 5000);
+  setTimeout(hideIntroOverlay, 4000);
+  // Clic en la intro también la cierra
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('intro-overlay');
+    if (ov) ov.addEventListener('click', hideIntroOverlay);
+  });
 
   function switchTab(event, panelId) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -467,7 +582,7 @@ button,.btn,.tab-btn{border-radius:12px;}
 {title:"296. Process Focus - Close Phone Link",desc:"Cierra Phone Link si está ejecutándose.",code:"taskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul"},
 {title:"297. Process Focus - Game Bar Processes",desc:"Cierra Game Bar si no usas su grabación.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul"},
 {title:"298. Delay Focus - Fullscreen Preference",desc:"Configura preferencias de pantalla completa.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f"},
-{title:"306. AGRESIVO - Process Killer Total (Window)",desc:"CIERRA y desactiva casi todos los procesos innecesarios de Windows. Baja mucho el conteo de procesos. ADVERTENCIA: puede romper Xbox, OneDrive, impresión, Widgets, Search, telemetría.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im SearchUI.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im SecurityHealthSystray.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im msedge.exe 2>nul\ntaskkill /f /im Cortana.exe 2>nul\ntaskkill /f /im RuntimeBroker.exe 2>nul\nsc stop SysMain\nsc config SysMain start= disabled\nsc stop WSearch\nsc config WSearch start= disabled\nsc stop DiagTrack\nsc config DiagTrack start= disabled\nsc stop dmwappushservice\nsc config dmwappushservice start= disabled\nsc stop XblAuthManager\nsc config XblAuthManager start= disabled\nsc stop XblGameSave\nsc config XblGameSave start= disabled\nsc stop XboxNetApiSvc\nsc config XboxNetApiSvc start= disabled\nsc stop XboxGipSvc\nsc config XboxGipSvc start= disabled\nsc stop Spooler\nsc config Spooler start= disabled\nsc stop Fax\nsc config Fax start= disabled\nsc stop WerSvc\nsc config WerSvc start= disabled\nsc stop PcaSvc\nsc config PcaSvc start= disabled\nsc stop MapsBroker\nsc config MapsBroker start= disabled\nsc stop lfsvc\nsc config lfsvc start= disabled\nsc stop PhoneSvc\nsc config PhoneSvc start= disabled\nsc stop CDPSvc\nsc config CDPSvc start= disabled\nsc stop CDPUserSvc\nsc config CDPUserSvc start= disabled\nsc stop DusmSvc\nsc config DusmSvc start= disabled\nsc stop OneSyncSvc\nsc config OneSyncSvc start= disabled\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\necho.\necho [AGRESIVO] Procesos y servicios innecesarios desactivados. REINICIA el PC."},
+{title:"306. AGRESIVO SAFE - Process Killer (no Defender/Firewall)",desc:"Cierra procesos opcionales y desactiva solo telemetría/Xbox/impresión no esenciales. NO toca Windows Defender, Firewall, SysMain ni servicios críticos. Baja procesos para más FPS y mejores 1% lows.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im SearchUI.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im msedge.exe 2>nul\ntaskkill /f /im Cortana.exe 2>nul\ntaskkill /f /im RuntimeBroker.exe 2>nul\ntaskkill /f /im SecurityHealthSystray.exe 2>nul\nsc stop DiagTrack 2>nul\nsc config DiagTrack start= disabled 2>nul\nsc stop dmwappushservice 2>nul\nsc config dmwappushservice start= disabled 2>nul\nsc stop XblAuthManager 2>nul\nsc config XblAuthManager start= disabled 2>nul\nsc stop XblGameSave 2>nul\nsc config XblGameSave start= disabled 2>nul\nsc stop XboxNetApiSvc 2>nul\nsc config XboxNetApiSvc start= disabled 2>nul\nsc stop XboxGipSvc 2>nul\nsc config XboxGipSvc start= disabled 2>nul\nsc stop Spooler 2>nul\nsc config Spooler start= disabled 2>nul\nsc stop Fax 2>nul\nsc config Fax start= disabled 2>nul\nsc stop MapsBroker 2>nul\nsc config MapsBroker start= disabled 2>nul\nsc stop lfsvc 2>nul\nsc config lfsvc start= disabled 2>nul\nsc stop PhoneSvc 2>nul\nsc config PhoneSvc start= disabled 2>nul\nsc stop CDPSvc 2>nul\nsc config CDPSvc start= disabled 2>nul\nsc stop DusmSvc 2>nul\nsc config DusmSvc start= disabled 2>nul\nsc stop OneSyncSvc 2>nul\nsc config OneSyncSvc start= disabled 2>nul\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\necho.\necho [AGRESIVO SAFE] Procesos opcionales cerrados + telemetria/Xbox/impresion off. Defender y Firewall intactos. REINICIA."},
 {title:"307. AGRESIVO - Startup Clean + Debloat UI",desc:"Limpia startups comunes y desactiva UI de segundo plano para bajar procesos permanentemente.",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v OneDrive /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Discord /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Steam /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v EpicGamesLauncher /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Spotify /f 2>nul\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f\necho [AGRESIVO] Startup y UI debloat aplicados."},
 
 
@@ -717,10 +832,185 @@ button,.btn,.tab-btn{border-radius:12px;}
 ,{title:"969. 1LOW ULTRA - Fortnite Exclusive Tips",desc:"Fortnite: Performance/DX12, Reflex On+Boost, Raw Input, VSync Off, Exclusive.",code:"echo Fortnite competitive:\necho Rendering Performance o DX12 | VSync Off\necho NVIDIA Reflex On+Boost | Raw Input On\necho Limit FPS cerca de tu Hz | Exclusive Fullscreen\necho Nanite/Lumen/Effects bajos si buscas max 1% lows\npause"}
 ,{title:"970. 1LOW ULTRA - Apex Valorant Warzone Tips",desc:"Apex/Val/WZ: Fullscreen, VSync Off, baja sombras/effects, Reflex/Anti-Lag.",code:"echo Apex: Fullscreen | VSync Off | NVIDIA Reflex / AMD Anti-Lag\necho Valorant: Fullscreen | Raw Input Buffer On | Multithreaded On\necho Warzone: Fullscreen Exclusive | VSync Off | Texture/Shadows bajos para 1% lows\npause"}
 ,{title:"971. 1LOW ULTRA - bcdedit Final Timer",desc:"disabledynamictick + sin platformclock + hypervisor off.",code:"bcdedit /set disabledynamictick yes\nbcdedit /deletevalue useplatformclock 2>nul\nbcdedit /set hypervisorlaunchtype off"}
-,{title:"972. 1LOW ULTRA - PS Bloat Services Off",desc:"PowerShell apaga servicios que generan hitch.",code:"PowerShell -NoProfile -Command \"$svcs=@('SysMain','WSearch','DiagTrack','dmwappushservice','MapsBroker','WbioSrvc','XblAuthManager','XblGameSave','XboxNetApiSvc','DoSvc'); foreach($s in $svcs){ Stop-Service $s -Force -ErrorAction SilentlyContinue; Set-Service $s -StartupType Disabled -ErrorAction SilentlyContinue }\""}
+,{title:"972. 1LOW ULTRA SAFE - PS Bloat Services Off",desc:"PowerShell apaga solo servicios de telemetría/Xbox/Maps (NO SysMain, WSearch, Defender ni Firewall). Menos hitch sin dañar el sistema.",code:"PowerShell -NoProfile -Command \"$svcs=@('DiagTrack','dmwappushservice','MapsBroker','WbioSrvc','XblAuthManager','XblGameSave','XboxNetApiSvc','DoSvc'); foreach($s in $svcs){ Stop-Service $s -Force -ErrorAction SilentlyContinue; Set-Service $s -StartupType Disabled -ErrorAction SilentlyContinue }\""}
 ,{title:"973. 1LOW ULTRA - PS NIC Low Latency",desc:"PowerShell: LSO off + power off en NIC.",code:"PowerShell -NoProfile -Command \"Disable-NetAdapterLso -Name '*' -ErrorAction SilentlyContinue; Get-NetAdapter | ForEach-Object { Set-NetAdapterPowerManagement -Name $_.Name -AllowComputerToTurnOffDevice Disabled -ErrorAction SilentlyContinue }\""}
 ,{title:"974. 1LOW ULTRA - Final Stutter Cleanup",desc:"Cierra todo lo que suele tirar el 1 percent en competitive.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im SecurityHealthSystray.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul"}
 
+
+
+,{title:"980. AGRESIVO SAFE - Kill Extra Bloat Session",desc:"Cierra más procesos opcionales de sesión (Edge, Teams, Cortana residual). No toca Defender ni Firewall.",code:"taskkill /f /im msedge.exe 2>nul\ntaskkill /f /im msedgewebview2.exe 2>nul\ntaskkill /f /im ms-teams.exe 2>nul\ntaskkill /f /im Teams.exe 2>nul\ntaskkill /f /im Cortana.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im SearchUI.exe 2>nul\ntaskkill /f /im StartMenuExperienceHost.exe 2>nul\necho [SAFE] Bloat de sesión cerrado."}
+,{title:"981. AGRESIVO SAFE - Disable Heavy Scheduled Tasks",desc:"Desactiva tareas programadas de telemetría y mantenimiento pesado. No toca Defender.",code:"schtasks /Change /TN \"\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Application Experience\\ProgramDataUpdater\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Maintenance\\WinSAT\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Windows Error Reporting\\QueueReporting\" /Disable 2>nul\necho [SAFE] Tareas pesadas desactivadas."}
+,{title:"982. AGRESIVO SAFE - Background Apps + Content Delivery Off",desc:"Reduce apps en fondo y contenido promocional. Más RAM libre.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SoftLandingEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f"}
+,{title:"983. AGRESIVO SAFE - Explorer Debloat UI",desc:"Quita Widgets, Chat, Task View, Search box para menos procesos de barra.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f"}
+,{title:"984. AGRESIVO SAFE - Startup Run Clean Common",desc:"Limpia entradas comunes de inicio (OneDrive, Discord, Steam, Epic, Spotify).",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v OneDrive /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Discord /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Steam /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v EpicGamesLauncher /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Spotify /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Skype /f 2>nul\necho [SAFE] Startup limpio."}
+,{title:"985. AGRESIVO SAFE - Power Ultimate + Core Parking Off",desc:"Plan Ultimate Performance + sin aparcamiento de núcleos. Máximo FPS estable.",code:"powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX 100\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor CPMAXCORES 100\npowercfg /setacvalueindex scheme_current sub_processor PERFBOOSTMODE 2\npowercfg /setactive scheme_current"}
+,{title:"986. AGRESIVO SAFE - Visual FX + Transparency Off",desc:"Efectos visuales al mínimo + transparencia off. Menos overhead GPU/CPU.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v MinAnimate /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\" /v MenuShowDelay /t REG_SZ /d 0 /f"}
+,{title:"987. AGRESIVO SAFE - GameDVR + GameBar Completely Off",desc:"Sin captura ni Game Bar. Más FPS y mejores 1% lows.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v HistoricalCaptureEnabled /t REG_DWORD /d 0 /f\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul"}
+,{title:"988. AGRESIVO SAFE - Fullscreen Optimizations Off Global",desc:"Mejor exclusive fullscreen + menos input lag.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_DXGIHonorFSEWindowsCompatible /t REG_DWORD /d 1 /f"}
+,{title:"989. AGRESIVO SAFE - SystemResponsiveness 0 + NetworkThrottling Off",desc:"Prioridad máxima a juegos + sin throttling de red multimedia.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"}
+,{title:"990. AGRESIVO SAFE - Win32PrioritySeparation 38",desc:"Prioridad primer plano al máximo. Critical para 1% lows.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"}
+,{title:"991. AGRESIVO SAFE - HAGS ON + Games GPU Priority",desc:"Hardware GPU Scheduling + prioridad alta Games. Solo 10/11 + GPU compatible.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Scheduling Category\" /t REG_SZ /d High /f"}
+,{title:"992. AGRESIVO SAFE - Timer Resolution + Disable Dynamic Tick",desc:"Timer más preciso + menos jitter. Ayuda 1% lows y input.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f\nbcdedit /set disabledynamictick yes\nbcdedit /deletevalue useplatformclock 2>nul"}
+,{title:"993. AGRESIVO SAFE - Power Throttling Off + PCIe ASPM Off",desc:"Sin throttling de energía + PCIe sin ahorro. Menos latency.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f\npowercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"}
+,{title:"994. AGRESIVO SAFE - USB Selective Suspend Off",desc:"Mouse/teclado no se suspenden. Zero delay input.",code:"powercfg /setacvalueindex scheme_current SUB_USB USBSELECTIVE 0\npowercfg /setactive scheme_current"}
+,{title:"995. NVIDIA AGRESIVO - Prefer Maximum Performance REG",desc:"Fuerza preferencia GPU alto rendimiento (NVIDIA detectada en BAT).",code:"reg add \"HKCU\\Software\\Microsoft\\DirectX\\UserGpuPreferences\" /v \"C:\\Windows\\System32\\dwm.exe\" /t REG_SZ /d \"GpuPreference=2;\" /f\necho NVIDIA: también abre Panel de Control NVIDIA > Administrar configuración 3D > Prefer maximum performance + Low Latency Ultra."}
+,{title:"996. NVIDIA AGRESIVO - Low Latency + Reflex Guide",desc:"Guía + reg para NVIDIA Reflex friendly. Máximo FPS zero delay.",code:"echo NVIDIA Control Panel:\necho - Low Latency Mode = Ultra\necho - Maximum Pre-Rendered Frames = 1\necho - Power management = Prefer maximum performance\necho - Vertical Sync = Off\necho - Threaded Optimization = On\necho En juego: NVIDIA Reflex = On + Boost\npause"}
+,{title:"997. AMD AGRESIVO - Anti-Lag + Gaming Profile Guide",desc:"Guía AMD Adrenalin para Anti-Lag y perfil Gaming. Zero delay.",code:"echo AMD Software Adrenalin:\necho - Radeon Anti-Lag = Enabled\necho - Radeon Chill = Disabled\necho - Radeon Boost = prueba por juego\necho - Wait for Vertical Refresh = Always Off\necho - Texture Filtering Quality = Performance\necho - GPU Workload = Graphics\npause"}
+,{title:"998. INTEL AGRESIVO - Graphics Max Performance Guide",desc:"Guía Intel Arc/iGPU para máximo rendimiento.",code:"echo Intel Graphics Command Center / Driver:\necho - Power = Maximum Performance\necho - Application Settings por juego = High Performance\necho - VSync = Off / Application Controlled\necho - Anisotropic Filtering = Application Controlled\npause"}
+,{title:"999. NVIDIA/AMD/INTEL - GPU Vendor Auto Report",desc:"Detecta GPU y muestra perfil recomendado (se usa en BAT total).",code:"powershell -NoProfile -Command \"$g=(Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join ' '; if($g -match 'NVIDIA'){Write-Host 'NVIDIA detectada - usa Low Latency Ultra + Reflex'} elseif($g -match 'AMD|Radeon'){Write-Host 'AMD detectada - usa Anti-Lag + Gaming'} elseif($g -match 'Intel'){Write-Host 'Intel detectada - usa Maximum Performance'} else {Write-Host $g}\""}
+,{title:"1000. AGRESIVO SAFE - Final Session Cleanup for 1% Lows",desc:"Cierre final de todo lo que suele causar hitch en competitive. Defender intacto.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul\ntaskkill /f /im NZXT CAM.exe 2>nul\necho [SAFE] Limpieza final de sesión lista. Reinicia para aplicar cambios de registro/bcdedit."}
+
+
+,{title:"1100. FORTNITE - GameUserSettings Aggressive Guide",desc:"Valores agresivos recomendados para GameUserSettings.ini (no sobrescribe automáticamente para no borrar tu config). Copia manualmente.",code:"echo ============================================\necho FORTNITE GameUserSettings.ini AGRESIVO\necho Ruta: %%LOCALAPPDATA%%\\FortniteGame\\Saved\\Config\\WindowsClient\\GameUserSettings.ini\necho ============================================\necho [ScalabilityGroups]\necho sg.ResolutionQuality=100\necho sg.ViewDistanceQuality=0\necho sg.AntiAliasingQuality=0\necho sg.ShadowQuality=0\necho sg.GlobalIlluminationQuality=0\necho sg.ReflectionQuality=0\necho sg.PostProcessQuality=0\necho sg.TextureQuality=0\necho sg.EffectsQuality=0\necho sg.FoliageQuality=0\necho sg.ShadingQuality=0\necho [Fortnite.FortGameUserSettings]\necho bUseVSync=False\necho bUseDynamicResolution=False\necho FrameRateLimit=0.000000\necho FrontendFrameRateLimit=60\necho bDisableMouseAcceleration=True\necho PreferredFullscreenMode=0\necho FullscreenMode=0\necho LastConfirmedFullscreenMode=0\necho PreferredFullscreenMode=0\necho bMotionBlur=False\necho NVIDIAReflexMode=1\necho NVIDIAReflexLowLatencyBoost=1\necho ============================================\npause"}
+,{title:"1101. FORTNITE - Launch Options Competitive",desc:"Opciones de inicio recomendadas (Epic Launcher > Fortnite > Settings).",code:"echo Fortnite Launch Options:\necho -USEALLAVAILABLECORES -NOTEXTURESTREAMING -NOSPLASH\necho En juego: Rendering Mode = Performance o DirectX 12\necho VSync Off | NVIDIA Reflex On+Boost | Raw Input On\necho Limit FPS cerca de tu Hz del monitor\npause"}
+,{title:"1102. FORTNITE - Exclusive Fullscreen + FSE REG",desc:"Fuerza comportamiento exclusive fullscreen para menos input lag.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_DXGIHonorFSEWindowsCompatible /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f"}
+,{title:"1103. APEX LEGENDS - video.txt Aggressive Guide",desc:"Valores agresivos para Apex (video config).",code:"echo Apex Legends video config guide:\necho setting.fullscreen 1\necho setting.nowindowborder 0\necho setting.vsync 0\necho setting.mat_picmip 0 o 1 (texturas)\necho setting.cl_fovScale segun preferencia\necho Launch options: -novid -fullscreen -forcenovsync +fps_max 0\necho NVIDIA Reflex / AMD Anti-Lag ON\npause"}
+,{title:"1104. APEX - Fullscreen + Low Latency REG",desc:"Fullscreen exclusive behavior + SystemResponsiveness.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1105. VALORANT - Launch + Raw Input Guide",desc:"Opciones de inicio y settings competitivos.",code:"echo Valorant:\necho Launch: -novid -high -fullscreen\necho En juego: Fullscreen | Raw Input Buffer On | Multithreaded Rendering On\necho VSync Off | Limit FPS off o =Hz+\necho NVIDIA Reflex On+Boost si tienes NVIDIA\npause"}
+,{title:"1106. VALORANT - GameDVR Off + Priority REG",desc:"Sin captura + prioridad alta Games.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f"}
+,{title:"1107. WARZONE - Fullscreen Exclusive + Shadows Low Guide",desc:"Guía agresiva Warzone para 1% lows.",code:"echo Warzone / MW:\necho Fullscreen Exclusive | VSync Off\necho Texture Resolution Low-Normal | Shadows Low\necho Particle Quality Low | Bullets Decals Off\necho NVIDIA Reflex On+Boost | AMD Anti-Lag On\necho Limit FPS cerca de tu monitor Hz\npause"}
+,{title:"1108. WARZONE - FSE + NetworkThrottling REG",desc:"Fullscreen + sin throttling de red.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"}
+,{title:"1109. ALL GAMES - NVIDIA Reflex Friendly REG",desc:"Ajustes que ayudan a Reflex / Low Latency.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1110. ALL GAMES - Disable Fullscreen Optimizations per EXE Guide",desc:"Cómo desactivar FSO por juego (clic derecho EXE > Propiedades > Compatibilidad).",code:"echo Clic derecho al .exe del juego > Propiedades > Compatibilidad\necho Marca: Deshabilitar optimizaciones de pantalla completa\necho Aplica y prueba exclusive fullscreen\npause"}
+,{title:"1111. OPT - MMCSS Games High Full",desc:"Perfil Games MMCSS completo en High.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Scheduling Category\" /t REG_SZ /d High /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"SFIO Priority\" /t REG_SZ /d High /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Background Only\" /t REG_SZ /d False /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Clock Rate\" /t REG_DWORD /d 10000 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Affinity /t REG_DWORD /d 0 /f"}
+,{title:"1112. OPT - SystemResponsiveness 0",desc:"Sistema cede CPU a juegos. Menos stutter.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1113. OPT - NetworkThrottlingIndex Max",desc:"Sin límite multimedia de red.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"}
+,{title:"1114. OPT - Win32PrioritySeparation 38",desc:"Prioridad primer plano máxima.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"}
+,{title:"1115. OPT - IRQ8Priority High",desc:"Prioridad IRQ timer.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v IRQ8Priority /t REG_DWORD /d 1 /f"}
+,{title:"1116. OPT - HAGS ON",desc:"Hardware Accelerated GPU Scheduling (10/11 + GPU compatible).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f"}
+,{title:"1117. OPT - Power Throttling Off",desc:"Sin throttling de energía en procesos.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f"}
+,{title:"1118. OPT - GlobalTimerResolutionRequests",desc:"Timer más preciso.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f"}
+,{title:"1119. OPT - Disable Dynamic Tick",desc:"bcdedit disabledynamictick yes.",code:"bcdedit /set disabledynamictick yes"}
+,{title:"1120. OPT - Delete useplatformclock",desc:"Quita useplatformclock si existe.",code:"bcdedit /deletevalue useplatformclock 2>nul"}
+,{title:"1121. OPT - Ultimate Performance Plan",desc:"Activa Ultimate Performance si existe.",code:"powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive SCHEME_MIN 2>nul"}
+,{title:"1122. OPT - CPU Min Max 100",desc:"CPU 100% min/max en AC.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX 100\npowercfg /setactive scheme_current"}
+,{title:"1123. OPT - Core Parking Off",desc:"Sin aparcamiento de núcleos.",code:"powercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor CPMAXCORES 100\npowercfg /setactive scheme_current"}
+,{title:"1124. OPT - Processor Boost Aggressive",desc:"Boost agresivo.",code:"powercfg /setacvalueindex scheme_current sub_processor PERFBOOSTMODE 2\npowercfg /setactive scheme_current"}
+,{title:"1125. OPT - PCIe ASPM Off",desc:"Sin ahorro PCIe.",code:"powercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"}
+,{title:"1126. OPT - USB Selective Suspend Off",desc:"USB no suspende dispositivos.",code:"powercfg /setacvalueindex scheme_current SUB_USB USBSELECTIVE 0\npowercfg /setactive scheme_current"}
+,{title:"1127. OPT - Disk / Standby / Monitor Timeout 0",desc:"No apagar disco/monitor/suspender en AC.",code:"powercfg /change disk-timeout-ac 0\npowercfg /change standby-timeout-ac 0\npowercfg /change monitor-timeout-ac 0"}
+,{title:"1128. OPT - Hibernate + Fast Startup Off",desc:"Apagado limpio.",code:"powercfg /hibernate off\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\" /v HiberbootEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1129. OPT - Visual Effects Best Performance",desc:"Efectos al mínimo.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v MinAnimate /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\" /v MenuShowDelay /t REG_SZ /d 0 /f"}
+,{title:"1130. OPT - Background Apps Off",desc:"Apps UWP fondo off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"1131. OPT - Widgets + Chat + TaskView Off",desc:"Menos procesos de barra.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f"}
+,{title:"1132. OPT - Game Mode ON",desc:"Game Mode activado.",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f"}
+,{title:"1133. OPT - GameDVR Completely Off",desc:"Sin captura GameDVR.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v HistoricalCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1134. OPT - Nagle Off TCP",desc:"TcpAckFrequency 1 + TCPNoDelay.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f"}
+,{title:"1135. OPT - LargeSystemCache 0",desc:"Prioriza programas.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"}
+,{title:"1136. OPT - DisablePagingExecutive 1",desc:"Kernel en RAM (16GB+ recomendado).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"}
+,{title:"1137. OPT - IoPageLockLimit",desc:"Más I/O lockeable.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v IoPageLockLimit /t REG_DWORD /d 4000000 /f"}
+,{title:"1138. OPT - Prefetch Superfetch Off REG",desc:"Prefetch/Superfetch a 0 (opcional, prueba).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnablePrefetcher /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnableSuperfetch /t REG_DWORD /d 0 /f"}
+,{title:"1139. OPT - Delivery Optimization P2P Off",desc:"No compartir actualizaciones.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config\" /v DODownloadMode /t REG_DWORD /d 0 /f"}
+,{title:"1140. OPT - Telemetry Allow 0 Safe",desc:"Telemetría mínima (no toca Defender).",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f"}
+,{title:"1141. OPT - CEIP Off",desc:"Customer Experience Improvement off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows\" /v CEIPEnable /t REG_DWORD /d 0 /f"}
+,{title:"1142. OPT - Activity History Off",desc:"Historial de actividad off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v EnableActivityFeed /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v PublishUserActivities /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v UploadUserActivities /t REG_DWORD /d 0 /f"}
+,{title:"1143. OPT - Sticky Filter Toggle Keys Off",desc:"Evita activación accidental en partida.",code:"reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f\nreg add \"HKCU\\Control Panel\\Accessibility\\ToggleKeys\" /v Flags /t REG_SZ /d 58 /f"}
+,{title:"1144. OPT - Mouse Accel Off + Sensitivity 6/11",desc:"Sin aceleración Windows + 1:1.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f"}
+,{title:"1145. OPT - MouseDataQueueSize 12",desc:"Cola mouse baja.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouhid\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f"}
+,{title:"1146. OPT - Keyboard Delay 0 Speed 31",desc:"Teclado máximo rápido.",code:"reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f"}
+,{title:"1147. OPT - KeyboardDataQueueSize 10",desc:"Cola teclado baja.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 10 /f"}
+,{title:"1148. OPT - SmoothMouse Curves Zero",desc:"Sin curvas de suavizado.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseXCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseYCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f"}
+,{title:"1149. OPT - No Win Key",desc:"Desactiva tecla Windows en partida.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoWinKeys /t REG_DWORD /d 1 /f"}
+,{title:"1150. SESSION - Kill Competitive Bloat",desc:"Cierra procesos típicos que bajan 1% lows (Defender intacto).",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul\necho Sesion limpia. Reinicia si aplicaste registro."}
+
+
+,{title:"1200. DELAY - SystemResponsiveness 0 REG",desc:"Prioridad maxima a juegos. Baja stutter y delay de sistema.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1201. DELAY - NetworkThrottlingIndex Max REG",desc:"Sin limite de red multimedia. Mejor ping estable en competitive.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"}
+,{title:"1202. DELAY - Win32PrioritySeparation 38 REG",desc:"Primer plano al maximo. Critical para input y 1% lows.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"}
+,{title:"1203. DELAY - IRQ8Priority High REG",desc:"Prioridad alta al timer del sistema.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v IRQ8Priority /t REG_DWORD /d 1 /f"}
+,{title:"1204. DELAY - GlobalTimerResolutionRequests REG",desc:"Timer mas preciso. Ayuda 1% lows e input.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f"}
+,{title:"1205. DELAY - Disable Dynamic Tick CMD",desc:"bcdedit disabledynamictick. Menos jitter de timer.",code:"bcdedit /set disabledynamictick yes"}
+,{title:"1206. DELAY - Delete Platform Clock CMD",desc:"Quita useplatformclock si existe.",code:"bcdedit /deletevalue useplatformclock 2>nul"}
+,{title:"1207. DELAY - Power Throttling Off REG",desc:"Sin throttling de energia en procesos.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f"}
+,{title:"1208. DELAY - Nagle Off TCP REG",desc:"TcpAckFrequency 1 + TCPNoDelay. Menos delay de red.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpDelAckTicks /t REG_DWORD /d 0 /f"}
+,{title:"1209. DELAY - Fullscreen FSE Behavior REG",desc:"Exclusive fullscreen mas limpio. Menos input lag.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_DXGIHonorFSEWindowsCompatible /t REG_DWORD /d 1 /f"}
+,{title:"1210. DELAY - GameDVR Completely Off REG",desc:"Sin captura en fondo. Mas FPS y menos delay.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v HistoricalCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1211. DELAY - Game Mode ON REG",desc:"Game Mode activado (10/11).",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f"}
+,{title:"1212. DELAY - HAGS ON REG",desc:"Hardware Accelerated GPU Scheduling. 10/11 + GPU compatible.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f"}
+,{title:"1213. DELAY - Games MMCSS Full High REG",desc:"Perfil Games: GPU Priority 8, Priority 6, Scheduling High.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Scheduling Category\" /t REG_SZ /d High /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"SFIO Priority\" /t REG_SZ /d High /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Background Only\" /t REG_SZ /d False /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Clock Rate\" /t REG_DWORD /d 10000 /f"}
+,{title:"1214. DELAY - CPU 100 Core Parking Off CMD",desc:"CPU siempre lista. Menos micro-stutter.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMAX 100\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor CPMAXCORES 100\npowercfg /setacvalueindex scheme_current sub_processor PERFBOOSTMODE 2\npowercfg /setactive scheme_current"}
+,{title:"1215. DELAY - PCIe ASPM + USB Suspend Off CMD",desc:"Sin ahorro PCIe/USB. Menos latency de GPU y perifericos.",code:"powercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setacvalueindex scheme_current SUB_USB USBSELECTIVE 0\npowercfg /setactive scheme_current"}
+,{title:"1216. DELAY - Ultimate Performance Plan CMD",desc:"Plan Ultimate Performance si existe.",code:"powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive SCHEME_MIN 2>nul"}
+,{title:"1217. DELAY - Visual FX Min REG",desc:"Efectos al minimo. Menos overhead GPU/CPU.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\\WindowMetrics\" /v MinAnimate /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Desktop\" /v MenuShowDelay /t REG_SZ /d 0 /f"}
+,{title:"1218. DELAY - Mouse Accel Off + Queue 12 REG",desc:"Sin aceleracion + cola mouse baja. Aim 1:1 zero delay.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f"}
+,{title:"1219. DELAY - Keyboard Delay 0 Speed 31 REG",desc:"Teclado maximo rapido.",code:"reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 10 /f"}
+,{title:"1220. GPU NVIDIA - Prefer Max Performance REG",desc:"Preferencia GPU alto rendimiento (DWM + guia panel).",code:"reg add \"HKCU\\Software\\Microsoft\\DirectX\\UserGpuPreferences\" /v \"C:\\Windows\\System32\\dwm.exe\" /t REG_SZ /d \"GpuPreference=2;\" /f\necho NVIDIA Panel: Power management = Prefer maximum performance | Low Latency = Ultra | Max Pre-Rendered Frames = 1 | VSync Off"}
+,{title:"1221. GPU NVIDIA - Reflex Competitive Guide",desc:"En Fortnite/Apex/Valorant/Warzone: Reflex On + Boost.",code:"echo NVIDIA Reflex Low Latency = On + Boost\necho Low Latency Mode Panel = Ultra\necho Maximum Pre-Rendered Frames = 1\necho VSync = Off\npause"}
+,{title:"1222. GPU AMD - Anti-Lag Competitive Guide",desc:"Adrenalin: Anti-Lag ON, Chill OFF, Wait for VRefresh Always Off.",code:"echo AMD Software:\necho Radeon Anti-Lag = Enabled\necho Radeon Chill = Disabled\necho Wait for Vertical Refresh = Always Off\necho Texture Filtering = Performance\necho GPU Workload = Graphics\npause"}
+,{title:"1223. GPU INTEL - Max Performance Guide",desc:"Intel Graphics: Maximum Performance + High Performance por juego.",code:"echo Intel Graphics Command Center:\necho Power = Maximum Performance\necho Application Settings por juego = High Performance\necho VSync = Off / Application Controlled\npause"}
+,{title:"1224. GPU ALL - HAGS + TDR Safe REG",desc:"HAGS ON + TDR a valores por defecto seguros.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\nreg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v TdrDelay /f 2>nul\nreg delete \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v TdrDdiDelay /f 2>nul"}
+,{title:"1225. GPU ALL - Vendor Detect PowerShell",desc:"Detecta NVIDIA/AMD/Intel y muestra perfil recomendado.",code:"powershell -NoProfile -Command \"$g=(Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join ' '; if($g -match 'NVIDIA'){Write-Host 'NVIDIA: Low Latency Ultra + Reflex On+Boost'} elseif($g -match 'AMD|Radeon'){Write-Host 'AMD: Anti-Lag ON + Chill OFF'} elseif($g -match 'Intel'){Write-Host 'Intel: Maximum Performance'} else {Write-Host $g}\""}
+,{title:"1226. FORTNITE REG - GameDVR Off + FSE + Game Mode",desc:"Pack registro Fortnite: sin captura, exclusive fullscreen, Game Mode.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f"}
+,{title:"1227. FORTNITE - GameUserSettings Aggressive Paths",desc:"Ruta real + valores agresivos (copia manual, no sobrescribe).",code:"echo Ruta real:\necho %LOCALAPPDATA%\\FortniteGame\\Saved\\Config\\WindowsClient\\GameUserSettings.ini\necho\necho Valores agresivos sugeridos:\necho bUseVSync=False\necho FrameRateLimit=0.000000\necho bDisableMouseAcceleration=True\necho PreferredFullscreenMode=0\necho FullscreenMode=0\necho NVIDIAReflexMode=1\necho NVIDIAReflexLowLatencyBoost=1\necho sg.ShadowQuality=0 sg.EffectsQuality=0 sg.FoliageQuality=0\npause"}
+,{title:"1228. APEX REG - FSE + SystemResponsiveness + GameDVR Off",desc:"Registro Apex: fullscreen exclusive + prioridad juegos + sin captura.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1229. APEX - Launch + video Guide",desc:"Launch options y video.txt agresivos.",code:"echo Apex Launch: -novid -fullscreen -forcenovsync +fps_max 0\necho video.txt: setting.fullscreen 1 | setting.vsync 0\necho NVIDIA Reflex / AMD Anti-Lag ON\npause"}
+,{title:"1230. VALORANT REG - GameDVR Off + Games Priority + FSE",desc:"Registro Valorant competitive.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f"}
+,{title:"1231. VALORANT - Launch Competitive Guide",desc:"Launch y settings in-game.",code:"echo Valorant Launch: -novid -high -fullscreen\necho In-game: Fullscreen | Raw Input Buffer On | Multithreaded On | VSync Off\necho NVIDIA Reflex On+Boost si aplica\npause"}
+,{title:"1232. WARZONE REG - FSE + NetworkThrottling + GameDVR Off",desc:"Registro Warzone para 1% lows y menos delay de red.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f"}
+,{title:"1233. WARZONE - Graphics Competitive Guide",desc:"Ajustes in-game para max 1% lows.",code:"echo Warzone: Fullscreen Exclusive | VSync Off\necho Texture Low-Normal | Shadows Low | Particle Low | Bullet Impacts Off\necho NVIDIA Reflex On+Boost | AMD Anti-Lag On\necho Limit FPS cerca de tu Hz\npause"}
+,{title:"1234. NET - QoS NonBestEffortLimit 0 REG",desc:"QoS no reserva ancho de banda (mejor para gaming).",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Psched\" /v NonBestEffortLimit /t REG_DWORD /d 0 /f"}
+,{title:"1235. NET - TcpTimedWaitDelay 30 REG",desc:"TIME_WAIT mas corto.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpTimedWaitDelay /t REG_DWORD /d 30 /f"}
+,{title:"1236. NET - MaxUserPort 65534 REG",desc:"Mas puertos efimeros.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v MaxUserPort /t REG_DWORD /d 65534 /f"}
+,{title:"1237. NET - DefaultTTL 64 REG",desc:"TTL 64 estandar gaming.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v DefaultTTL /t REG_DWORD /d 64 /f"}
+,{title:"1238. NET - RSS + Autotuning Normal CMD",desc:"RSS on + autotuning normal.",code:"netsh int tcp set global rss=enabled\nnetsh int tcp set global autotuninglevel=normal\nnetsh int tcp set global ecncapability=disabled\nnetsh int tcp set global timestamps=disabled"}
+,{title:"1239. NET - Disable LSO PowerShell",desc:"Large Send Offload off (puede bajar latency spikes).",code:"PowerShell -NoProfile -Command \"Disable-NetAdapterLso -Name '*' -ErrorAction SilentlyContinue\""}
+,{title:"1240. NET - Adapter Power Saving Off PowerShell",desc:"NIC no se apaga.",code:"PowerShell -NoProfile -Command \"Get-NetAdapter | ForEach-Object { Set-NetAdapterPowerManagement -Name $_.Name -AllowComputerToTurnOffDevice Disabled -ErrorAction SilentlyContinue }\""}
+,{title:"1241. INTEL DELAY - HAGS + Games Priority REG",desc:"Intel: HAGS + prioridad Games alta.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v Priority /t REG_DWORD /d 6 /f"}
+,{title:"1242. INTEL DELAY - SystemResponsiveness + NetworkThrottling REG",desc:"Intel competitive: prioridad juegos + red sin throttle.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f"}
+,{title:"1243. INTEL DELAY - Timer + Nagle + FSE REG",desc:"Intel zero latency pack: timer + Nagle off + FSE.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel\" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TcpAckFrequency /t REG_DWORD /d 1 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\" /v TCPNoDelay /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f"}
+,{title:"1244. INTEL DELAY - Mouse Keyboard Zero REG",desc:"Intel input pack: mouse accel off + queue + teclado max.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f"}
+,{title:"1245. INTEL DELAY - Power CPU 100 + ASPM Off CMD",desc:"Intel: CPU 100% + sin ahorro PCIe.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"}
+,{title:"1246. INTEL DELAY - GameDVR Off + Background Apps Off REG",desc:"Intel: sin captura + menos procesos UWP.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"1247. INTEL DELAY - Session Kill Competitive CMD",desc:"Cierra bloat de sesion (Defender intacto).",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul"}
+,{title:"1248. COMPETITIVE - LargeSystemCache 0 + DisablePagingExecutive REG",desc:"RAM para el juego, kernel en RAM (16GB+).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"}
+,{title:"1249. COMPETITIVE - Session Final Cleanup CMD",desc:"Limpieza final de sesion antes de jugar. Sin tocar Defender/Firewall.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul\necho Listo. Reinicia si aplicaste REG/bcdedit."}
+
+
+,{title:"1300. DEBLOAT - Clean User %TEMP%",desc:"Limpia archivos temporales del usuario. Seguro para trabajo y juegos.",code:"del /f /s /q \"%TEMP%\\*\" 2>nul\necho %TEMP% limpio."}
+,{title:"1301. DEBLOAT - Clean Windows\\Temp",desc:"Limpia C:\\Windows\\Temp (archivos no en uso).",code:"del /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul\necho Windows\\Temp limpio."}
+,{title:"1302. DEBLOAT - Clean Prefetch Optional",desc:"Limpia Prefetch. En SSD puede ayudar a limpiar; no borra programas.",code:"del /f /s /q \"C:\\Windows\\Prefetch\\*\" 2>nul\necho Prefetch limpio."}
+,{title:"1303. DEBLOAT - Clean Thumbnail Cache",desc:"Limpia caché de miniaturas de Explorer.",code:"del /f /s /q /a \"%LocalAppData%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db\" 2>nul\ndel /f /q \"%LocalAppData%\\IconCache.db\" 2>nul\necho Thumbnail cache limpio."}
+,{title:"1304. DEBLOAT - Clean Delivery Optimization",desc:"Limpia caché de actualizaciones compartidas.",code:"rmdir /s /q \"C:\\Windows\\SoftwareDistribution\\Download\" 2>nul\nmkdir \"C:\\Windows\\SoftwareDistribution\\Download\" 2>nul\necho Delivery Optimization cache limpia."}
+,{title:"1305. DEBLOAT - Clean Windows Update Cache Soft",desc:"Detiene wuauserv breve, limpia Download y reinicia el servicio.",code:"net stop wuauserv 2>nul\ndel /f /s /q \"C:\\Windows\\SoftwareDistribution\\Download\\*\" 2>nul\nnet start wuauserv 2>nul\necho Update Download cache limpia. Defender intacto."}
+,{title:"1306. DEBLOAT - Clean D3DSCache",desc:"Limpia caché DirectX shaders (puede recompilar al abrir juegos).",code:"del /f /s /q \"%LocalAppData%\\D3DSCache\\*\" 2>nul\necho D3DSCache limpio."}
+,{title:"1307. DEBLOAT - Clean NVIDIA Shader Cache Optional",desc:"Limpia DXCache/GLCache NVIDIA (opcional).",code:"rmdir /s /q \"%LocalAppData%\\NVIDIA\\DXCache\" 2>nul\nrmdir /s /q \"%LocalAppData%\\NVIDIA\\GLCache\" 2>nul\necho NVIDIA cache limpia."}
+,{title:"1308. DEBLOAT - Clean AMD DxCache Optional",desc:"Limpia DxCache AMD (opcional).",code:"rmdir /s /q \"%LocalAppData%\\AMD\\DxCache\" 2>nul\necho AMD DxCache limpia."}
+,{title:"1309. DEBLOAT - Clean Crash Dumps",desc:"Limpia MEMORY.DMP, Minidump y CrashDumps.",code:"del /f /q \"%SystemRoot%\\MEMORY.DMP\" 2>nul\ndel /f /s /q \"%SystemRoot%\\Minidump\\*.dmp\" 2>nul\ndel /f /s /q \"%LocalAppData%\\CrashDumps\\*\" 2>nul\necho Dumps limpios."}
+,{title:"1310. DEBLOAT - Clean WER Reports",desc:"Limpia reportes de errores de Windows.",code:"del /f /s /q \"%ProgramData%\\Microsoft\\Windows\\WER\\*\" 2>nul\necho WER limpio."}
+,{title:"1311. DEBLOAT - Empty Recycle Bin",desc:"Vacía la Papelera de reciclaje.",code:"PowerShell -NoProfile -Command \"Clear-RecycleBin -Force -ErrorAction SilentlyContinue\"\necho Papelera vacia."}
+,{title:"1312. DEBLOAT - Clean Recent Documents List",desc:"Limpia lista de documentos recientes (no borra archivos).",code:"del /f /q \"%APPDATA%\\Microsoft\\Windows\\Recent\\*\" 2>nul\ndel /f /q \"%APPDATA%\\Microsoft\\Windows\\Recent\\AutomaticDestinations\\*\" 2>nul\ndel /f /q \"%APPDATA%\\Microsoft\\Windows\\Recent\\CustomDestinations\\*\" 2>nul\necho Recent limpio."}
+,{title:"1313. DEBLOAT - Clean Font Cache",desc:"Reconstruye caché de fuentes.",code:"net stop FontCache 2>nul\ndel /f /q \"%WinDir%\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache\\*\" 2>nul\nnet start FontCache 2>nul\necho Font cache limpia."}
+,{title:"1314. DEBLOAT - Clean Windows Store Cache WSReset",desc:"Resetea caché de Microsoft Store (no desinstala apps).",code:"wsreset.exe\necho Store cache reseteada."}
+,{title:"1315. DEBLOAT - Clean DNS Cache",desc:"Flush DNS.",code:"ipconfig /flushdns\necho DNS cache limpia."}
+,{title:"1316. DEBLOAT - Clean Explorer Icon Cache Restart",desc:"Limpia icon cache y reinicia Explorer.",code:"ie4uinit.exe -ClearIconCache 2>nul\ntaskkill /f /im explorer.exe 2>nul\nstart explorer.exe\necho Icon cache limpia."}
+,{title:"1317. DEBLOAT - Startup Remove OneDrive Run",desc:"Quita OneDrive del inicio (no desinstala).",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v OneDrive /f 2>nul\necho OneDrive quitado del inicio."}
+,{title:"1318. DEBLOAT - Startup Remove Discord Run",desc:"Quita Discord del inicio.",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Discord /f 2>nul\necho Discord quitado del inicio."}
+,{title:"1319. DEBLOAT - Startup Remove Steam Epic Spotify",desc:"Quita Steam, Epic y Spotify del inicio.",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Steam /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v EpicGamesLauncher /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Spotify /f 2>nul\necho Steam/Epic/Spotify quitados del inicio."}
+,{title:"1320. DEBLOAT - Startup Remove Skype Teams",desc:"Quita Skype/Teams del inicio si existen.",code:"reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Skype /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v Teams /f 2>nul\nreg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v com.squirrel.Teams.Teams /f 2>nul\necho Skype/Teams quitados del inicio."}
+,{title:"1321. DEBLOAT - Background Apps Off REG",desc:"Apps UWP en fondo off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"1322. DEBLOAT - Widgets Off REG",desc:"Widgets de barra off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f"}
+,{title:"1323. DEBLOAT - Chat Meet Now Off REG",desc:"Chat y Meet Now off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v HideSCAMeetNow /t REG_DWORD /d 1 /f"}
+,{title:"1324. DEBLOAT - Tips Suggestions Off REG",desc:"Consejos y sugerencias off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SoftLandingEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1325. DEBLOAT - Consumer Features Off REG",desc:"Contenido promocional consumer off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent\" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f"}
+,{title:"1326. DEBLOAT - Advertising ID Off REG",desc:"ID publicitario off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo\" /v Enabled /t REG_DWORD /d 0 /f"}
+,{title:"1327. DEBLOAT - Telemetry Allow 0 REG",desc:"Telemetria minima. No toca Defender.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f"}
+,{title:"1328. DEBLOAT - CEIP Off REG",desc:"Customer Experience Improvement off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\SQMClient\\Windows\" /v CEIPEnable /t REG_DWORD /d 0 /f"}
+,{title:"1329. DEBLOAT - Activity History Off REG",desc:"Historial de actividad off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v EnableActivityFeed /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v PublishUserActivities /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v UploadUserActivities /t REG_DWORD /d 0 /f"}
+,{title:"1330. DEBLOAT - Scheduled Tasks Telemetry Off CMD",desc:"Desactiva tareas pesadas de telemetria (no Defender).",code:"schtasks /Change /TN \"\\Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Application Experience\\ProgramDataUpdater\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip\" /Disable 2>nul\nschtasks /Change /TN \"\\Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector\" /Disable 2>nul\necho Tareas telemetria desactivadas."}
+,{title:"1331. DEBLOAT - DiagTrack Service Off CMD",desc:"Servicio DiagTrack off. Defender intacto.",code:"sc stop DiagTrack 2>nul\nsc config DiagTrack start= disabled 2>nul\necho DiagTrack off."}
+,{title:"1332. DEBLOAT - dmwappushservice Off CMD",desc:"Servicio dmwappush off.",code:"sc stop dmwappushservice 2>nul\nsc config dmwappushservice start= disabled 2>nul\necho dmwappushservice off."}
+,{title:"1333. DEBLOAT - Kill Session Bloat CMD",desc:"Cierra procesos de bloat en sesion (trabajo: Office/Chrome no se tocan).",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\necho Bloat de sesion cerrado."}
+,{title:"1334. DEBLOAT - GameDVR Off REG",desc:"Sin captura GameDVR.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1335. DEBLOAT - Search History Off REG",desc:"Historial de busqueda off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v HistoryViewEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v BingSearchEnabled /t REG_DWORD /d 0 /f"}
+,{title:"1336. DEBLOAT - Clipboard History Off REG",desc:"Historial de portapapeles off.",code:"reg add \"HKCU\\Software\\Microsoft\\Clipboard\" /v EnableClipboardHistory /t REG_DWORD /d 0 /f"}
+,{title:"1337. DEBLOAT - Storage Sense Temp Cleanup Guide",desc:"Guia: Storage Sense limpia temp automaticamente.",code:"echo Configuracion > Sistema > Almacenamiento > Sense de almacenamiento\necho Activa limpieza temporal automatica si quieres\npause"}
+,{title:"1338. DEBLOAT - Disk Cleanup Silent CMD",desc:"Ejecuta cleanmgr en modo sageset predefinido suave (temp).",code:"cleanmgr /sagerun:1\necho Disk Cleanup lanzado."}
+,{title:"1339. DEBLOAT - AppData Local Temp Nested",desc:"Limpia subcarpetas temp comunes en LocalAppData.",code:"del /f /s /q \"%LOCALAPPDATA%\\Temp\\*\" 2>nul\necho LocalAppData\\Temp limpio."}
+,{title:"1340. DEBLOAT - Edge Cache Optional",desc:"Limpia caché de Edge (no borra favoritos/contraseñas).",code:"taskkill /f /im msedge.exe 2>nul\ndel /f /s /q \"%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\Default\\Cache\\*\" 2>nul\ndel /f /s /q \"%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\Default\\Code Cache\\*\" 2>nul\necho Edge cache limpia."}
+,{title:"1341. DEBLOAT - Chrome Cache Optional",desc:"Limpia caché de Chrome (no borra favoritos/contraseñas).",code:"taskkill /f /im chrome.exe 2>nul\ndel /f /s /q \"%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Cache\\*\" 2>nul\ndel /f /s /q \"%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Code Cache\\*\" 2>nul\necho Chrome cache limpia."}
+,{title:"1342. DEBLOAT - GPU Driver Cache Report",desc:"Muestra rutas de cache GPU para limpieza manual si hace falta.",code:"echo NVIDIA: %%LOCALAPPDATA%%\\NVIDIA\\DXCache\necho AMD: %%LOCALAPPDATA%%\\AMD\\DxCache\necho DirectX: %%LOCALAPPDATA%%\\D3DSCache\npause"}
+,{title:"1343. DEBLOAT - Full Safe Clean Pack CMD",desc:"Pack limpieza segura: TEMP + Windows Temp + Prefetch + thumbnails + dumps + recycle.",code:"del /f /s /q \"%TEMP%\\*\" 2>nul\ndel /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul\ndel /f /s /q \"C:\\Windows\\Prefetch\\*\" 2>nul\ndel /f /s /q /a \"%LocalAppData%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db\" 2>nul\ndel /f /q \"%SystemRoot%\\MEMORY.DMP\" 2>nul\ndel /f /s /q \"%SystemRoot%\\Minidump\\*.dmp\" 2>nul\nPowerShell -NoProfile -Command \"Clear-RecycleBin -Force -ErrorAction SilentlyContinue\"\nipconfig /flushdns\necho Pack limpieza segura completado. No se borro nada de trabajo (Documentos/Desktop/Office intactos)."}
+,{title:"1344. DEBLOAT - Gaming Session Prep Pack",desc:"Limpia temp + cierra bloat + GameDVR off. Listo para Fortnite/Apex/Valorant/Warzone.",code:"del /f /s /q \"%TEMP%\\*\" 2>nul\ndel /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul\ntaskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\necho Sesion gaming preparada. Defender y archivos de trabajo intactos."}
 
 ];
 
@@ -839,10 +1129,101 @@ const ramTweaksList = [
 {title:"159. RAM STABLE - Process Diagnostic",desc:"Lista los procesos por memoria para encontrar el verdadero consumidor en lugar de matar procesos a ciegas.",code:"PowerShell -NoProfile -Command \"Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 30 ProcessName,Id,@{N='RAM_MB';E={[math]::Round($_.WorkingSet64/1MB,1)}} | Format-Table -AutoSize\"\npause"},
 {title:"160. RAM STABLE - Standby List Guide",desc:"Guía para revisar memoria standby sin limpiarla automáticamente.",code:"echo Comprueba primero RAM disponible y standby.\necho No ejecutes limpiadores agresivos durante una partida.\npause"},
 
+
+,{title:"170. AGRESIVO SAFE RAM - Process Profile Competitive",desc:"Cierra procesos opcionales pesados de sesión para liberar RAM. No toca Defender, Firewall ni servicios críticos.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im msedge.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im Cortana.exe 2>nul\necho [RAM SAFE] Procesos opcionales cerrados."}
+,{title:"171. AGRESIVO SAFE RAM - Memory Compression Keep + Background Off",desc:"Mantiene compresión (ayuda anti-stutter) + apps fondo off.",code:"PowerShell -NoProfile -Command \"Enable-MMAgent -MemoryCompression -ErrorAction SilentlyContinue\"\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"172. AGRESIVO SAFE RAM - LargeSystemCache 0 + DisablePagingExecutive",desc:"Prioriza programas + kernel en RAM (si tienes 16GB+).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"}
+,{title:"173. AGRESIVO SAFE RAM - IoPageLockLimit Alto",desc:"Más páginas bloqueables para I/O de juegos (texturas/assets).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v IoPageLockLimit /t REG_DWORD /d 4000000 /f"}
+,{title:"174. AGRESIVO SAFE RAM - Clean Temp + Prefetch Optional",desc:"Limpia temporales. Prefetch se deja (no se desactiva para no dañar cargas).",code:"del /f /s /q \"%TEMP%\\*\" 2>nul\ndel /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul\necho Temp limpio. Prefetch se mantiene."}
+,{title:"175. AGRESIVO SAFE RAM - Visual FX Min + Transparency Off",desc:"Reduce consumo de memoria de composición.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f"}
+,{title:"176. AGRESIVO SAFE RAM - Foreground Priority + Power Throttling Off",desc:"Prioridad primer plano + sin throttling.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f"}
+,{title:"177. AGRESIVO SAFE RAM - CPU Core Parking + Min 100",desc:"Núcleos siempre listos. Mejor 1% lows.",code:"powercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setactive scheme_current"}
+,{title:"178. AGRESIVO SAFE RAM - Game Mode ON + GameDVR OFF",desc:"Game Mode + sin captura (ahorra RAM/CPU).",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"179. AGRESIVO SAFE RAM - Final Diagnostic",desc:"Muestra top procesos por RAM para que sepas qué cierra manualmente si hace falta.",code:"PowerShell -NoProfile -Command \"Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 20 ProcessName,Id,@{N='RAM_MB';E={[math]::Round($_.WorkingSet64/1MB,1)}} | Format-Table -AutoSize\"\npause"}
+
+
+,{title:"200. RAM AGRESIVO - Standby List Guide Safe",desc:"No limpia standby automáticamente (puede causar stutter). Solo guía de medición.",code:"echo Abre Task Manager > Rendimiento > Memoria\necho Revisa en uso / disponible / en espera\necho No uses limpiadores agresivos durante partida\npause"}
+,{title:"201. RAM AGRESIVO - Working Set Trim Guide",desc:"No fuerza trim agresivo (puede dañar). Usa solo si sabes medir.",code:"echo Para diagnosticar usa Process Explorer o RAMMap\necho No ejecutes Empty Standby List en medio de un juego\npause"}
+,{title:"202. RAM AGRESIVO - Disable Memory Compression Optional",desc:"Solo si tienes mucha RAM libre y quieres probar. Puede aumentar presión en 8GB.",code:"PowerShell -NoProfile -Command \"Disable-MMAgent -MemoryCompression -ErrorAction SilentlyContinue\"\necho Si notas más stutter, vuelve a activar con Enable-MMAgent -MemoryCompression"}
+,{title:"203. RAM AGRESIVO - Enable Memory Compression Safe",desc:"Mantiene compresión ON (recomendado anti-stutter).",code:"PowerShell -NoProfile -Command \"Enable-MMAgent -MemoryCompression -ErrorAction SilentlyContinue\""}
+,{title:"204. RAM AGRESIVO - Clear User Temp Only",desc:"Limpia solo TEMP del usuario.",code:"del /f /s /q \"%TEMP%\\*\" 2>nul\necho Temp usuario limpio."}
+,{title:"205. RAM AGRESIVO - Clear Windows Temp Only",desc:"Limpia TEMP de Windows no en uso.",code:"del /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul\necho Windows Temp limpio."}
+,{title:"206. RAM AGRESIVO - Clear Thumbnail Cache",desc:"Reconstruye caché de miniaturas.",code:"del /f /s /q /a \"%LocalAppData%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db\" 2>nul\ndel /f /q \"%LocalAppData%\\IconCache.db\" 2>nul"}
+,{title:"207. RAM AGRESIVO - Clear D3DSCache",desc:"Limpia caché DirectX shader (puede recompilar shaders la primera vez).",code:"del /f /s /q \"%LocalAppData%\\D3DSCache\\*\" 2>nul\necho D3DSCache limpiado. Puede haber stutter breve al recompilar."}
+,{title:"208. RAM AGRESIVO - Clear NVIDIA DXCache Optional",desc:"Solo si usas NVIDIA y quieres forzar recompilación.",code:"rmdir /s /q \"%LocalAppData%\\NVIDIA\\DXCache\" 2>nul\nrmdir /s /q \"%LocalAppData%\\NVIDIA\\GLCache\" 2>nul\necho NVIDIA cache limpiada."}
+,{title:"209. RAM AGRESIVO - Clear AMD DxCache Optional",desc:"Solo AMD.",code:"rmdir /s /q \"%LocalAppData%\\AMD\\DxCache\" 2>nul\necho AMD DxCache limpiada."}
+,{title:"210. RAM AGRESIVO - Crash Dumps Clean",desc:"Limpia volcados de memoria antiguos.",code:"del /f /q \"%SystemRoot%\\MEMORY.DMP\" 2>nul\ndel /f /s /q \"%SystemRoot%\\Minidump\\*.dmp\" 2>nul\ndel /f /s /q \"%LocalAppData%\\CrashDumps\\*\" 2>nul"}
+,{title:"211. RAM AGRESIVO - WER Clean",desc:"Limpia reportes de errores.",code:"del /f /s /q \"%ProgramData%\\Microsoft\\Windows\\WER\\*\" 2>nul"}
+,{title:"212. RAM AGRESIVO - Recycle Bin Empty",desc:"Vacía papelera.",code:"PowerShell -NoProfile -Command \"Clear-RecycleBin -Force -ErrorAction SilentlyContinue\""}
+,{title:"213. RAM AGRESIVO - LargeSystemCache 0",desc:"Prioriza programas sobre caché de sistema.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"}
+,{title:"214. RAM AGRESIVO - DisablePagingExecutive",desc:"Mantiene kernel en RAM.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"}
+,{title:"215. RAM AGRESIVO - IoPageLockLimit 4M",desc:"Límite I/O alto.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v IoPageLockLimit /t REG_DWORD /d 4000000 /f"}
+,{title:"216. RAM AGRESIVO - Prefetch 0",desc:"Prefetch off (prueba en SSD).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnablePrefetcher /t REG_DWORD /d 0 /f"}
+,{title:"217. RAM AGRESIVO - Superfetch 0",desc:"Superfetch off.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters\" /v EnableSuperfetch /t REG_DWORD /d 0 /f"}
+,{title:"218. RAM AGRESIVO - Background Apps Global Off",desc:"UWP fondo off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"219. RAM AGRESIVO - Visual FX Best Perf",desc:"Efectos mínimos.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f"}
+,{title:"220. RAM AGRESIVO - Transparency Off",desc:"Sin transparencia.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f"}
+,{title:"221. RAM AGRESIVO - Game Mode ON",desc:"Game Mode.",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f"}
+,{title:"222. RAM AGRESIVO - GameDVR Off",desc:"Sin captura.",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"223. RAM AGRESIVO - Win32Priority 38",desc:"Prioridad primer plano.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"}
+,{title:"224. RAM AGRESIVO - Power Throttling Off",desc:"Sin power throttling.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f"}
+,{title:"225. RAM AGRESIVO - CPU Core Parking 100",desc:"Sin parking.",code:"powercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setactive scheme_current"}
+,{title:"226. RAM AGRESIVO - CPU Min 100",desc:"Mínimo CPU 100%.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setactive scheme_current"}
+,{title:"227. RAM AGRESIVO - Session Kill OneDrive Widgets Phone",desc:"Cierra consumidores de RAM de sesión.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul"}
+,{title:"228. RAM AGRESIVO - Session Kill GameBar EdgeUpdate",desc:"Cierra GameBar y Edge update.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul"}
+,{title:"229. RAM AGRESIVO - Top Processes Diagnostic",desc:"Lista top 25 por RAM.",code:"PowerShell -NoProfile -Command \"Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 25 ProcessName,Id,@{N='RAM_MB';E={[math]::Round($_.WorkingSet64/1MB,1)}} | Format-Table -AutoSize\"\npause"}
+,{title:"230. RAM AGRESIVO - Memory Pressure Report",desc:"Muestra memoria total/libre.",code:"PowerShell -NoProfile -Command \"Get-CimInstance Win32_OperatingSystem | Select-Object @{N='TotalGB';E={[math]::Round($_.TotalVisibleMemorySize/1MB,1)}},@{N='FreeGB';E={[math]::Round($_.FreePhysicalMemory/1MB,1)}} | Format-List\"\npause"}
+
+
+,{title:"250. RAM PROC - Kill OneDrive Session",desc:"Cierra OneDrive solo en sesion. No deshabilita el servicio.",code:"taskkill /f /im OneDrive.exe 2>nul"}
+,{title:"251. RAM PROC - Kill Widgets Session",desc:"Cierra Widgets en sesion.",code:"taskkill /f /im Widgets.exe 2>nul"}
+,{title:"252. RAM PROC - Kill Phone Link Session",desc:"Cierra Phone Link / Your Phone.",code:"taskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul"}
+,{title:"253. RAM PROC - Kill GameBar Session",desc:"Cierra Game Bar y Presence Writer.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul"}
+,{title:"254. RAM PROC - Kill Edge Update Session",desc:"Cierra MicrosoftEdgeUpdate (no desinstala Edge).",code:"taskkill /f /im MicrosoftEdgeUpdate.exe 2>nul"}
+,{title:"255. RAM PROC - Kill SearchApp Session",desc:"Cierra SearchApp/SearchUI en sesion.",code:"taskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im SearchUI.exe 2>nul"}
+,{title:"256. RAM PROC - Kill Cortana Session",desc:"Cierra Cortana si esta abierta.",code:"taskkill /f /im Cortana.exe 2>nul"}
+,{title:"257. RAM PROC - Kill Teams Session",desc:"Cierra Teams durante gaming.",code:"taskkill /f /im ms-teams.exe 2>nul\ntaskkill /f /im Teams.exe 2>nul"}
+,{title:"258. RAM PROC - Kill RGB Software",desc:"Cierra iCUE, Synapse, Armoury, LGHUB (menos RAM y delay).",code:"taskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul\ntaskkill /f /im Corsair.Service.exe 2>nul"}
+,{title:"259. RAM PROC - Kill All Competitive Bloat Pack",desc:"Pack sesion: OneDrive+Widgets+Phone+GameBar+Search+EdgeUpdate+RGB. Defender intacto.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im YourPhone.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im SearchApp.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul"}
+,{title:"260. RAM REG - Background Apps Global Off",desc:"Apps UWP en segundo plano off. Mas RAM libre.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f"}
+,{title:"261. RAM REG - Widgets Taskbar Off",desc:"Widgets de barra off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarDa /t REG_DWORD /d 0 /f"}
+,{title:"262. RAM REG - Chat Taskbar Off",desc:"Chat de barra off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v TaskbarMn /t REG_DWORD /d 0 /f"}
+,{title:"263. RAM REG - Task View Button Off",desc:"Boton Vista de tareas off.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v ShowTaskViewButton /t REG_DWORD /d 0 /f"}
+,{title:"264. RAM REG - Search Box Taskbar Off",desc:"Caja de busqueda off en barra.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search\" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f"}
+,{title:"265. RAM REG - Game Mode ON",desc:"Game Mode on.",code:"reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f"}
+,{title:"266. RAM REG - GameDVR Off",desc:"Sin captura (ahorra RAM/CPU).",code:"reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f"}
+,{title:"267. RAM REG - Visual FX Best Performance",desc:"Efectos al minimo.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f"}
+,{title:"268. RAM REG - Transparency Off",desc:"Sin transparencia.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f"}
+,{title:"269. RAM REG - LargeSystemCache 0",desc:"Prioriza programas sobre cache grande.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f"}
+,{title:"270. RAM REG - DisablePagingExecutive 1",desc:"Kernel en RAM (recomendado 16GB+).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f"}
+,{title:"271. RAM REG - IoPageLockLimit Alto",desc:"Mas paginas I/O bloqueables para assets.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v IoPageLockLimit /t REG_DWORD /d 4000000 /f"}
+,{title:"272. RAM REG - Win32PrioritySeparation 38",desc:"Prioridad primer plano maxima.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl\" /v Win32PrioritySeparation /t REG_DWORD /d 38 /f"}
+,{title:"273. RAM REG - Power Throttling Off",desc:"Sin power throttling.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f"}
+,{title:"274. RAM REG - Startup Delay 0",desc:"Sin retraso artificial de apps de inicio.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Serialize\" /v StartupDelayInMSec /t REG_DWORD /d 0 /f"}
+,{title:"275. RAM REG - Content Delivery Tips Off",desc:"Menos sugerencias y contenido promocional.",code:"reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SystemPaneSuggestionsEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SoftLandingEnabled /t REG_DWORD /d 0 /f\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v SilentInstalledAppsEnabled /t REG_DWORD /d 0 /f"}
+,{title:"276. RAM REG - Telemetry Allow 0 Safe",desc:"Telemetria minima. No toca Defender.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f"}
+,{title:"277. RAM REG - Activity History Off",desc:"Historial de actividad off.",code:"reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v EnableActivityFeed /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v PublishUserActivities /t REG_DWORD /d 0 /f\nreg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System\" /v UploadUserActivities /t REG_DWORD /d 0 /f"}
+,{title:"278. RAM REG - Delivery Optimization P2P Off",desc:"No compartir actualizaciones P2P.",code:"reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config\" /v DODownloadMode /t REG_DWORD /d 0 /f"}
+,{title:"279. RAM POWER - CPU Min 100 + Core Parking Off",desc:"CPU lista, sin parking. Mejor 1% lows.",code:"powercfg /setacvalueindex scheme_current sub_processor PROCTHROTTLEMIN 100\npowercfg /setacvalueindex scheme_current sub_processor CPMINCORES 100\npowercfg /setactive scheme_current"}
+,{title:"280. RAM POWER - Ultimate Performance",desc:"Ultimate Performance si esta disponible.",code:"powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul\npowercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61 2>nul"}
+,{title:"281. RAM POWER - PCIe ASPM Off",desc:"Sin ahorro PCIe.",code:"powercfg /setacvalueindex scheme_current SUB_PCIEXPRESS ASPM 0\npowercfg /setactive scheme_current"}
+,{title:"282. RAM POWER - USB Selective Suspend Off",desc:"USB no suspende perifericos.",code:"powercfg /setacvalueindex scheme_current SUB_USB USBSELECTIVE 0\npowercfg /setactive scheme_current"}
+,{title:"283. RAM CLEAN - User Temp Only",desc:"Limpia solo %TEMP% del usuario.",code:"del /f /s /q \"%TEMP%\\*\" 2>nul"}
+,{title:"284. RAM CLEAN - Windows Temp Only",desc:"Limpia C:\\Windows\\Temp no en uso.",code:"del /f /s /q \"C:\\Windows\\Temp\\*\" 2>nul"}
+,{title:"285. RAM CLEAN - Thumbnail Cache",desc:"Limpia thumbcache.",code:"del /f /s /q /a \"%LocalAppData%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db\" 2>nul\ndel /f /q \"%LocalAppData%\\IconCache.db\" 2>nul"}
+,{title:"286. RAM CLEAN - Crash Dumps",desc:"Limpia MEMORY.DMP y Minidump.",code:"del /f /q \"%SystemRoot%\\MEMORY.DMP\" 2>nul\ndel /f /s /q \"%SystemRoot%\\Minidump\\*.dmp\" 2>nul\ndel /f /s /q \"%LocalAppData%\\CrashDumps\\*\" 2>nul"}
+,{title:"287. RAM CLEAN - Recycle Bin",desc:"Vacia papelera.",code:"PowerShell -NoProfile -Command \"Clear-RecycleBin -Force -ErrorAction SilentlyContinue\""}
+,{title:"288. RAM DIAG - Top Processes by RAM",desc:"Lista top 25 procesos por memoria.",code:"PowerShell -NoProfile -Command \"Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 25 ProcessName,Id,@{N='RAM_MB';E={[math]::Round($_.WorkingSet64/1MB,1)}} | Format-Table -AutoSize\"\npause"}
+,{title:"289. RAM DIAG - Memory Pressure Report",desc:"Total/libre de RAM.",code:"PowerShell -NoProfile -Command \"Get-CimInstance Win32_OperatingSystem | Select-Object @{N='TotalGB';E={[math]::Round($_.TotalVisibleMemorySize/1MB,1)}},@{N='FreeGB';E={[math]::Round($_.FreePhysicalMemory/1MB,1)}} | Format-List\"\npause"}
+,{title:"290. RAM DIAG - Process Count",desc:"Cantidad actual de procesos.",code:"powershell -NoProfile -Command \"(Get-Process).Count\"\npause"}
+,{title:"291. RAM STABLE - Memory Compression ON",desc:"Mantiene compresion (ayuda anti-stutter).",code:"PowerShell -NoProfile -Command \"Enable-MMAgent -MemoryCompression -ErrorAction SilentlyContinue\""}
+,{title:"292. RAM STABLE - Prefetch Keep Guide",desc:"No desactiva Prefetch (puede perjudicar cargas).",code:"echo Prefetch se mantiene activo para no danar tiempos de carga.\npause"}
+,{title:"293. RAM STABLE - Defender Keep",desc:"Confirma que Defender no se desactiva.",code:"echo Windows Defender se mantiene activo. Este pack no lo desactiva.\npause"}
+,{title:"294. RAM COMPETITIVE - Final Session Pack",desc:"Cierre final + background off + GameDVR off. Listo para Fortnite/Apex/Valorant/Warzone.",code:"taskkill /f /im OneDrive.exe 2>nul\ntaskkill /f /im Widgets.exe 2>nul\ntaskkill /f /im PhoneExperienceHost.exe 2>nul\ntaskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul\ntaskkill /f /im MicrosoftEdgeUpdate.exe 2>nul\ntaskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f\nreg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f\necho Pack competitive aplicado. Reinicia si cambiaste REG."}
+
 ];
 
-  // ===================== INTERNET TWEAKS (ESTABILIDAD + ZERO DELAY) =====================
-  const internetTweaksList = [
+const internetTweaksList = [
 {title:"1. Cloudflare DNS",desc:"DNS rápido y estable (1.1.1.1 + 1.0.0.1).",code:"netsh interface ip set dns name=\"Ethernet\" static 1.1.1.1\nnetsh interface ip add dns name=\"Ethernet\" 1.0.0.1 index=2\nnetsh interface ip set dns name=\"Wi-Fi\" static 1.1.1.1\nnetsh interface ip add dns name=\"Wi-Fi\" 1.0.0.1 index=2"},
 {title:"2. Google DNS",desc:"Alternativa estable (8.8.8.8 + 8.8.4.4).",code:"netsh interface ip set dns name=\"Ethernet\" static 8.8.8.8\nnetsh interface ip add dns name=\"Ethernet\" 8.8.4.4 index=2"},
 {title:"4. Reset Winsock",desc:"Reinicia la pila Winsock (arregla muchos problemas de red).",code:"netsh winsock reset"},
@@ -1008,10 +1389,34 @@ const ramTweaksList = [
 ,{title:"97. CLICK FAST - Polling 1000Hz+",desc:"1000Hz minimo; 2000/4000 si tu PC lo aguanta sin stutter.",code:"echo Software del mouse: Polling Rate 1000Hz (o 2000/4000)\necho Clics se registran mas veces por segundo\npause"}
 ,{title:"98. CLICK FAST - Kill RGB Delay",desc:"Cierra software RGB que anade latencia a clics.",code:"taskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul"}
 
+
+,{title:"100. MOUSE AGRESIVO - Accel Completely Off",desc:"MouseSpeed + Thresholds 0. Obligatorio competitive.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f"}
+,{title:"101. MOUSE AGRESIVO - Sensitivity 6/11",desc:"1:1 con raw input.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f"}
+,{title:"102. MOUSE AGRESIVO - Queue 12 mouclass",desc:"Cola muy baja.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f"}
+,{title:"103. MOUSE AGRESIVO - Queue 12 mouhid",desc:"Cola HID baja.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouhid\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f"}
+,{title:"104. MOUSE AGRESIVO - Queue 16 Safe",desc:"Cola 16 si pierdes input con 12.",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 16 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouhid\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 16 /f"}
+,{title:"105. MOUSE AGRESIVO - Smooth Curves Zero",desc:"Sin suavizado Windows.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseXCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseYCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f"}
+,{title:"106. MOUSE AGRESIVO - Trails Off",desc:"Sin rastro.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseTrails /t REG_SZ /d 0 /f"}
+,{title:"107. MOUSE AGRESIVO - Cursor Shadow Off",desc:"Sin sombra.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v CursorShadow /t REG_SZ /d 0 /f"}
+,{title:"108. MOUSE AGRESIVO - ClickLock Off",desc:"ClickLock off.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v ClickLock /t REG_DWORD /d 0 /f"}
+,{title:"109. MOUSE AGRESIVO - MouseKeys Off",desc:"Teclas de mouse off.",code:"reg add \"HKCU\\Control Panel\\Accessibility\\MouseKeys\" /v Flags /t REG_SZ /d 0 /f"}
+,{title:"110. MOUSE AGRESIVO - DoubleClickSpeed Fast",desc:"Doble clic más rápido.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v DoubleClickSpeed /t REG_SZ /d 200 /f"}
+,{title:"111. MOUSE AGRESIVO - DoubleClick Area Min",desc:"Área doble clic precisa.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v DoubleClickHeight /t REG_SZ /d 4 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v DoubleClickWidth /t REG_SZ /d 4 /f"}
+,{title:"112. MOUSE AGRESIVO - SnapToDefault Off",desc:"Sin snap al botón.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v SnapToDefaultButton /t REG_SZ /d 0 /f"}
+,{title:"113. MOUSE AGRESIVO - USB Selective Suspend Off",desc:"USB no suspende mouse.",code:"powercfg /setacvalueindex scheme_current 2a737441-1930-4402-8d77-b2bebba308a3 48e0a6e6-7c45-4a1a-9b4b-5b8c5d8e5f5f 0\npowercfg /setactive scheme_current"}
+,{title:"114. MOUSE AGRESIVO - Kill RGB Software",desc:"Cierra iCUE/Synapse/Armoury/LGHUB.",code:"taskkill /f /im iCUE.exe 2>nul\ntaskkill /f /im RazerSynapse.exe 2>nul\ntaskkill /f /im ArmouryCrate.exe 2>nul\ntaskkill /f /im LGHUB.exe 2>nul\ntaskkill /f /im Corsair.Service.exe 2>nul"}
+,{title:"115. MOUSE AGRESIVO - Kill GameBar Overlay",desc:"Cierra Game Bar.",code:"taskkill /f /im GameBar.exe 2>nul\ntaskkill /f /im GameBarPresenceWriter.exe 2>nul"}
+,{title:"116. MOUSE AGRESIVO - Polling 1000Hz Guide",desc:"Configura 1000Hz en software del mouse.",code:"echo Software del mouse: Polling Rate = 1000Hz\necho Si 2000/4000/8000 causa stutter, vuelve a 1000\npause"}
+,{title:"117. MOUSE AGRESIVO - Raw Input Games Guide",desc:"Activa Raw Input en Fortnite/Apex/Valorant.",code:"echo Fortnite: Raw Input = On\necho Apex: Mouse Data = Raw\necho Valorant: Raw Input Buffer = On\npause"}
+,{title:"118. MOUSE AGRESIVO - NVIDIA Latency Guide",desc:"Low Latency Ultra + Pre-Rendered 1 + Reflex.",code:"echo NVIDIA Panel: Low Latency Mode = Ultra\necho Maximum Pre-Rendered Frames = 1\necho En juego: Reflex On + Boost\npause"}
+,{title:"119. MOUSE AGRESIVO - Angle Snapping Off Guide",desc:"Angle Snapping / Prediction OFF.",code:"echo En software del mouse:\necho Angle Snapping = Off\necho Motion Sync = prueba Off\necho Prediction / Ripple = Off\npause"}
+,{title:"120. MOUSE AGRESIVO - Debounce Min Guide",desc:"Debounce 0-4ms sin double-click fantasma.",code:"echo Debounce time = mínimo estable (0-4ms)\necho Eso acelera el clic físico\npause"}
+,{title:"121. MOUSE AGRESIVO - Wired Prefer Guide",desc:"Usa cable para mínimo delay variable.",code:"echo Conecta el mouse por cable a puerto de placa base (no hub)\npause"}
+,{title:"122. MOUSE AGRESIVO - Full Accel Off Pack",desc:"Todo el pack de aceleración off + queue 12 + curves zero.",code:"reg add \"HKCU\\Control Panel\\Mouse\" /v MouseSpeed /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold1 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseThreshold2 /t REG_SZ /d 0 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v MouseSensitivity /t REG_SZ /d 10 /f\nreg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters\" /v MouseDataQueueSize /t REG_DWORD /d 12 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseXCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f\nreg add \"HKCU\\Control Panel\\Mouse\" /v SmoothMouseYCurve /t REG_BINARY /d 0000000000000000000000000000000000000000000000000000000000000000 /f"}
+
 ];
 
-  // ===================== KEYBOARD TWEAKS (ZERO DELAY) =====================
-  const keyboardTweaksList = [
+const keyboardTweaksList = [
 {title:"1. Keyboard Delay 0",desc:"Retraso de repetición al mínimo absoluto.",code:"reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardDelay /t REG_SZ /d 0 /f"},
 {title:"2. Keyboard Speed Max",desc:"Velocidad de repetición al máximo (31).",code:"reg add \"HKCU\\Control Panel\\Keyboard\" /v KeyboardSpeed /t REG_SZ /d 31 /f"},
 {title:"3. KeyboardDataQueueSize 16",desc:"Reduce la cola de datos del teclado (menor latency).",code:"reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\kbdclass\\Parameters\" /v KeyboardDataQueueSize /t REG_DWORD /d 16 /f"},
@@ -1103,8 +1508,12 @@ const ramTweaksList = [
       ...internetTweaksList,
       ...mouseTweaksList,
       ...keyboardTweaksList
-    ].filter(t => t && typeof t === 'object' && t.code != null)
-     .filter(isCompatibleWithSupportedWindows);
+    ].filter(t => t && typeof t === 'object' && t.code != null);
+  }
+
+  // Alias: todos los tweaks de las 5 pestanas (Window, RAM, Internet, Mouse, Keyboard)
+  function getAllCategoryTweaks() {
+    return getAllTweaks();
   }
 
   function downloadAllTweaksBat() {
@@ -1112,32 +1521,159 @@ const ramTweaksList = [
       // Solo tweaks que en la UI muestran "Descargar .BAT" (no son puro registro)
       const tweaks = getAllTweaks().filter(t => t && t.code != null && !isPureRegistryTweak(String(t.code || '')));
       if (!tweaks.length) return alert('No se encontraron tweaks .BAT compatibles.');
-      const body = tweaks.map((t,i)=>`\n:: ========================================\n:: ${i+1}. ${t.title}\n:: ${t.desc||''}\n:: ========================================\n${t.code||''}\n`).join('\n');
+
+      // Separar por tipo para el BAT inteligente
+      const general = [];
+      const nvidia = [];
+      const amd = [];
+      const intel = [];
+      tweaks.forEach((t, i) => {
+        const title = (t.title || '').toUpperCase();
+        const desc = (t.desc || '').toUpperCase();
+        const code = (t.code || '').toUpperCase();
+        const entry = { title: t.title, desc: t.desc, code: t.code, idx: i+1 };
+        if (title.includes('NVIDIA') || desc.includes('NVIDIA') || code.includes('NVIDIA') || title.includes('REFLEX')) {
+          nvidia.push(entry);
+        } else if (title.includes('AMD') || desc.includes('AMD') || title.includes('RADEON') || desc.includes('ANTI-LAG')) {
+          amd.push(entry);
+        } else if (title.includes('INTEL') || desc.includes('INTEL ARC') || title.includes('INTEL ')) {
+          intel.push(entry);
+        } else {
+          general.push(entry);
+        }
+      });
+
+      function makeSection(list, label) {
+        if (!list.length) return `echo [INFO] No hay tweaks especificos de ${label} en este paquete.\n`;
+        return list.map((t,i) => `
+:: ========================================
+:: ${label} ${i+1}. ${t.title}
+:: ${t.desc||''}
+:: ========================================
+${t.code||''}
+`).join('\n');
+      }
+
+      const bodyGeneral = makeSection(general, 'GENERAL');
+      const bodyNvidia = makeSection(nvidia, 'NVIDIA');
+      const bodyAmd = makeSection(amd, 'AMD');
+      const bodyIntel = makeSection(intel, 'INTEL');
+
       const fullContent = `@echo off
-setlocal EnableExtensions
-:: Yosser Tweaks - SOLO TWEAKS .BAT (Windows 8.1 / 10 / 11)
-:: Ejecutar como administrador. Se bloquea cualquier otro Windows.
-for /f "tokens=2 delims==" %%V in ('wmic os get Version /value ^| find "="') do set "WINVER=%%V"
+setlocal EnableExtensions EnableDelayedExpansion
+title Yosser Tweaks - Aggressive Safe BAT (Auto-detect OS + GPU)
+:: ============================================================
+:: Yosser Tweaks - SOLO TWEAKS .BAT
+:: Windows 8.1 / 10 / 11 + deteccion NVIDIA / AMD / INTEL
+:: NO desactiva Windows Defender ni Firewall
+:: Ejecutar SIEMPRE como Administrador
+:: ============================================================
+
+echo.
+echo ============================================
+echo   YOSSER TWEAKS - DETECCION AUTOMATICA
+echo ============================================
+echo.
+
+:: --- Detectar version de Windows ---
+set "WINVER="
+set "OSNAME=UNKNOWN"
+for /f "tokens=2 delims==" %%V in ('wmic os get Version /value 2^>nul ^| find "="') do set "WINVER=%%V"
 if not defined WINVER (
-  for /f "delims=" %%V in ('powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).Version"') do set "WINVER=%%V"
+  for /f "delims=" %%V in ('powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).Version" 2^>nul') do set "WINVER=%%V"
 )
-echo Windows detectado: %WINVER%
-echo %WINVER% | findstr /b "6.3. 10.0." >nul || (
-  echo [BLOQUEADO] Este archivo solo es para Windows 8.1, 10 y 11.
+if not defined WINVER (
+  echo [ERROR] No se pudo detectar la version de Windows.
   pause
   exit /b 1
 )
+
+echo Windows Version: %WINVER%
+
+echo %WINVER% | findstr /b "6.3." >nul && set "OSNAME=8.1"
+echo %WINVER% | findstr /b "10.0." >nul && (
+  for /f "tokens=2 delims==" %%B in ('wmic os get BuildNumber /value 2^>nul ^| find "="') do set "BUILD=%%B"
+  if not defined BUILD (
+    for /f "delims=" %%B in ('powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).BuildNumber" 2^>nul') do set "BUILD=%%B"
+  )
+  if defined BUILD (
+    if !BUILD! GEQ 22000 (set "OSNAME=11") else (set "OSNAME=10")
+  ) else (
+    set "OSNAME=10/11"
+  )
+)
+
+if "%OSNAME%"=="UNKNOWN" (
+  echo [BLOQUEADO] Este archivo solo es para Windows 8.1, 10 y 11.
+  echo Version detectada: %WINVER%
+  pause
+  exit /b 1
+)
+
+echo Sistema operativo: Windows %OSNAME%
 echo.
-echo Yosser Tweaks: aplicando SOLO tweaks .BAT (${tweaks.length} ajustes)...
+
+:: --- Detectar GPU ---
+set "GPU=OTHER"
+set "GPUNAME="
+for /f "tokens=*" %%G in ('wmic path win32_VideoController get name 2^>nul ^| findstr /i /v "Name" ^| findstr /i "."') do (
+  set "GPUNAME=%%G"
+  echo %%G | findstr /i "NVIDIA" >nul && set "GPU=NVIDIA"
+  echo %%G | findstr /i "AMD Radeon" >nul && set "GPU=AMD"
+  echo %%G | findstr /i "Intel" >nul && if not "!GPU!"=="NVIDIA" if not "!GPU!"=="AMD" set "GPU=INTEL"
+)
+if not defined GPUNAME (
+  for /f "delims=" %%G in ('powershell -NoProfile -Command "(Get-CimInstance Win32_VideoController).Name -join ' | '" 2^>nul') do set "GPUNAME=%%G"
+  echo !GPUNAME! | findstr /i "NVIDIA" >nul && set "GPU=NVIDIA"
+  echo !GPUNAME! | findstr /i "AMD Radeon" >nul && set "GPU=AMD"
+  echo !GPUNAME! | findstr /i "Intel" >nul && if not "!GPU!"=="NVIDIA" if not "!GPU!"=="AMD" set "GPU=INTEL"
+)
+
+echo GPU detectada: %GPU%  (%GPUNAME%)
 echo.
-${body}
+echo Aplicando tweaks GENERALES + especificos de %GPU% ...
+echo Los cambios de registro y bcdedit requieren REINICIO para aplicarse completamente.
 echo.
-echo Terminado. Reinicia Windows si algun ajuste lo requiere.
+pause
+echo.
+
+:: ========== TWEAKS GENERALES (todas las GPUs / OS soportados) ==========
+echo [GENERAL] Aplicando tweaks generales...
+${bodyGeneral}
+
+:: ========== TWEAKS POR GPU ==========
+if /i "%GPU%"=="NVIDIA" (
+  echo.
+  echo [NVIDIA] Aplicando tweaks NVIDIA...
+${bodyNvidia}
+) else if /i "%GPU%"=="AMD" (
+  echo.
+  echo [AMD] Aplicando tweaks AMD...
+${bodyAmd}
+) else if /i "%GPU%"=="INTEL" (
+  echo.
+  echo [INTEL] Aplicando tweaks INTEL...
+${bodyIntel}
+) else (
+  echo.
+  echo [INFO] GPU no NVIDIA/AMD/Intel clasica. Solo se aplicaron tweaks generales.
+)
+
+echo.
+echo ============================================
+echo   TERMINADO - Yosser Tweaks
+echo ============================================
+echo Windows: %OSNAME%  |  GPU: %GPU%
+echo.
+echo IMPORTANTE: Reinicia Windows ahora para que los cambios
+echo de registro, bcdedit y planes de energia se apliquen.
+echo Defender y Firewall NO fueron desactivados.
+echo.
 pause
 endlocal
 `;
-      forceDownload(new Blob([fullContent], {type:'text/plain;charset=utf-8'}), 'Yosser_Tweaks_SOLO_BAT.BAT');
-      alert('Descarga iniciada: Yosser_Tweaks_SOLO_BAT.BAT\nTweaks .BAT incluidos: ' + tweaks.length);
+      forceDownload(new Blob([fullContent], {type:'text/plain;charset=utf-8'}), 'Yosser_Tweaks_TODOS_BAT_Window_RAM_Net_Mouse_KB.BAT');
+      alert('Descarga iniciada: Yosser_Tweaks_TODOS_BAT (Window+RAM+Internet+Mouse+Keyboard)\\n\\nTweaks .BAT: ' + tweaks.length + '\\nGenerales: ' + general.length + ' | NVIDIA: ' + nvidia.length + ' | AMD: ' + amd.length + ' | INTEL: ' + intel.length + '\\n\\nEl BAT detecta tu Windows (8.1/10/11) y tu GPU al ejecutarlo.');
     } catch(e) { alert('Error al crear BAT: '+e.message); console.error(e); }
   }
   function downloadAllTweaksReg() {
@@ -1171,8 +1707,8 @@ endlocal
         return;
       }
       const blob = new Blob([lines.join('\r\n')], { type: 'application/octet-stream' });
-      forceDownload(blob, 'Yosser_Tweaks_SOLO_REG.REG');
-      alert('Descarga iniciada: Yosser_Tweaks_SOLO_REG.REG\nTweaks .REG: ' + tweaks.length + '\nEntradas únicas: ' + count);
+      forceDownload(blob, 'Yosser_Tweaks_TODOS_REG_Window_RAM_Net_Mouse_KB.REG');
+      alert('Descarga iniciada: Yosser_Tweaks_TODOS_REG (Window+RAM+Internet+Mouse+Keyboard)\nTweaks .REG: ' + tweaks.length + '\nEntradas únicas: ' + count);
     } catch (e) {
       alert('Error en downloadAllTweaksReg: ' + e.message);
       console.error(e);
